@@ -1,0 +1,43 @@
+﻿<UserControl x:Name="TimePicker" x:Class="WarnMe_Cherry.Steuerelemente.DateTimePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             mc:Ignorable="d" Height="30" Width="153.75"
+             Focusable="True"
+             KeyDown="HandleKeyInput">
+    
+    <Grid x:Name="grid"
+          HorizontalAlignment="Stretch"
+          Height="Auto"
+          VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="18"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox>
+            <local:TimeOfDay x:Name="Time" Height="70" Width="293"/>
+        </Viewbox>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="IncreaseButton"
+                       Grid.Row="0"
+                       MouseDown="IncreaseValue">
+                <TextBlock.Background>
+                    <ImageBrush ImageSource="/WarnMe;component/Ressources/UpIcon.png"/>
+                </TextBlock.Background>
+            </TextBlock>
+            <TextBlock x:Name="DecreaseButton"
+                       Grid.Row="1"
+                       MouseDown="DecreaseValue">
+                <TextBlock.Background>
+                    <ImageBrush ImageSource="/WarnMe;component/Ressources/DownIcon.png"/>
+                </TextBlock.Background>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</UserControl>

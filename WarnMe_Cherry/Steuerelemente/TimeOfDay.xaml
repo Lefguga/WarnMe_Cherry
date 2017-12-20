@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.TimeOfDay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             mc:Ignorable="d" 
+             d:DesignHeight="70" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="86"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="86"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="86"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock FontSize="80" Margin="0,-21,0,0" Focusable="True" x:Name="Hours" Text="00"
+             GotFocus="Control_GotFocus"
+             LostFocus="Control_LostFocus"/>
+        <TextBlock FontSize="80" Margin="0,-25,0,0" Text=":" Grid.Column="1"/>
+        <TextBlock FontSize="80" Margin="0,-21,0,0" Focusable="True"  x:Name="Minutes" Text="00" Grid.Column="2"
+             GotFocus="Control_GotFocus"
+             LostFocus="Control_LostFocus"/>
+        <TextBlock FontSize="80" Margin="0,-25,0,0" Text=":" Grid.Column="3"/>
+        <TextBlock FontSize="80" Margin="0,-21,0,0" Focusable="True"  x:Name="Seconds" Text="00" Grid.Column="4"
+             GotFocus="Control_GotFocus"
+             LostFocus="Control_LostFocus"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.SwitchButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="40"
+             MouseDown="Switch_MouseDown">
+
+    <Grid>
+        <Viewbox>
+            <Border x:Name="SwitchBG" BorderThickness="1" CornerRadius="0.5, 0.5, 0.5, 0.5" BorderBrush="#7FE0E0E0" Width="4"/>
+        </Viewbox>
+        <Viewbox x:Name="Switch" Margin="1" HorizontalAlignment="Right">
+            <Border BorderThickness="1" CornerRadius="0.5, 0.5, 0.5, 0.5" BorderBrush="White"/>
+        </Viewbox>
+    </Grid>
+</UserControl>

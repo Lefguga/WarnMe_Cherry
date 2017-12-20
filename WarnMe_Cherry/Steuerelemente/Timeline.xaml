@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Timeline"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             mc:Ignorable="d">
+    <Border>
+        <Border.Background>
+            <LinearGradientBrush EndPoint="1,0">
+                <GradientStop x:Name="ProgressColor2" Color="Blue" Offset="0.85"/>
+                <GradientStop x:Name="ProgressColor1" Color="#000000FF" Offset="0.9"/>
+            </LinearGradientBrush>
+        </Border.Background>
+    </Border>
+</UserControl>

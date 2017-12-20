@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("WarnMe_Cherry")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Continental AG")]
-[assembly: AssemblyProduct("WarnMe_Cherry")]
-[assembly: AssemblyCopyright("Copyright © Continental AG 2017")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("WarnMe")]
+[assembly: AssemblyCopyright("Copyright © Open Source")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,7 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.3.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("de-DE")]
+
