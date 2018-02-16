@@ -10,10 +10,21 @@
         Title="WarnMe" Height="400" Width="600"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="#6F000064"
         FontFamily="/WarnMe;component/Ressources/#San Francisco Display"
         IsTabStop="False"
-        Foreground="#FFEAEAEA">
+        Foreground="#FFEAEAEA"
+        Loaded="AfterFormInitialized"
+        Closing="ShutdownWarnMe">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="#11111164"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF0000A0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
 
     <Grid Margin="2" Focusable="True" Background="#FF313131" MouseDown="Grid_MouseDown">
         <Grid.RowDefinitions>
@@ -127,7 +138,8 @@
                         Grid.Row="1"
                         BorderThickness="0"
                         Background="{x:Null}"
-                        BorderBrush="{x:Null}">
+                        BorderBrush="{x:Null}" Foreground="{Binding Foreground, ElementName=MainWindow}">
+                <!--==============================HOME==============================-->
                 <TabItem Header="Home" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -137,7 +149,8 @@
                         </Grid.RowDefinitions>
                         <Steuerelemente:DateTimePicker x:Name="StartTimePicker" Margin="10,24,0,0"
                                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                       Height="30" Width="100" AllowInputs="True"/>
+                                                       Height="30" Width="100" AllowInputs="True"
+                                                       TimeUpdated="StartTimeUpdated"/>
                         <TextBlock Text="Startzeit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
                                Width="100"/>
                         <Steuerelemente:DateTimePicker x:Name="EndTimePicker" Margin="178,24,0,0"
@@ -150,7 +163,7 @@
                                                        Height="30" Width="100"/>
                         <TextBlock Text="Stundenlimit" HorizontalAlignment="Left" Margin="348,10,0,0" VerticalAlignment="Top"
                                Width="100"/>
-                        <Steuerelemente:Timeline Grid.Row="2"/>
+                        <Steuerelemente:Timeline x:Name="timeLine" Grid.Row="2"/>
                         <!--<Border Grid.Row="2">
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="1,0">
@@ -161,14 +174,38 @@
                         </Border>-->
                     </Grid>
                 </TabItem>
-                <TabItem Header="Übersicht" IsTabStop="False" Height="0" Margin="0">
+                <!--==============================ÜBERSICHT==============================-->
+                <TabItem Header="Übersicht" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}">
                     <Grid>
-
-                        <Wecker:Wecker HorizontalAlignment="Left" VerticalAlignment="Top" Height="50"/>
-
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="152*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Margin="1">
+                                <TextBlock Text="Startzeit"/>
+                            </Viewbox>
+                            <Viewbox Margin="1" Grid.Column="1">
+                                <TextBlock Text="Endzeit"/>
+                            </Viewbox>
+                            <Viewbox Margin="1" Grid.Column="2">
+                                <TextBlock Text="Arbeitszeit"/>
+                            </Viewbox>
+                            <Viewbox Margin="1" Grid.Column="3">
+                                <TextBlock Text="Bemerkung"/>
+                            </Viewbox>
+                        </Grid>
+                        <Grid x:Name="Uebersicht" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Einstellungen" IsTabStop="False" Height="0" Margin="0">
+                <!--==============================EINSTELLUNGEN==============================-->
+                <TabItem Header="Einstellungen" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="120"/>
@@ -183,7 +220,7 @@
                                 <RowDefinition Height="20*"/>
                             </Grid.RowDefinitions>
                             <Viewbox Grid.Row="1">
-                                <TextBlock Text="AddItem" Margin="2"/>
+                                <TextBlock Text="Read Website" MouseDown="TestWebsite"/>
                             </Viewbox>
                         </Grid>
                     </Grid>
