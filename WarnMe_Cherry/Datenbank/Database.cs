@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 
 namespace WarnMe_Cherry.Datenbank
 {
-    class Database
+    class Datenbank
     {
         FileInfo source;
         Dictionary<string, Dictionary<string, Object>> Library = new Dictionary<string, Dictionary<string, Object>>();
 
         Encoding Encoding = Encoding.UTF8;
 
-        public Database(string Filename)
+        string LastCommittedString = "";
+        public bool HasUncommitedChanges { get => (LastCommittedString != null && LastCommittedString.Equals(Serialize())); }
+
+        public Datenbank(string Filename)
         {
             source = new FileInfo(Filename);
 
@@ -30,6 +33,7 @@ namespace WarnMe_Cherry.Datenbank
                     sourceString = sr.ReadToEnd();
                     sr.Close();
                 }
+                LastCommittedString = sourceString;
                 Deserialize(sourceString);
             }
         }
@@ -68,14 +72,14 @@ namespace WarnMe_Cherry.Datenbank
             {
                 Library.Add(tableName, new Dictionary<string, Object>());
             }
-                if (!Library[tableName].ContainsKey(elementName))
-                {
-                    Library[tableName].Add(elementName, elementValue);
-                }
-                else
-                {
-                    Library[tableName][elementName] = elementValue;
-                }
+            if (!Library[tableName].ContainsKey(elementName))
+            {
+                Library[tableName].Add(elementName, elementValue);
+            }
+            else
+            {
+                Library[tableName][elementName] = elementValue;
+            }
         }
 
         /// <summary>
@@ -86,14 +90,21 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="tableName"></param>
         /// <param name="elementName"></param>
         /// <returns></returns>
-        public Object Select<T>(string tableName, string elementName)
+        public T Select<T>(string tableName, string elementName)
         {
-            // check if key already exists
+            // check if key exists
             if (!Library.ContainsKey(tableName) || !Library[tableName].ContainsKey(elementName))
             {
                 throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
             }
-            return (T)Library[tableName][elementName];
+            try
+            {
+                return (T)Library[tableName][elementName];
+            }
+            catch (InvalidCastException) // Some custom objects cant deserialized correctly and stored as objects. These must deserialized explictly
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
+            }
         }
 
         /// <summary>
@@ -160,10 +171,22 @@ namespace WarnMe_Cherry.Datenbank
         /// </summary>
         internal void Commit()
         {
-            using (StreamWriter sw = new StreamWriter(source.OpenWrite(), Encoding))
+            string toWrite = Serialize();
+            try
             {
-                sw.Write(Serialize());
-                sw.Close();
+                using (StreamWriter sw = new StreamWriter(source.OpenWrite(), Encoding))
+                {
+                    sw.Write(toWrite);
+                    sw.Close();
+                }
+            }
+            catch (IOException)
+            {
+                return;
+            }
+            finally
+            {
+                LastCommittedString = toWrite;
             }
         }
 
