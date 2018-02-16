@@ -7,7 +7,7 @@
              xmlns:steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="150">
-    <Grid>
+    <Grid x:Name="ContentGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition/>
@@ -25,8 +25,8 @@
             </Viewbox>
         </Grid>
         <Viewbox Grid.Row="1" HorizontalAlignment="Left">
-            <TextBlock Text="Name"/>
+            <TextBlock x:Name="Titel" Text="Name" Focusable="True" GotFocus="Titel_GotFocus"/>
         </Viewbox>
-        
+        <!--<TextBox Grid.Row="1" Text="Titel" BorderBrush="{x:Null}" Background="#FF616161"/>-->
     </Grid>
 </UserControl>

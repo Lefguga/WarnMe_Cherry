@@ -51,5 +51,45 @@ namespace WarnMe_Cherry.Wecker
         {
             InitializeComponent();
         }
+
+        private void Titel_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox editText = new TextBox()
+            {
+                Focusable=true,
+                Text = Titel.Text,
+                BorderBrush=null,
+                Background = Brushes.Transparent,
+                Margin = new Thickness(0, 0, 0, -5),
+                FontSize = Titel.FontSize + 1,
+                Foreground = Foreground
+            };
+            editText.KeyDown += delegate (object o, KeyEventArgs a)
+            {
+                if (a.Key == Key.Enter)
+                {
+                    Titel.Text = ((TextBox)o).Text;
+                    ContentGrid.Children.Remove((TextBox)o);
+                    Titel.Visibility = Visibility.Visible;
+                }
+                else if (a.Key == Key.Escape)
+                {
+                    ContentGrid.Children.Remove((TextBox)o);
+                    Titel.Visibility = Visibility.Visible;
+                }
+            };
+            editText.LostFocus += delegate (object o, RoutedEventArgs a)
+            {
+                    Titel.Text = ((TextBox)o).Text;
+                    ContentGrid.Children.Remove((TextBox)o);
+                    Titel.Visibility = Visibility.Visible;
+            };
+
+            Titel.Visibility = Visibility.Hidden;
+            editText.SetValue(Grid.RowProperty, 1);
+            ContentGrid.Children.Add(editText);
+            editText.Focus();
+            editText.SelectAll();
+        }
     }
 }
