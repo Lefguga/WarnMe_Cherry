@@ -76,7 +76,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>IconCherry.ico</ApplicationIcon>
+    <ApplicationIcon>Ressources\IconCherry.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -96,6 +96,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Datenbank\Database.cs" />
+    <Compile Include="Extensions\Wetter.cs" />
+    <Compile Include="ExterneKlassen\Extern.cs" />
+    <Compile Include="Structs\Arbeitstag.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonObjectId.cs" />
@@ -403,7 +406,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Ressources\SplashScreenCherry.png" />
+    <None Include="Ressources\SplashScreenCherry.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Ressources\UpIcon.png" />
@@ -412,7 +415,7 @@
     <Resource Include="Ressources\DownIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconCherry.ico" />
+    <Resource Include="Ressources\IconCherry.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
