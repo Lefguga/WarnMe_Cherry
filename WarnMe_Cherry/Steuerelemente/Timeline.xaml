@@ -8,7 +8,7 @@
     <Border>
         <Border.Background>
             <LinearGradientBrush EndPoint="1,0">
-                <GradientStop x:Name="ProgressColor2" Color="Blue" Offset="0.85"/>
+                <GradientStop x:Name="ProgressColor2" Color="#700000FF" Offset="0.85"/>
                 <GradientStop x:Name="ProgressColor1" Color="#000000FF" Offset="0.9"/>
             </LinearGradientBrush>
         </Border.Background>

@@ -49,8 +49,6 @@ namespace WarnMe_Cherry.Steuerelemente
                     double tmp = (Value) / (MaxValue);
                     if (tmp <= 1 && tmp >= 0)
                         return tmp;
-                    else
-                        return 0;
                 }
                 return 0;
             }

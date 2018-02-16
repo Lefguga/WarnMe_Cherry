@@ -20,8 +20,8 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class DateTimePicker : UserControl
     {
-        public delegate void ValueUpdates(object value);
-        public event ValueUpdates ValueUpdated;
+        public delegate void TimeUpdates(TimeSpan value);
+        public event TimeUpdates TimeUpdated;
         
         public bool AllowInputs { get; set; }
         int LastInput = 0;
@@ -34,7 +34,6 @@ namespace WarnMe_Cherry.Steuerelemente
                 Hour = value.Hours;
                 Minute = value.Minutes;
                 Second = value.Seconds;
-                ValueUpdated?.Invoke(value);
             }
         }
         
@@ -61,6 +60,11 @@ namespace WarnMe_Cherry.Steuerelemente
             Loaded += delegate (object o, RoutedEventArgs e)
             {
                 IncreaseButton.Visibility = DecreaseButton.Visibility = AllowInputs ? Visibility.Visible : Visibility.Hidden;
+            };
+
+            Time.TimeUpdated += delegate (TimeSpan timeSpan)
+            {
+                TimeUpdated?.Invoke(DateTime);
             };
         }
 
@@ -138,7 +142,7 @@ namespace WarnMe_Cherry.Steuerelemente
                 return key - Key.D0;
             if (Key.NumPad0 <= key && key <= Key.NumPad9)
                 return key - Key.NumPad0;
-            throw new InvalidCastException(string.Format("Could not convert in digit: {0}", key));
+            throw new InvalidCastException(string.Format("Could not convert into digit: {0}", key));
         }
     }
 }

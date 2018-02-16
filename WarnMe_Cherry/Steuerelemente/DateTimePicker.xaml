@@ -19,25 +19,43 @@
         <Viewbox>
             <local:TimeOfDay x:Name="Time" Height="70" Width="293"/>
         </Viewbox>
-        <Grid Grid.Column="1">
+        <Grid x:Name="Buttons" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="IncreaseButton"
+            <Viewbox x:Name="IncreaseButton"
                        Grid.Row="0"
                        MouseDown="IncreaseValue">
-                <TextBlock.Background>
-                    <ImageBrush ImageSource="/WarnMe;component/Ressources/UpIcon.png"/>
-                </TextBlock.Background>
-            </TextBlock>
-            <TextBlock x:Name="DecreaseButton"
+                <Polygon Points="0,1 2,1 1,0">
+                    <Polygon.Style>
+                        <Style>
+                            <Setter Property="Polygon.Fill" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="Polygon.IsMouseOver" Value="True">
+                                    <Setter Property="Polygon.Fill" Value="Gray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Polygon.Style>
+                </Polygon>
+            </Viewbox>
+            <Viewbox x:Name="DecreaseButton"
                        Grid.Row="1"
                        MouseDown="DecreaseValue">
-                <TextBlock.Background>
-                    <ImageBrush ImageSource="/WarnMe;component/Ressources/DownIcon.png"/>
-                </TextBlock.Background>
-            </TextBlock>
+                <Polygon Points="0,0 2,0 1,1">
+                    <Polygon.Style>
+                        <Style>
+                            <Setter Property="Polygon.Fill" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="Polygon.IsMouseOver" Value="True">
+                                    <Setter Property="Polygon.Fill" Value="Gray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Polygon.Style>
+                </Polygon>
+            </Viewbox>
         </Grid>
     </Grid>
 </UserControl>

@@ -20,6 +20,9 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class TimeOfDay : UserControl
     {
+        public delegate void TimeUpdates(TimeSpan time);
+        public event TimeUpdates TimeUpdated;
+
         int hour, minute, second;
         public int Hour
         {
@@ -35,6 +38,7 @@ namespace WarnMe_Cherry.Steuerelemente
                     hour = 23;
                 }
                 Hours.Text = hour.ToString("D2");
+                TriggerTimeUpdate();
             }
         }
         public int Minute
@@ -51,6 +55,7 @@ namespace WarnMe_Cherry.Steuerelemente
                     minute = 59;
                 }
                 Minutes.Text = minute.ToString("D2");
+                TriggerTimeUpdate();
             }
         }
         public int Second
@@ -67,8 +72,18 @@ namespace WarnMe_Cherry.Steuerelemente
                     second = 59;
                 }
                 Seconds.Text = second.ToString("D2");
+                TriggerTimeUpdate();
             }
         }
+
+        private void TriggerTimeUpdate() => TimeUpdated?.Invoke(new TimeSpan(Hour, Minute, Second));
+
+        Brush focusBrush = new LinearGradientBrush(new GradientStopCollection(3)
+        {
+            new GradientStop(Color.FromArgb(0x9F, 0x00, 0x60, 0xFF), 0.16),
+            new GradientStop(Color.FromArgb(0x00, 0x00, 0x60, 0xFF), 0.15)
+        },90);
+        public Brush FocusBrush { get => focusBrush; set => focusBrush = value; }
 
         public TimeOfDay()
         {
@@ -78,7 +93,7 @@ namespace WarnMe_Cherry.Steuerelemente
         private void Control_GotFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBlock)
-                ((TextBlock)sender).Background = new LinearGradientBrush(Color.FromArgb(0x00, 0x00, 0x50, 0xF0), Color.FromArgb(0xA0, 0x00, 0x50, 0xF0), 90);
+                ((TextBlock)sender).Background = FocusBrush;
         }
 
         private void Control_LostFocus(object sender, RoutedEventArgs e)
