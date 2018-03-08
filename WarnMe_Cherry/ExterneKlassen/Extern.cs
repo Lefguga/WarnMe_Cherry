@@ -8,12 +8,20 @@ namespace WarnMe_Cherry
         [DllImport("kernel32")]
         extern static UInt64 GetTickCount64();
 
-        public static TimeSpan UpDuration
+        public static TimeSpan SystemUpDuration
         {
             get
             {
                 GetTickCount64(); // run 2 times to be sure
                 return TimeSpan.FromMilliseconds(GetTickCount64());
+            }
+        }
+
+        public static DateTime SystemUpTime
+        {
+            get
+            {
+               return DateTime.Now - SystemUpDuration;
             }
         }
     }

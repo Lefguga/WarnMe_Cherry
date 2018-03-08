@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WarnMe_Cherry.Datenbank
 {
@@ -90,6 +89,16 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="tableName"></param>
         /// <param name="elementName"></param>
         /// <returns></returns>
+        public Dictionary<string, T> Select<T>(string tableName)
+        {
+            // check if key exists
+            if (!Library.ContainsKey(tableName))
+            {
+                throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
+            }
+            return Library[tableName].ToDictionary(item => item.Key, item => Select<T>(tableName, item.Key));
+        }
+
         public T Select<T>(string tableName, string elementName)
         {
             // check if key exists
@@ -199,7 +208,8 @@ namespace WarnMe_Cherry.Datenbank
             return Newtonsoft.Json.JsonConvert.SerializeObject(Library, new Newtonsoft.Json.JsonSerializerSettings()
             {
                 Formatting = Newtonsoft.Json.Formatting.Indented,
-                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
+                DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
             });
         }
 
@@ -211,7 +221,8 @@ namespace WarnMe_Cherry.Datenbank
         {
             Library = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Object>>>(data, new Newtonsoft.Json.JsonSerializerSettings()
             {
-                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
+                DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
             }) ?? new Dictionary<string, Dictionary<string, Object>>();
         }
     }
