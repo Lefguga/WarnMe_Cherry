@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WarnMe_Cherry
 {
@@ -12,5 +8,7 @@ namespace WarnMe_Cherry
         TimeSpan endZeit;
         public TimeSpan StartZeit { get => new TimeSpan(startZeit.Days, startZeit.Hours, startZeit.Minutes, startZeit.Seconds); set => startZeit = value; }
         public TimeSpan EndZeit { get => new TimeSpan(endZeit.Days, endZeit.Hours, endZeit.Minutes, endZeit.Seconds); set => endZeit = value; }
+        public string Bemerkung { get; set; }
+        internal TimeSpan Duration { get => EndZeit - StartZeit; }
     }
 }

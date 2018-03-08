@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WarnMe_Cherry.Steuerelemente;
 
 namespace WarnMe_Cherry
 {
@@ -26,6 +16,12 @@ namespace WarnMe_Cherry
         const string WORKINGDAYS_TABLE_NAME = "Arbeitstage";
         const string WECKER_TABLE_NAME = "Wecker";
         const string SETTINGS_TABLE_NAME = "Einstellungen";
+        const string SONSTIGES_TABLE_NAME = "Sonstiges";
+        struct SONSTIGES_TABLE_VALUE
+        {
+            public const string SYSTEM_UP_TIME = "SystemUpTime";
+        }
+        const string CONFIG_FILE_NAME = @".\Configuration.json";
 
         // Shortcuts
         string HeuteString => DateTime.Now.ToShortDateString();
@@ -35,22 +31,11 @@ namespace WarnMe_Cherry
         {
             get
             {
-                Arbeitstag heute;
                 if (Datenbank.Exists(WORKINGDAYS_TABLE_NAME, HeuteString))
                 {
-                    heute = Datenbank.Select<Arbeitstag>(WORKINGDAYS_TABLE_NAME, HeuteString);
-                    heute.EndZeit = DateTime.Now.TimeOfDay;
+                    return Datenbank.Select<Arbeitstag>(WORKINGDAYS_TABLE_NAME, HeuteString);
                 }
-                else
-                {
-                    heute = new Arbeitstag()
-                    {
-                        StartZeit = DateTime.Now.TimeOfDay - Extern.UpDuration,
-                        EndZeit = DateTime.Now.TimeOfDay
-                    };
-                    Datenbank.Insert(WORKINGDAYS_TABLE_NAME, HeuteString, heute);
-                }
-                return heute;
+                throw new ResourceReferenceKeyNotFoundException("Data not found", HeuteString);
             }
             set
             {
@@ -69,7 +54,9 @@ namespace WarnMe_Cherry
         private void AfterFormInitialized(object sender, RoutedEventArgs e)
         {
             //Load Datenbank
-            Datenbank = new Datenbank.Datenbank(@".\Configuration.json");
+            Datenbank = new Datenbank.Datenbank(CONFIG_FILE_NAME);
+
+            //Set up Variables and Settings
             InitFormValues();
 
             //Set up Updater
@@ -86,6 +73,88 @@ namespace WarnMe_Cherry
             Updater.RunWorkerAsync();
         }
 
+        private void InitFormValues()
+        {
+
+            // init new day of working
+            if (!Datenbank.Exists(WORKINGDAYS_TABLE_NAME, HeuteString))
+            {
+                Datenbank.Insert(WORKINGDAYS_TABLE_NAME, HeuteString, new Arbeitstag()
+                {
+                    StartZeit = Extern.SystemUpTime.TimeOfDay,
+                    EndZeit = Jetzt
+                });
+            }
+            Arbeitstag heute = Heute;
+
+            StartTimePicker.DateTime = heute.StartZeit;
+
+            EndTimePicker.DateTime = heute.StartZeit + new TimeSpan(7, 45, 0);
+            MaxEndTimePicker.DateTime = heute.StartZeit + new TimeSpan(10, 45, 0);
+            
+            Datenbank.Update(SONSTIGES_TABLE_NAME, SONSTIGES_TABLE_VALUE.SYSTEM_UP_TIME, Extern.SystemUpTime);
+            Datenbank.Commit();
+
+            // WORKINGDAY TABLE
+            System.Collections.Generic.Dictionary<string, Arbeitstag> dictionaryAT = Datenbank.Select<Arbeitstag>(WORKINGDAYS_TABLE_NAME);
+            if (dictionaryAT.Count > 1)
+            {
+                foreach (var item in dictionaryAT.Reverse())
+                {
+                    Viewbox day = new Viewbox
+                    {
+                        Margin = new Thickness(0, 3, 0, 3),
+                        Child = new TextBlock() { Text = item.Key }
+                    },
+                    start = new Viewbox
+                    {
+                        Margin = new Thickness(0, 3, 0, 3),
+                        Child = new Steuerelemente.TimeOfDay() { Value = item.Value.StartZeit }
+                    },
+                    end = new Viewbox
+                    {
+                        Margin = new Thickness(0, 3, 0, 3),
+                        Child = new Steuerelemente.TimeOfDay() { Value = item.Value.EndZeit,  }
+                    },
+                    duration = new Viewbox
+                    {
+                        Margin = new Thickness(0, 3, 0, 3),
+                        Child = new Steuerelemente.TimeOfDay() { Value = item.Value.Duration }
+                    },
+                    comment = new Viewbox
+                    {
+                        Margin = new Thickness(0, 3, 0, 3),
+                        Child = new TextBox() {
+                            Text = item.Value.Bemerkung,
+                            BorderBrush = null,
+                            Background = null,
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            Foreground = MainWindow.Foreground,
+                            MinWidth = 150.0d
+                        }
+                    };
+
+                    Uebersicht.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    Uebersicht.Children.Add(day);
+                    Uebersicht.Children.Add(start);
+                    Uebersicht.Children.Add(end);
+                    Uebersicht.Children.Add(duration);
+                    Uebersicht.Children.Add(comment);
+
+                    Grid.SetRow(day, Uebersicht.RowDefinitions.Count - 1);
+                    Grid.SetRow(start, Uebersicht.RowDefinitions.Count - 1);
+                    Grid.SetRow(end, Uebersicht.RowDefinitions.Count - 1);
+                    Grid.SetRow(duration, Uebersicht.RowDefinitions.Count - 1);
+                    Grid.SetRow(comment, Uebersicht.RowDefinitions.Count - 1);
+
+                    Grid.SetColumn(start, 1);
+                    Grid.SetColumn(end, 2);
+                    Grid.SetColumn(duration, 3);
+                    Grid.SetColumn(comment, 4);
+                }
+            }
+        }
+
         private void UpdateForm(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             // Update Timeline
@@ -93,21 +162,6 @@ namespace WarnMe_Cherry
 
             // Restart Updater
             Updater.RunWorkerAsync();
-        }
-
-        private void InitFormValues()
-        {
-
-            // init new day of working
-            Arbeitstag heute = Heute;
-
-            StartTimePicker.DateTime = heute.StartZeit;
-
-            EndTimePicker.DateTime = heute.StartZeit + new TimeSpan(7, 45, 0);
-            MaxEndTimePicker.DateTime = heute.StartZeit + new TimeSpan(10, 45, 0);
-
-            Datenbank.Update("Sonstiges", "SystemUpTime", Extern.UpDuration);
-            Datenbank.Commit();
         }
 
         private void ActivateDragMove(object sender, MouseButtonEventArgs e)

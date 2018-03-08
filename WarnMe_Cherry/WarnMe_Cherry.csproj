@@ -409,12 +409,6 @@
     <None Include="Ressources\SplashScreenCherry.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Ressources\UpIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\DownIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Ressources\IconCherry.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,152 +19,161 @@
         <Style TargetType="Window">
             <Setter Property="Background" Value="#11111164"/>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <Trigger Property="IsActive" Value="True">
                     <Setter Property="Background" Value="#FF0000A0"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Style>
 
-    <Grid Margin="2" Focusable="True" Background="#FF313131" MouseDown="Grid_MouseDown">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition/>
+            <RowDefinition Height="2"/>
         </Grid.RowDefinitions>
-        <Grid MouseLeftButtonDown="ActivateDragMove" Background="#FF262626">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="35"/>
-            </Grid.ColumnDefinitions>
-            <Viewbox  Grid.Column="0">
-                <TextBlock Text="WarnMe"/>
-            </Viewbox>
-            <Rectangle Margin="1, 3" Grid.Column="2" Fill="#FFA0A0A0"
-                       MouseLeftButtonDown="MinimizeClick" ToolTip="Minimieren"/>
-            <Rectangle Margin="1, 3" Grid.Column="3" Fill="#FF909090"
-                       MouseLeftButtonDown="MaximizeClick" ToolTip="Maximieren"/>
-            <Rectangle Margin="1, 3" Grid.Column="4" Fill="#FFA01010"
-                       MouseLeftButtonDown="CloseClick" ToolTip="Schließen"/>
-        </Grid>
-        <Grid Margin="0" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <!--<ColumnDefinition Width="130"/>-->
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1" Focusable="True" Background="#FF313131" MouseDown="Grid_MouseDown">
             <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
-            <Grid>
+            <Grid MouseLeftButtonDown="ActivateDragMove" Background="#FF262626">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="4*"/>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="35"/>
                 </Grid.ColumnDefinitions>
-                <Border MouseDown="HomeBT_Click" Margin="0,0,0.2,-0.2">
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                                <GradientStop Color="#0C0000FF" Offset="0"/>
-                                                <GradientStop Color="#4C0000FF" Offset="0.903"/>
-                                                <GradientStop Color="#CC0000FF" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Viewbox Margin="1">
-                        <TextBlock Text="Home"/>
-                    </Viewbox>
-                </Border>
-                <Border
-                         MouseDown="ÜbersichtBT_Click" Grid.ColumnSpan="2" Margin="99,0,2.2,-0.2">
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                                <GradientStop Color="#0C0000FF" Offset="0"/>
-                                                <GradientStop Color="#4C0000FF" Offset="0.903"/>
-                                                <GradientStop Color="#CC0000FF" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Viewbox Margin="1">
-                        <TextBlock Text="Übersicht"/>
-                    </Viewbox>
-                </Border>
-                <Border Grid.Column="2"
-                         MouseDown="EinstellungenBT_Click" Margin="1.8,0,0,-0.2">
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                                <GradientStop Color="#0C0000FF" Offset="0"/>
-                                                <GradientStop Color="#4C0000FF" Offset="0.903"/>
-                                                <GradientStop Color="#CC0000FF" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Viewbox Margin="1">
-                        <TextBlock Text="Einstellungen"/>
-                    </Viewbox>
-                </Border>
+                <Viewbox  Grid.Column="0">
+                    <TextBlock Text="WarnMe"/>
+                </Viewbox>
+                <Rectangle Margin="1, 3" Grid.Column="2" Fill="#FFA0A0A0"
+                       MouseLeftButtonDown="MinimizeClick" ToolTip="Minimieren"/>
+                <Rectangle Margin="1, 3" Grid.Column="3" Fill="#FF909090"
+                       MouseLeftButtonDown="MaximizeClick" ToolTip="Maximieren"/>
+                <Rectangle Margin="1, 3" Grid.Column="4" Fill="#FFA01010"
+                       MouseLeftButtonDown="CloseClick" ToolTip="Schließen"/>
             </Grid>
-            <TabControl x:Name="Tabs"
+            <Grid Margin="0" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <!--<ColumnDefinition Width="130"/>-->
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="12*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border MouseDown="HomeBT_Click">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                    <GradientStop Color="#0C0000FF" Offset="0"/>
+                                                    <GradientStop Color="#4C0000FF" Offset="0.903"/>
+                                                    <GradientStop Color="#CC0000FF" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Viewbox Margin="1">
+                            <TextBlock Text="Home"/>
+                        </Viewbox>
+                    </Border>
+                    <Border MouseDown="ÜbersichtBT_Click" Grid.Column="1">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                    <GradientStop Color="#0C0000FF" Offset="0"/>
+                                                    <GradientStop Color="#4C0000FF" Offset="0.903"/>
+                                                    <GradientStop Color="#CC0000FF" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Viewbox Margin="1">
+                            <TextBlock Text="Übersicht"/>
+                        </Viewbox>
+                    </Border>
+                    <Border Grid.Column="2" MouseDown="EinstellungenBT_Click">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                    <GradientStop Color="#0C0000FF" Offset="0"/>
+                                                    <GradientStop Color="#4C0000FF" Offset="0.903"/>
+                                                    <GradientStop Color="#CC0000FF" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Viewbox Margin="1">
+                            <TextBlock Text="Einstellungen"/>
+                        </Viewbox>
+                    </Border>
+                </Grid>
+                <TabControl x:Name="Tabs"
                         Grid.Row="1"
                         BorderThickness="0"
                         Background="{x:Null}"
                         BorderBrush="{x:Null}" Foreground="{Binding Foreground, ElementName=MainWindow}">
-                <!--==============================HOME==============================-->
-                <TabItem Header="Home" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="80"/>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="5"/>
-                        </Grid.RowDefinitions>
-                        <Steuerelemente:DateTimePicker x:Name="StartTimePicker" Margin="10,24,0,0"
+                    <!--==============================HOME==============================-->
+                    <TabItem Header="Home" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}" Visibility="Hidden">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="4*"/>
+                                <RowDefinition Height="5"/>
+                            </Grid.RowDefinitions>
+                            <Steuerelemente:DateTimePicker x:Name="StartTimePicker" Margin="5,24,0,0"
                                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                       Height="30" Width="100" AllowInputs="True"
+                                                       Height="30" Width="120" AllowInputs="True"
                                                        TimeUpdated="StartTimeUpdated"/>
-                        <TextBlock Text="Startzeit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+                            <TextBlock Text="Startzeit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
                                Width="100"/>
-                        <Steuerelemente:DateTimePicker x:Name="EndTimePicker" Margin="178,24,0,0"
+                            <Steuerelemente:DateTimePicker x:Name="EndTimePicker" Margin="175,24,0,0"
                                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                       Height="30" Width="100"/>
-                        <TextBlock Text="Feierabend" HorizontalAlignment="Left" Margin="178,10,0,0" VerticalAlignment="Top"
+                                                       Height="30" Width="120"/>
+                            <TextBlock Text="Feierabend" HorizontalAlignment="Left" Margin="178,10,0,0" VerticalAlignment="Top"
                                Width="100"/>
-                        <Steuerelemente:DateTimePicker x:Name="MaxEndTimePicker" Margin="348,24,0,0"
+                            <Steuerelemente:DateTimePicker x:Name="MaxEndTimePicker" Margin="345,24,0,0"
                                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                       Height="30" Width="100"/>
-                        <TextBlock Text="Stundenlimit" HorizontalAlignment="Left" Margin="348,10,0,0" VerticalAlignment="Top"
+                                                       Height="30" Width="120"/>
+                            <TextBlock Text="Stundenlimit" HorizontalAlignment="Left" Margin="348,10,0,0" VerticalAlignment="Top"
                                Width="100"/>
-                        <Steuerelemente:Timeline x:Name="timeLine" Grid.Row="2"/>
-                        <!--<Border Grid.Row="2">
+                            <Steuerelemente:Timeline x:Name="timeLine" Grid.Row="2"/>
+                            <!--<Border Grid.Row="2">
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="1,0">
                                     <GradientStop Color="Blue" Offset="0.489"/>
@@ -172,61 +181,98 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>-->
-                    </Grid>
-                </TabItem>
-                <!--==============================ÜBERSICHT==============================-->
-                <TabItem Header="Übersicht" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20"/>
-                            <RowDefinition Height="152*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Viewbox Margin="1">
-                                <TextBlock Text="Startzeit"/>
-                            </Viewbox>
-                            <Viewbox Margin="1" Grid.Column="1">
-                                <TextBlock Text="Endzeit"/>
-                            </Viewbox>
-                            <Viewbox Margin="1" Grid.Column="2">
-                                <TextBlock Text="Arbeitszeit"/>
-                            </Viewbox>
-                            <Viewbox Margin="1" Grid.Column="3">
-                                <TextBlock Text="Bemerkung"/>
-                            </Viewbox>
                         </Grid>
-                        <Grid x:Name="Uebersicht" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
-                    </Grid>
-                </TabItem>
-                <!--==============================EINSTELLUNGEN==============================-->
-                <TabItem Header="Einstellungen" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="4*"/>
-                        </Grid.ColumnDefinitions>
+                    </TabItem>
+                    <!--==============================ÜBERSICHT==============================-->
+                    <TabItem Header="Übersicht" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}" Visibility="Hidden">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="4*"/>
-                                <RowDefinition Height="4*"/>
-                                <RowDefinition Height="4*"/>
-                                <RowDefinition Height="20*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="40*"/>
                             </Grid.RowDefinitions>
-                            <Viewbox Grid.Row="1">
-                                <TextBlock Text="Read Website" MouseDown="TestWebsite"/>
-                            </Viewbox>
-                        </Grid>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </Grid>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="8*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Margin="1" Grid.Column="0">
+                                    <TextBlock Text="Datum"/>
+                                </Viewbox>
+                                <Viewbox Margin="1" Grid.Column="1">
+                                    <TextBlock Text="Startzeit"/>
+                                </Viewbox>
+                                <Viewbox Margin="1" Grid.Column="2">
+                                    <TextBlock Text="Endzeit"/>
+                                </Viewbox>
+                                <Viewbox Margin="1" Grid.Column="3">
+                                    <TextBlock Text="Arbeitszeit"/>
+                                </Viewbox>
+                                <Viewbox Margin="1" Grid.Column="4">
+                                    <TextBlock Text="Bemerkung"/>
+                                </Viewbox>
+                            </Grid>
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                                <Grid x:Name="Uebersicht">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!--<Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Viewbox Margin="0,3">
+                                    <TextBlock Text="27.01.2018"/>
+                                </Viewbox>
+                                <Viewbox Margin="0,3" Grid.Column="1">
+                                    <Steuerelemente:TimeOfDay Hour="8" Minute="10" Second="0"/>
+                                </Viewbox>
+                            
+                                <Viewbox Margin="0,3" Grid.Column="2">
+                                    <Steuerelemente:TimeOfDay Hour="8" Minute="10" Second="0"/>
+                                </Viewbox>
+                            
+                                <Viewbox Margin="0,3" Grid.Column="3">
+                                    <Steuerelemente:TimeOfDay Hour="8" Minute="10" Second="0"/>
+                                </Viewbox>
 
+                                <Viewbox Grid.Column="4" Margin="0,3">
+                                    <TextBox Text="Hallo du" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalContentAlignment="Stretch"/>
+                                </Viewbox>-->
+                                </Grid>
+                            </ScrollViewer>
+                        </Grid>
+                    </TabItem>
+                    <!--==============================EINSTELLUNGEN==============================-->
+                    <TabItem Header="Einstellungen" IsTabStop="False" Height="0" Margin="0" Foreground="{Binding Foreground, ElementName=MainWindow}" Visibility="Hidden">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="4*"/>
+                                    <RowDefinition Height="4*"/>
+                                    <RowDefinition Height="4*"/>
+                                    <RowDefinition Height="20*"/>
+                                </Grid.RowDefinitions>
+                                <Viewbox Grid.Row="1">
+                                    <TextBlock Text="Read Website" MouseDown="TestWebsite"/>
+                                </Viewbox>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+
+        </Grid>
     </Grid>
 </Window>

@@ -8,22 +8,32 @@
              d:DesignHeight="70" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="86"/>
+            <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="86"/>
+            <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="86"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock FontSize="80" Margin="0,-21,0,0" Focusable="True" x:Name="Hours" Text="00"
+        <Viewbox>
+            <TextBlock FontSize="80" Focusable="True" x:Name="Hours" Text="00"
              GotFocus="Control_GotFocus"
              LostFocus="Control_LostFocus"/>
-        <TextBlock FontSize="80" Margin="0,-25,0,0" Text=":" Grid.Column="1"/>
-        <TextBlock FontSize="80" Margin="0,-21,0,0" Focusable="True"  x:Name="Minutes" Text="00" Grid.Column="2"
+        </Viewbox>
+        <Viewbox Grid.Column="1">
+            <TextBlock FontSize="80" Text=":"/>
+        </Viewbox>
+        <Viewbox Grid.Column="2">
+            <TextBlock FontSize="80" Focusable="True"  x:Name="Minutes" Text="00"
              GotFocus="Control_GotFocus"
              LostFocus="Control_LostFocus"/>
-        <TextBlock FontSize="80" Margin="0,-25,0,0" Text=":" Grid.Column="3"/>
-        <TextBlock FontSize="80" Margin="0,-21,0,0" Focusable="True"  x:Name="Seconds" Text="00" Grid.Column="4"
+        </Viewbox>
+        <Viewbox Grid.Column="3">
+            <TextBlock FontSize="80" Text=":"/>
+        </Viewbox>
+        <Viewbox Grid.Column="4">
+            <TextBlock FontSize="80" Focusable="True"  x:Name="Seconds" Text="00"
              GotFocus="Control_GotFocus"
              LostFocus="Control_LostFocus"/>
+        </Viewbox>
     </Grid>
 </UserControl>

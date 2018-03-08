@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
-             mc:Ignorable="d" Height="30" Width="153.75"
+             mc:Ignorable="d" Height="30" Width="150"
              Focusable="True"
              KeyDown="HandleKeyInput">
     
@@ -17,7 +17,7 @@
             <ColumnDefinition Width="18"/>
         </Grid.ColumnDefinitions>
         <Viewbox>
-            <local:TimeOfDay x:Name="Time" Height="70" Width="293"/>
+            <local:TimeOfDay x:Name="Time"/>
         </Viewbox>
         <Grid x:Name="Buttons" Grid.Column="1">
             <Grid.RowDefinitions>

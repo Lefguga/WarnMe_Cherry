@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
 namespace WarnMe_Cherry.Steuerelemente
 {
@@ -24,6 +11,8 @@ namespace WarnMe_Cherry.Steuerelemente
         private double maxValue = 100;
         public double MaxValue { get => maxValue; set => maxValue = value; }
 
+        float fadeOutLength = 0.02f;
+
         private double value = 0;
         public double Value
         {
@@ -32,10 +21,10 @@ namespace WarnMe_Cherry.Steuerelemente
             {
                 this.value = value;
                 double progress = Progress;
-                if (progress >= 0.05)
+                if (progress >= fadeOutLength)
                 {
                     ProgressColor1.Offset = progress;
-                    ProgressColor2.Offset = progress - 0.05;
+                    ProgressColor2.Offset = progress - fadeOutLength;
                 }
             }
         }

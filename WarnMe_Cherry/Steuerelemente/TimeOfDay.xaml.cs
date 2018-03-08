@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WarnMe_Cherry.Steuerelemente
 {
@@ -84,6 +74,7 @@ namespace WarnMe_Cherry.Steuerelemente
             new GradientStop(Color.FromArgb(0x00, 0x00, 0x60, 0xFF), 0.15)
         },90);
         public Brush FocusBrush { get => focusBrush; set => focusBrush = value; }
+        public TimeSpan Value { get => new TimeSpan(Hour, Minute, Second); internal set { Hour = value.Hours; Minute = value.Minutes; Second = value.Seconds; } }
 
         public TimeOfDay()
         {
