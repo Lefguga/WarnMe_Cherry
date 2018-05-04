@@ -96,8 +96,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Datenbank\Database.cs" />
+    <Compile Include="Extensions\DayMatcher.cs" />
     <Compile Include="Extensions\Wetter.cs" />
     <Compile Include="ExterneKlassen\Extern.cs" />
+    <Compile Include="ExterneKlassen\KlassenErweiterung.cs" />
+    <Compile Include="Steuerelemente\Buttons\Close.xaml.cs">
+      <DependentUpon>Close.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Buttons\Maxi.xaml.cs">
+      <DependentUpon>Maxi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Buttons\Mini.xaml.cs">
+      <DependentUpon>Mini.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Workday.xaml.cs">
+      <DependentUpon>Workday.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\WorkTable.xaml.cs">
+      <DependentUpon>WorkTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Structs\Arbeitstag.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
@@ -334,6 +351,26 @@
     <Compile Include="Wecker\Wecker.xaml.cs">
       <DependentUpon>Wecker.xaml</DependentUpon>
     </Compile>
+    <Page Include="Steuerelemente\Buttons\Close.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Steuerelemente\Buttons\Maxi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Steuerelemente\Buttons\Mini.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Steuerelemente\Workday.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Steuerelemente\WorkTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Steuerelemente\SwitchButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

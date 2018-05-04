@@ -12,8 +12,9 @@ namespace WarnMe_Cherry.Steuerelemente
     {
         public delegate void TimeUpdates(TimeSpan value);
         public event TimeUpdates TimeUpdated;
-        
-        public bool AllowInputs { get; set; }
+
+        public bool AllowInputs { get; set; } = false;
+        public Visibility ShowUpDown { get; set; } = Visibility.Hidden;
         int LastInput = 0;
         
         public TimeSpan DateTime
@@ -49,7 +50,7 @@ namespace WarnMe_Cherry.Steuerelemente
 
             Loaded += delegate (object o, RoutedEventArgs e)
             {
-                IncreaseButton.Visibility = DecreaseButton.Visibility = AllowInputs ? Visibility.Visible : Visibility.Hidden;
+                Buttons.Visibility = ShowUpDown;
             };
 
             Time.TimeUpdated += delegate (TimeSpan timeSpan)

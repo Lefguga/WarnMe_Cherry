@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Workday"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="250">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Viewbox HorizontalAlignment="Right" Margin="0,0,7,0">
+            <TextBlock x:Name="DayOfMonth" Text="0"/>
+        </Viewbox>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Viewbox HorizontalAlignment="Left">
+                <TextBlock Text="Start:"/>
+            </Viewbox>
+            <Viewbox Grid.Row="1" HorizontalAlignment="Left">
+                <TextBlock Text="Ende:"/>
+            </Viewbox>
+            <Viewbox Grid.Row="2" HorizontalAlignment="Left">
+                <TextBlock Text="Zeit:"/>
+            </Viewbox>
+            <Viewbox Grid.Column="1">
+                <local:TimeOfDay x:Name="start"/>
+            </Viewbox>
+            <Viewbox Grid.Row="1" Grid.Column="1">
+                <local:TimeOfDay/>
+            </Viewbox>
+            <Viewbox Grid.Row="2" Grid.Column="1">
+                <local:TimeOfDay/>
+            </Viewbox>
+        </Grid>
+        <Viewbox Grid.Row="2">
+            <TextBlock x:Name="Kommentar"/>
+        </Viewbox>
+        <Border x:Name="Rahmen" Grid.RowSpan="3" BorderThickness="3"/>
+    </Grid>
+</UserControl>

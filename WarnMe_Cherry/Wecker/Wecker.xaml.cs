@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using WarnMe_Cherry.Extensions;
 
 namespace WarnMe_Cherry.Wecker
 {
@@ -12,22 +13,9 @@ namespace WarnMe_Cherry.Wecker
     [Serializable]
     public partial class Wecker : UserControl
     {
-        public struct DaysOfWeek
-        {
-            public bool Montag { get; set; }
-            public bool Dienstag { get; set; }
-            public bool Mittwoch { get; set; }
-            public bool Donnerstag { get; set; }
-            public bool Freitag { get; set; }
-            public bool Samstag { get; set; }
-            public bool Sonntag { get; set; }
-        }
-
-        DaysOfWeek activeDays;
-        public DaysOfWeek ActiveDays { get => activeDays; set => activeDays = value; }
+        public DayMatcher ActiveDays { get ; set; }
         
-        TimeSpan time = new TimeSpan();
-        public TimeSpan Time { get => time; set => time = value; }
+        public TimeSpan Time { get; set; }
 
         public bool IsActiveted
         {

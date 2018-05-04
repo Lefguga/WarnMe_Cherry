@@ -12,16 +12,42 @@ namespace WarnMe_Cherry
     public partial class WarnMeVision : Window
     {
         System.ComponentModel.BackgroundWorker Updater = new System.ComponentModel.BackgroundWorker();
-
-        const string WORKINGDAYS_TABLE_NAME = "Arbeitstage";
-        const string WECKER_TABLE_NAME = "Wecker";
-        const string SETTINGS_TABLE_NAME = "Einstellungen";
-        const string SONSTIGES_TABLE_NAME = "Sonstiges";
-        struct SONSTIGES_TABLE_VALUE
+        
+        public struct WORKINGDAYS
         {
+            public const string NAME = "Arbeitstage";
+            public System.Collections.Generic.Dictionary<string, Arbeitstag> VALUE { get; set; }
+        }
+        public struct WECKER
+        {
+            public const string NAME = "Wecker";
+            public System.Collections.Generic.Dictionary<string, Wecker.Wecker> VALUE { get; set; }
+        }
+        public struct SETTINGS
+        {
+            public const string CONFIG_FILE_NAME = @".\Configuration.json";
+            // TABLE
+            public const string NAME = "Einstellungen";
+            public struct Korrektur
+            {
+                public struct TIME_A_DAY
+                {
+                    public const string NAME = "Workingtime";
+                    public TimeSpan Value { get; set; }
+                }
+                public struct MAX_TIME_A_DAY
+                {
+                    public const string Name = "MaxWorkingtime";
+                    public TimeSpan Value { get; set; }
+                }
+            }
+        }
+        public struct OTHER
+        {
+            public const string NAME = "Sonstiges";
             public const string SYSTEM_UP_TIME = "SystemUpTime";
         }
-        const string CONFIG_FILE_NAME = @".\Configuration.json";
+        
 
         // Shortcuts
         string HeuteString => DateTime.Now.ToShortDateString();
@@ -31,15 +57,15 @@ namespace WarnMe_Cherry
         {
             get
             {
-                if (Datenbank.Exists(WORKINGDAYS_TABLE_NAME, HeuteString))
+                if (Datenbank.Exists(WORKINGDAYS.NAME, HeuteString))
                 {
-                    return Datenbank.Select<Arbeitstag>(WORKINGDAYS_TABLE_NAME, HeuteString);
+                    return Datenbank.Select<Arbeitstag>(WORKINGDAYS.NAME, HeuteString);
                 }
                 throw new ResourceReferenceKeyNotFoundException("Data not found", HeuteString);
             }
             set
             {
-                Datenbank.Update(WORKINGDAYS_TABLE_NAME, HeuteString, value);
+                Datenbank.Update(WORKINGDAYS.NAME, HeuteString, value);
             }
         }
 
@@ -54,7 +80,7 @@ namespace WarnMe_Cherry
         private void AfterFormInitialized(object sender, RoutedEventArgs e)
         {
             //Load Datenbank
-            Datenbank = new Datenbank.Datenbank(CONFIG_FILE_NAME);
+            Datenbank = new Datenbank.Datenbank(SETTINGS.CONFIG_FILE_NAME);
 
             //Set up Variables and Settings
             InitFormValues();
@@ -77,12 +103,14 @@ namespace WarnMe_Cherry
         {
 
             // init new day of working
-            if (!Datenbank.Exists(WORKINGDAYS_TABLE_NAME, HeuteString))
+            if (!Datenbank.Exists(WORKINGDAYS.NAME, HeuteString))
             {
-                Datenbank.Insert(WORKINGDAYS_TABLE_NAME, HeuteString, new Arbeitstag()
+                DateTime upTime = Extern.SystemUpTime;
+                Datenbank.Insert(WORKINGDAYS.NAME, HeuteString, new Arbeitstag()
                 {
-                    StartZeit = Extern.SystemUpTime.TimeOfDay,
-                    EndZeit = Jetzt
+                    StartZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : Jetzt),
+                    EndZeit = Jetzt,
+                    Bemerkung = ""
                 });
             }
             Arbeitstag heute = Heute;
@@ -92,11 +120,17 @@ namespace WarnMe_Cherry
             EndTimePicker.DateTime = heute.StartZeit + new TimeSpan(7, 45, 0);
             MaxEndTimePicker.DateTime = heute.StartZeit + new TimeSpan(10, 45, 0);
             
-            Datenbank.Update(SONSTIGES_TABLE_NAME, SONSTIGES_TABLE_VALUE.SYSTEM_UP_TIME, Extern.SystemUpTime);
+            Datenbank.Update(OTHER.NAME, OTHER.SYSTEM_UP_TIME, Extern.SystemUpTime);
             Datenbank.Commit();
 
             // WORKINGDAY TABLE
-            System.Collections.Generic.Dictionary<string, Arbeitstag> dictionaryAT = Datenbank.Select<Arbeitstag>(WORKINGDAYS_TABLE_NAME);
+            System.Collections.Generic.Dictionary<DateTime, Arbeitstag> dictionaryAT = Datenbank.Select<Arbeitstag>(WORKINGDAYS.NAME).ToDictionary(item => DateTime.Parse(item.Key), item => item.Value);
+
+            ZeitTabelle.TableData = new System.Collections.Generic.SortedDictionary<DateTime, Arbeitstag>(dictionaryAT);
+
+            ZeitTabelle.UpdateTable();
+
+            /*
             if (dictionaryAT.Count > 1)
             {
                 foreach (var item in dictionaryAT.Reverse())
@@ -109,17 +143,17 @@ namespace WarnMe_Cherry
                     start = new Viewbox
                     {
                         Margin = new Thickness(0, 3, 0, 3),
-                        Child = new Steuerelemente.TimeOfDay() { Value = item.Value.StartZeit }
+                        Child = new Steuerelemente.DateTimePicker() { DateTime = item.Value.StartZeit, AllowInputs = true }
                     },
                     end = new Viewbox
                     {
                         Margin = new Thickness(0, 3, 0, 3),
-                        Child = new Steuerelemente.TimeOfDay() { Value = item.Value.EndZeit,  }
+                        Child = new Steuerelemente.DateTimePicker() { DateTime = item.Value.EndZeit, AllowInputs = true }
                     },
                     duration = new Viewbox
                     {
                         Margin = new Thickness(0, 3, 0, 3),
-                        Child = new Steuerelemente.TimeOfDay() { Value = item.Value.Duration }
+                        Child = new Steuerelemente.DateTimePicker() { DateTime = item.Value.Duration, AllowInputs = true }
                     },
                     comment = new Viewbox
                     {
@@ -153,6 +187,7 @@ namespace WarnMe_Cherry
                     Grid.SetColumn(comment, 4);
                 }
             }
+            */
         }
 
         private void UpdateForm(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)

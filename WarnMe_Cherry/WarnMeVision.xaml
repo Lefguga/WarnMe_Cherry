@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WarnMe_Cherry"
         xmlns:Steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente"
-        xmlns:Wecker="clr-namespace:WarnMe_Cherry.Wecker" x:Name="MainWindow" x:Class="WarnMe_Cherry.WarnMeVision"
+        xmlns:Wecker="clr-namespace:WarnMe_Cherry.Wecker"
+    xmlns:local1="clr-namespace:WarnMe_Cherry.Steuerelemente.Buttons" x:Name="MainWindow" x:Class="WarnMe_Cherry.WarnMeVision"
         mc:Ignorable="d"
         Title="WarnMe" Height="400" Width="600"
         AllowsTransparency="True"
@@ -46,18 +47,18 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="32"/>
                 </Grid.ColumnDefinitions>
                 <Viewbox  Grid.Column="0">
                     <TextBlock Text="WarnMe"/>
                 </Viewbox>
-                <Rectangle Margin="1, 3" Grid.Column="2" Fill="#FFA0A0A0"
+                <local1:Mini Margin="0.5, 2" Grid.Column="2"
                        MouseLeftButtonDown="MinimizeClick" ToolTip="Minimieren"/>
-                <Rectangle Margin="1, 3" Grid.Column="3" Fill="#FF909090"
+                <local1:Maxi Margin="0.5, 2" Grid.Column="3"
                        MouseLeftButtonDown="MaximizeClick" ToolTip="Maximieren"/>
-                <Rectangle Margin="1, 3" Grid.Column="4" Fill="#FFA01010"
+                <local1:Close Margin="0.5, 2" Grid.Column="4"
                        MouseLeftButtonDown="CloseClick" ToolTip="Schließen"/>
             </Grid>
             <Grid Margin="0" Grid.Row="1">
@@ -158,7 +159,7 @@
                             </Grid.RowDefinitions>
                             <Steuerelemente:DateTimePicker x:Name="StartTimePicker" Margin="5,24,0,0"
                                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                       Height="30" Width="120" AllowInputs="True"
+                                                       Height="30" Width="120" AllowInputs="True" ShowUpDown="Visible"
                                                        TimeUpdated="StartTimeUpdated"/>
                             <TextBlock Text="Startzeit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
                                Width="100"/>
@@ -188,65 +189,8 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*"/>
-                                <RowDefinition Height="40*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="8*"/>
-                                </Grid.ColumnDefinitions>
-                                <Viewbox Margin="1" Grid.Column="0">
-                                    <TextBlock Text="Datum"/>
-                                </Viewbox>
-                                <Viewbox Margin="1" Grid.Column="1">
-                                    <TextBlock Text="Startzeit"/>
-                                </Viewbox>
-                                <Viewbox Margin="1" Grid.Column="2">
-                                    <TextBlock Text="Endzeit"/>
-                                </Viewbox>
-                                <Viewbox Margin="1" Grid.Column="3">
-                                    <TextBlock Text="Arbeitszeit"/>
-                                </Viewbox>
-                                <Viewbox Margin="1" Grid.Column="4">
-                                    <TextBlock Text="Bemerkung"/>
-                                </Viewbox>
-                            </Grid>
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-                                <Grid x:Name="Uebersicht">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="8*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <!--<Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition Height="30"/>
-                                </Grid.RowDefinitions>
-                                <Viewbox Margin="0,3">
-                                    <TextBlock Text="27.01.2018"/>
-                                </Viewbox>
-                                <Viewbox Margin="0,3" Grid.Column="1">
-                                    <Steuerelemente:TimeOfDay Hour="8" Minute="10" Second="0"/>
-                                </Viewbox>
-                            
-                                <Viewbox Margin="0,3" Grid.Column="2">
-                                    <Steuerelemente:TimeOfDay Hour="8" Minute="10" Second="0"/>
-                                </Viewbox>
-                            
-                                <Viewbox Margin="0,3" Grid.Column="3">
-                                    <Steuerelemente:TimeOfDay Hour="8" Minute="10" Second="0"/>
-                                </Viewbox>
-
-                                <Viewbox Grid.Column="4" Margin="0,3">
-                                    <TextBox Text="Hallo du" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalContentAlignment="Stretch"/>
-                                </Viewbox>-->
-                                </Grid>
-                            </ScrollViewer>
+                            <Steuerelemente:WorkTable x:Name="ZeitTabelle"/>
                         </Grid>
                     </TabItem>
                     <!--==============================EINSTELLUNGEN==============================-->
