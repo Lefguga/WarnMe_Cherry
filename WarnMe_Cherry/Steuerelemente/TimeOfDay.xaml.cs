@@ -68,13 +68,12 @@ namespace WarnMe_Cherry.Steuerelemente
 
         private void TriggerTimeUpdate() => TimeUpdated?.Invoke(new TimeSpan(Hour, Minute, Second));
 
-        Brush focusBrush = new LinearGradientBrush(new GradientStopCollection(3)
+        public Brush FocusBrush { get; set; } = new LinearGradientBrush(new GradientStopCollection(3)
         {
             new GradientStop(Color.FromArgb(0x9F, 0x00, 0x60, 0xFF), 0.16),
             new GradientStop(Color.FromArgb(0x00, 0x00, 0x60, 0xFF), 0.15)
-        },90);
+        }, 90);
 
-        public Brush FocusBrush { get => focusBrush; set => focusBrush = value; }
         public TimeSpan Value { get => new TimeSpan(Hour, Minute, Second); internal set { Hour = value.Hours; Minute = value.Minutes; Second = value.Seconds; } }
 
         public TimeOfDay()
@@ -92,6 +91,11 @@ namespace WarnMe_Cherry.Steuerelemente
         {
             if (sender is TextBlock)
                 ((TextBlock)sender).Background = Brushes.Transparent;
+        }
+
+        private void Hours_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ((UIElement)sender).Focus();
         }
 
         public void AddValue(int v)

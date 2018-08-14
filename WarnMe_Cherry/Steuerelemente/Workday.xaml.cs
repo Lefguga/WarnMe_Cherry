@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WarnMe_Cherry.Steuerelemente
 {
@@ -20,9 +8,44 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class Workday : UserControl
     {
+        private DateTime dateTime;
+        public DateTime DateTime
+        {
+            get => dateTime;
+            set
+            {
+                dateTime = value;
+                if (dateTime != null)
+                    DayOfMonth.Text = dateTime.Day.ToString();
+            }
+        }
+
+        private Arbeitstag arbeitstag;
+        public Arbeitstag Arbeitstag
+        {
+            get => arbeitstag;
+            set
+            {
+                arbeitstag = value;
+                if (arbeitstag != null)
+                {
+                    starttime.Content = arbeitstag.StartZeit;
+                    endtime.Content = arbeitstag.EndZeit;
+                    duration.Content = arbeitstag.Duration;
+                    comment.Text = arbeitstag.Bemerkung;
+                }
+            }
+        }
+
         public Workday()
         {
             InitializeComponent();
+        }
+
+        public Workday(DateTime datetime, Arbeitstag arbeitstag)
+        {
+            DateTime = datetime;
+            Arbeitstag = arbeitstag;
         }
     }
 }

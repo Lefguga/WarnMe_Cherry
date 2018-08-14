@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="250">
-    <Grid Margin="5">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Viewbox HorizontalAlignment="Right" Margin="0,0,7,0">
+        <Viewbox HorizontalAlignment="Left">
             <TextBlock x:Name="DayOfMonth" Text="0"/>
         </Viewbox>
         <Grid Grid.Row="1">
@@ -35,18 +35,18 @@
                 <TextBlock Text="Zeit:"/>
             </Viewbox>
             <Viewbox Grid.Column="1">
-                <local:TimeOfDay x:Name="start"/>
+                <local:TimeOfDay x:Name="starttime"/>
             </Viewbox>
             <Viewbox Grid.Row="1" Grid.Column="1">
-                <local:TimeOfDay/>
+                <local:TimeOfDay x:Name="endtime"/>
             </Viewbox>
             <Viewbox Grid.Row="2" Grid.Column="1">
-                <local:TimeOfDay/>
+                <local:TimeOfDay x:Name="duration"/>
             </Viewbox>
         </Grid>
         <Viewbox Grid.Row="2">
-            <TextBlock x:Name="Kommentar"/>
+            <TextBlock x:Name="comment"/>
         </Viewbox>
-        <Border x:Name="Rahmen" Grid.RowSpan="3" BorderThickness="3"/>
+        <!--<Border x:Name="Rahmen" Grid.RowSpan="3" BorderThickness="3" BorderBrush="#55000000"/>-->
     </Grid>
 </UserControl>

@@ -12,7 +12,8 @@ namespace WarnMe_Cherry
     public partial class WarnMeVision : Window
     {
         System.ComponentModel.BackgroundWorker Updater = new System.ComponentModel.BackgroundWorker();
-        
+
+        #region STRUCTS
         public struct WORKINGDAYS
         {
             public const string NAME = "Arbeitstage";
@@ -28,8 +29,9 @@ namespace WarnMe_Cherry
             public const string CONFIG_FILE_NAME = @".\Configuration.json";
             // TABLE
             public const string NAME = "Einstellungen";
-            public struct Korrektur
+            public struct Zeiten
             {
+                public const string NAME = "Zeiten";
                 public struct TIME_A_DAY
                 {
                     public const string NAME = "Workingtime";
@@ -37,7 +39,12 @@ namespace WarnMe_Cherry
                 }
                 public struct MAX_TIME_A_DAY
                 {
-                    public const string Name = "MaxWorkingtime";
+                    public const string NAME = "MaxWorkingtime";
+                    public TimeSpan Value { get; set; }
+                }
+                public struct KORREKTUR
+                {
+                    public const string NAME = "Korrektur";
                     public TimeSpan Value { get; set; }
                 }
             }
@@ -47,11 +54,12 @@ namespace WarnMe_Cherry
             public const string NAME = "Sonstiges";
             public const string SYSTEM_UP_TIME = "SystemUpTime";
         }
-        
+        #endregion
 
-        // Shortcuts
+        #region Shortcuts
         string HeuteString => DateTime.Now.ToShortDateString();
         TimeSpan Jetzt => DateTime.Now.TimeOfDay;
+        #endregion
 
         Arbeitstag Heute
         {
@@ -77,6 +85,97 @@ namespace WarnMe_Cherry
             InitializeComponent();
         }
 
+        private void ActivateDragMove(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
+        }
+
+        private void CloseClick(object sender, MouseButtonEventArgs e) => Close();
+
+        private void MaximizeClick(object sender, MouseButtonEventArgs e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+
+        private void MinimizeClick(object sender, MouseButtonEventArgs e) => WindowState = WindowState.Minimized;
+
+        private void FrameworkElement_MouseDown_Focus(object sender, MouseButtonEventArgs e) => ((FrameworkElement)sender).Focus();
+
+        // *********************************************************************************
+        // HOME EVENTS
+        // *********************************************************************************
+
+        private void HomeBT_Click(object sender, MouseButtonEventArgs e)
+        {
+            Home.Visibility = Visibility.Visible; // Home
+            Settings.Visibility = Übersicht.Visibility = Visibility.Hidden;
+        }
+
+        // *********************************************************************************
+        // ÜBERSICHT EVENTS
+        // *********************************************************************************
+
+        private void ÜbersichtBT_Click(object sender, MouseButtonEventArgs e)
+        {
+            Übersicht.Visibility = Visibility.Visible; // Home
+            Settings.Visibility = Home.Visibility = Visibility.Hidden;
+        }
+
+        private void PrevMonth_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (ZeitTabelle.Month == 1)
+            {
+                ZeitTabelle.Month = 12;
+                ZeitTabelle.Year--;
+            }
+            else
+            {
+                ZeitTabelle.Month--;
+            }
+            ZeitTabelle.UpdateTable();
+            MonthTitle.Text = ZeitTabelle.MonthString;
+        }
+
+        private void NextMonth_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (ZeitTabelle.Month == 12)
+            {
+                ZeitTabelle.Month = 1;
+                ZeitTabelle.Year++;
+            }
+            else
+            {
+                ZeitTabelle.Month++;
+            }
+            ZeitTabelle.UpdateTable();
+            MonthTitle.Text = ZeitTabelle.MonthString;
+        }
+
+        private void ResetMonth_Click(object sender, MouseButtonEventArgs e)
+        {
+            ZeitTabelle.Month = DateTime.Now.Month;
+            ZeitTabelle.Year = DateTime.Now.Year;
+            ZeitTabelle.UpdateTable();
+            MonthTitle.Text = ZeitTabelle.MonthString;
+        }
+
+        // *********************************************************************************
+        // EINSTELLUNG EVENTS
+        // *********************************************************************************
+
+        private void EinstellungenBT_Click(object sender, MouseButtonEventArgs e)
+        {
+            Settings.Visibility = Visibility.Visible; // Home
+            Home.Visibility = Übersicht.Visibility = Visibility.Hidden;
+        }
+
+        private void TestWebsite(object sender, MouseButtonEventArgs e)
+        {
+            Extensions.Wetter wetter = new Extensions.Wetter();
+        }
+
+        // *********************************************************************************
+        // TRIGGER EVENTS
+        // *********************************************************************************
+
         private void AfterFormInitialized(object sender, RoutedEventArgs e)
         {
             //Load Datenbank
@@ -86,7 +185,7 @@ namespace WarnMe_Cherry
             InitFormValues();
 
             //Set up Updater
-            Updater.DoWork += (object o, System.ComponentModel.DoWorkEventArgs arg) => 
+            Updater.DoWork += (object o, System.ComponentModel.DoWorkEventArgs arg) =>
             {
                 System.Threading.Thread.Sleep(1000 - DateTime.Now.Millisecond);
             };
@@ -99,6 +198,31 @@ namespace WarnMe_Cherry
             Updater.RunWorkerAsync();
         }
 
+        private void UpdateForm(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            // Update Timeline
+            Arbeitstag _heute;
+            try
+            {
+                _heute = Heute;
+            }
+            catch (ResourceReferenceKeyNotFoundException)
+            {
+                InitFormValues();
+                _heute = Heute;
+            }
+            timeLine.Value = (Jetzt - _heute.StartZeit).TotalSeconds;
+
+            // Restart Updater
+            Updater.RunWorkerAsync();
+        }
+
+        private void ShutdownWarnMe(object sender, System.ComponentModel.CancelEventArgs e) => PrepareShutdown();
+
+        // *********************************************************************************
+        // PRIVATE FUNCTIONS
+        // *********************************************************************************
+
         private void InitFormValues()
         {
 
@@ -108,6 +232,7 @@ namespace WarnMe_Cherry
                 DateTime upTime = Extern.SystemUpTime;
                 Datenbank.Insert(WORKINGDAYS.NAME, HeuteString, new Arbeitstag()
                 {
+                    // check if uptime is today else add the actual time
                     StartZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : Jetzt),
                     EndZeit = Jetzt,
                     Bemerkung = ""
@@ -119,7 +244,7 @@ namespace WarnMe_Cherry
 
             EndTimePicker.DateTime = heute.StartZeit + new TimeSpan(7, 45, 0);
             MaxEndTimePicker.DateTime = heute.StartZeit + new TimeSpan(10, 45, 0);
-            
+
             Datenbank.Update(OTHER.NAME, OTHER.SYSTEM_UP_TIME, Extern.SystemUpTime);
             Datenbank.Commit();
 
@@ -130,124 +255,6 @@ namespace WarnMe_Cherry
 
             ZeitTabelle.UpdateTable();
 
-            /*
-            if (dictionaryAT.Count > 1)
-            {
-                foreach (var item in dictionaryAT.Reverse())
-                {
-                    Viewbox day = new Viewbox
-                    {
-                        Margin = new Thickness(0, 3, 0, 3),
-                        Child = new TextBlock() { Text = item.Key }
-                    },
-                    start = new Viewbox
-                    {
-                        Margin = new Thickness(0, 3, 0, 3),
-                        Child = new Steuerelemente.DateTimePicker() { DateTime = item.Value.StartZeit, AllowInputs = true }
-                    },
-                    end = new Viewbox
-                    {
-                        Margin = new Thickness(0, 3, 0, 3),
-                        Child = new Steuerelemente.DateTimePicker() { DateTime = item.Value.EndZeit, AllowInputs = true }
-                    },
-                    duration = new Viewbox
-                    {
-                        Margin = new Thickness(0, 3, 0, 3),
-                        Child = new Steuerelemente.DateTimePicker() { DateTime = item.Value.Duration, AllowInputs = true }
-                    },
-                    comment = new Viewbox
-                    {
-                        Margin = new Thickness(0, 3, 0, 3),
-                        Child = new TextBox() {
-                            Text = item.Value.Bemerkung,
-                            BorderBrush = null,
-                            Background = null,
-                            HorizontalAlignment = HorizontalAlignment.Stretch,
-                            Foreground = MainWindow.Foreground,
-                            MinWidth = 150.0d
-                        }
-                    };
-
-                    Uebersicht.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
-                    Uebersicht.Children.Add(day);
-                    Uebersicht.Children.Add(start);
-                    Uebersicht.Children.Add(end);
-                    Uebersicht.Children.Add(duration);
-                    Uebersicht.Children.Add(comment);
-
-                    Grid.SetRow(day, Uebersicht.RowDefinitions.Count - 1);
-                    Grid.SetRow(start, Uebersicht.RowDefinitions.Count - 1);
-                    Grid.SetRow(end, Uebersicht.RowDefinitions.Count - 1);
-                    Grid.SetRow(duration, Uebersicht.RowDefinitions.Count - 1);
-                    Grid.SetRow(comment, Uebersicht.RowDefinitions.Count - 1);
-
-                    Grid.SetColumn(start, 1);
-                    Grid.SetColumn(end, 2);
-                    Grid.SetColumn(duration, 3);
-                    Grid.SetColumn(comment, 4);
-                }
-            }
-            */
-        }
-
-        private void UpdateForm(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-            // Update Timeline
-            timeLine.Value = (Jetzt - Heute.StartZeit).TotalSeconds;
-
-            // Restart Updater
-            Updater.RunWorkerAsync();
-        }
-
-        private void ActivateDragMove(object sender, MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-            DragMove();
-        }
-
-        private void CloseClick(object sender, MouseButtonEventArgs e)
-        {
-            Close();
-        }
-
-        private void MaximizeClick(object sender, MouseButtonEventArgs e)
-        {
-            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-        }
-
-        private void MinimizeClick(object sender, MouseButtonEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ((UIElement)e.OriginalSource).Focus();
-        }
-
-        private void HomeBT_Click(object sender, MouseButtonEventArgs e)
-        {
-            Tabs.SelectedIndex = 0; // Home
-        }
-
-        private void ÜbersichtBT_Click(object sender, MouseButtonEventArgs e)
-        {
-            Tabs.SelectedIndex = 1; // View
-        }
-
-        private void EinstellungenBT_Click(object sender, MouseButtonEventArgs e)
-        {
-            Tabs.SelectedIndex = 2; // Settings
-        }
-
-        private void TestWebsite(object sender, MouseButtonEventArgs e)
-        {
-            Extensions.Wetter wetter = new Extensions.Wetter();
-        }
-
-        private void ShutdownWarnMe(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            PrepareShutdown();
         }
 
         private void PrepareShutdown()

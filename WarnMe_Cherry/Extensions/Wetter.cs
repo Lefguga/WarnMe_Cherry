@@ -6,30 +6,45 @@ namespace WarnMe_Cherry.Extensions
 {
     class Wetter
     {
-        int forecast = 3;
-        public int Forecast { get => forecast; set => forecast = value; }
-
-        string wetterCode = "GMXX3719";
+        public int Forecast { get; set; } = 3;
         /// <summary>
         /// WetterCode is of type <see cref="string"/>
         /// </summary>
-        public string WetterCode { get => wetterCode; set => wetterCode = value; }
+        public string WetterCode { get; set; } = "GMXX3719";
 
-        string websiteUrl = "http://wxdata.weather.com/wxdata/weather/local/{0}?cc=*&unit=m&dayf={1}";
+        readonly string websiteUrl = "http://wxdata.weather.com/wxdata/weather/local/{0}?cc=*&unit=m&dayf={1}";
         /// <summary>
         /// WebsiteUrl uses <see cref="WetterCode"/> and <see cref="Forecast"/> to create an Url
         /// </summary>
-        public string WebsiteUrl { get => string.Format(websiteUrl, wetterCode, forecast); }
-
-        string wetterPattern = ".*?<head>.*?<ut>(.*?)</ut>.*?<ud>(.*?)</ud>.*?<us>(.*?)</us>.*?<up>(.*?)</up>.*?</head>.*?<dnam>(.*?),(.*?),(.*?)</dnam>.*?<lat>(.*?)</lat>.*?<lon>(.*?)</lon>.*?<sunr>(.*?)</sunr>.*?<suns>(.*?)</suns>.*?<zone>(.*?)</zone>.*?<tmp>(.*?)</tmp>.*?<flik>(.*?)</flik>.*?<t>(.*?)</t>.*?<icon>(.*?)</icon>.*?<r>(.*?)</r>.*?<d>(.*?)</d>.*?<s>(.*?)</s>.*?<d>(.*?)</d>.*?<t>(.*?)</t>.*?<hmid>(.*?)</hmid>.*?<vis>(.*?)</vis>.*?<day d=\"1\" t=\"(.*?)\".*?<hi>(.*?)</hi>.*?<low>(.*?)</low>.*?<icon>(.*?)</icon>.*?<t>(.*?)</t>.*?<day d=\"2\" t=\"(.*?)\".*?<hi>(.*?)</hi>.*?<low>(.*?)</low>.*?<icon>(.*?)</icon>.*?<t>(.*?)</t>.*?";
+        public string WebsiteUrl => "https://www.google.com/search?q=wetter"; // { get => string.Format(websiteUrl, WetterCode, Forecast); }
         /// <summary>
         /// 
         /// </summary>
-        public string WetterPattern { get => wetterPattern; set => wetterPattern = value; }
+        public string WetterPattern { get; set; } = ".*?<head>.*?<ut>(.*?)</ut>.*?<ud>(.*?)</ud>.*?<us>(.*?)</us>.*?<up>(.*?)</up>.*?</head>.*?<dnam>(.*?),(.*?),(.*?)</dnam>.*?<lat>(.*?)</lat>.*?<lon>(.*?)</lon>.*?<sunr>(.*?)</sunr>.*?<suns>(.*?)</suns>.*?<zone>(.*?)</zone>.*?<tmp>(.*?)</tmp>.*?<flik>(.*?)</flik>.*?<t>(.*?)</t>.*?<icon>(.*?)</icon>.*?<r>(.*?)</r>.*?<d>(.*?)</d>.*?<s>(.*?)</s>.*?<d>(.*?)</d>.*?<t>(.*?)</t>.*?<hmid>(.*?)</hmid>.*?<vis>(.*?)</vis>.*?<day d=\"1\" t=\"(.*?)\".*?<hi>(.*?)</hi>.*?<low>(.*?)</low>.*?<icon>(.*?)</icon>.*?<t>(.*?)</t>.*?<day d=\"2\" t=\"(.*?)\".*?<hi>(.*?)</hi>.*?<low>(.*?)</low>.*?<icon>(.*?)</icon>.*?<t>(.*?)</t>.*?";
+
+        private string GetWeatherPattern(string id) => string.Format(@"(?<=id=""{0}"")[^>]*?>(.*?)<", id);
+
+        public System.Collections.Generic.Dictionary<string, string> WeatherData { get; set; } = new System.Collections.Generic.Dictionary<string, string>()
+        {
+            {"wob_loc", "" },
+            {"wob_dts", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" },
+            {"wob_", "" }
+        };
 
         /// <summary>
         /// Variablen:
-        /// <para>(1-4)	Einheiten	[Temperatur, Entfernung, Geschwindigkeit, Druck]</para>
+        /// <para>(1-4)		Einheiten	[Temperatur, Entfernung, Geschwindigkeit, Druck]</para>
         /// <para>(5-10)	Werte		[Stadt, Region, Land, Breitengrad, Längengrad, Zeitzone]</para>
         /// <para>(11-15)				[Sonnenaufgang, Sonnenuntergang, Temperatur, Beschreibung, Bild]</para>
         /// <para>(16-23)				[Gefühlt, Wind, Richtung, Kardinal, Druck, Anstieg, Feuchtigkeit, Sichtweite]</para>
@@ -46,18 +61,17 @@ namespace WarnMe_Cherry.Extensions
             {
                 tmp = GetWebsiteString(WebsiteUrl);
             }
-            catch (System.Net.WebException)
+            catch (WebException)
             {
                 tmp = "lol";
             }
             System.Windows.MessageBox.Show(tmp);
-
-            System.Text.RegularExpressions.MatchCollection m = r.Matches(tmp);
-            foreach (System.Text.RegularExpressions.Match match in m)
+            
+            foreach (System.Text.RegularExpressions.Match match in  r.Matches(tmp))
             {
                 foreach (System.Text.RegularExpressions.Group group in match.Groups)
                 {
-                    System.Windows.MessageBox.Show(group.Value, group.Name);
+                    //System.Windows.MessageBox.Show(group.Value, group.Name);
                 }
             }
 

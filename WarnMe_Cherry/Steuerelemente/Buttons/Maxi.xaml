@@ -8,18 +8,18 @@
              d:DesignHeight="32" d:DesignWidth="32">
     <Grid ToolTip="Maximieren">
         <Grid.RowDefinitions>
-            <RowDefinition Height="6"/>
+            <RowDefinition Height="7"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="2"/>
-            <RowDefinition Height="6"/>
+            <RowDefinition Height="7"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2"/>
-            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="7"/>
         </Grid.ColumnDefinitions>
         <Grid.Style>
             <Style TargetType="Grid">

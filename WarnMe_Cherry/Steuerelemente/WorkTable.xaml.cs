@@ -1,18 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WarnMe_Cherry.ExterneKlassen;
 
 namespace WarnMe_Cherry.Steuerelemente
 {
@@ -21,144 +11,130 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class WorkTable : UserControl
     {
-
-        public GridLength TitelHeight => Table.RowDefinitions[0].Height;
-        public GridLength RowHeight { get; set; } = new GridLength(40);
-        public int RowCount => Data.RowDefinitions.Count;
-        public ColumnDefinitionCollection ColumnDefinition
-        {
-            get
-            {
-                return Data.ColumnDefinitions;
-            }
-            set
-            {
-                Data.ColumnDefinitions.Clear();
-                foreach (var colDef in ColumnDefinition)
-                {
-                    Data.ColumnDefinitions.Add(colDef);
-                }
-            }
-        }
+        public string MonthString => System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Month);
+        public int Month { get; set; } = DateTime.Now.Month;
+        public int Year { get; set; } = DateTime.Now.Year;
+        public ColumnDefinitionCollection ColumnDefinition => Data.ColumnDefinitions;
 
         public SortedDictionary<DateTime, Arbeitstag> TableData = new SortedDictionary<DateTime, Arbeitstag>();
+
+        /// <summary>
+        /// Returns the first <see cref="DateTime.DayOfWeek"/> as <see cref="int"/> with Sunday set as 6 not 0
+        /// </summary>
+        int FirstDayInMonth => ((int)new DateTime(Year, Month, 1).DayOfWeek + 6) % 7;
 
         public WorkTable()
         {
             InitializeComponent();
+            FillGridWithEmpty();
         }
 
-        public void UpdateRow(DateTime dateTime, Arbeitstag arbeitstag)
+        /// <summary>
+        /// Fills all possible fields with placeholders of <see cref="Workday"/> with empty <see cref="Arbeitstag"/>
+        /// </summary>
+        private void FillGridWithEmpty()
         {
-            if (TableData.ContainsKey(dateTime))
+            for (int i = 0; i < 42; i++)
             {
-                TableData[dateTime] = arbeitstag;
+                Workday workday = new Workday()
+                {
+                    Arbeitstag = Arbeitstag.Zero,
+                    Opacity = 0.2d
+                };
+                workday.MouseDown += Focus_On_MouseDown;
+                AddElementToCell(workday, i / 7, i % 7);
             }
-            else
-            {
-                TableData.Add(dateTime, arbeitstag);
-                //UpdateTable();
-            }
-            UpdateTable();
         }
 
         public void UpdateTable()
         {
-            int i = 0;
-            Data.Children.Clear();
-            Data.RowDefinitions.Clear();
+            FillGridForMonth();
+            //Data.RowDefinitions.Clear();
 
-            foreach (var item in TableData.Reverse())
-            {
-                AddWorkRow(i++, item.Key, item.Value);
-            }
-        }
-
-        ///// <summary>
-        ///// Inserts an <see cref="Array"/> of <see cref="UIElement"/> in a new <see cref="RowDefinition"/>. Column index increases with every element in array.
-        ///// </summary>
-        ///// <param name="cellElements"></param>
-        //public void AddRow(params UIElement[] cellElements) => AddRow(RowCount, cellElements);
-        public void AddWorkRow(int rowIndex, DateTime dateTime, Arbeitstag arbeitstag)
-        {
-            Viewbox day = new Viewbox
-            {
-                Margin = new Thickness(0, 3, 0, 3),
-                Child = new TextBlock() { Text = dateTime.ToShortDateString() }
-            },
-            start = new Viewbox
-            {
-                Margin = new Thickness(0, 3, 0, 3),
-                Child = new Steuerelemente.DateTimePicker() { DateTime = arbeitstag.StartZeit, AllowInputs = true }
-            },
-            end = new Viewbox
-            {
-                Margin = new Thickness(0, 3, 0, 3),
-                Child = new Steuerelemente.DateTimePicker() { DateTime = arbeitstag.EndZeit, AllowInputs = true }
-            },
-            duration = new Viewbox
-            {
-                Margin = new Thickness(0, 3, 0, 3),
-                Child = new Steuerelemente.DateTimePicker() { DateTime = arbeitstag.Duration, AllowInputs = true }
-            },
-            comment = new Viewbox
-            {
-                Margin = new Thickness(0, 3, 0, 3),
-                Child = new TextBox()
-                {
-                    Text = arbeitstag.Bemerkung,
-                    BorderBrush = null,
-                    Background = null,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    //Foreground = MainWindow.Foreground,
-                    MinWidth = 150.0d
-                }
-            };
-
-            Data.RowDefinitions.Add(new RowDefinition() { Height = RowHeight });
-
-            AddElementToCell(day, rowIndex, 0);
-            AddElementToCell(start, rowIndex, 1);
-            AddElementToCell(end, rowIndex, 2);
-            AddElementToCell(duration, rowIndex, 3);
-            AddElementToCell(comment, rowIndex, 4);
-        }
-
-        /* ClearRow()
-        public void ClearRow(int rowIndex)
-        {
-            int i = 0;
             foreach (var item in TableData)
             {
-                if (i == rowIndex)
-                {
-                    ClearRow(item.Key);
-                }
-                i++;
+                UpdateWorkday(item.Key, item.Value);
             }
         }
 
-        public void ClearRow(DateTime dateTime)
+        /// <summary>
+        /// Update the <see cref="Workday"/> Values with <see cref="DateTime"/>.Value
+        /// <paramref name="arbeitstag"/>
+        /// <paramref name="dateTime"/>
+        /// </summary>
+        public void UpdateWorkday(DateTime dateTime, Arbeitstag arbeitstag)
         {
-            int index = TableData.IndexOf(dateTime);
-            if (index > 0)
+            if (dateTime.Month == Month & dateTime.Year == Year)
             {
-                TableData.Remove(dateTime);
-                UIElementCollection children = Data.Children;
-                foreach (UIElement child in children)
+                int day = dateTime.Day + (FirstDayInMonth) - 1;
+                if (GetWorkday(day / 7, day % 7, out Workday wDay))
                 {
-                    if (Grid.GetRow(child) == index)
-                        Data.Children.Remove(child);
+                    wDay.Arbeitstag = arbeitstag;
+                    wDay.Opacity = 1d;
+                }
+                //AddElementToCell(workday, day / 7, day % 7);
+            }
+        }
+
+        private void FillGridForMonth()
+        {
+            int daysInMonth = DateTime.DaysInMonth(Year, Month);
+            //hide days from prev month
+            for (int i = 0; i < FirstDayInMonth; i++)
+            {
+                if (GetWorkday(i / 7, i % 7, out Workday workday))
+                {
+                    workday.Arbeitstag = Arbeitstag.Zero;
+                    workday.Opacity = 0d;
+                }
+            }
+            //update existing days
+            for (int i = 0; i < daysInMonth; i++)
+            {
+                int day = i + FirstDayInMonth;
+                if (GetWorkday(day / 7, day % 7, out Workday workday))
+                {
+                    workday.DateTime = new DateTime(Year, Month, i + 1);
+                    workday.Arbeitstag = Arbeitstag.Zero;
+                    workday.Opacity = 0.4d;
+                };
+                //AddElementToCell(workday, day / 7, day % 7);
+            }
+            //hide days from next month
+            for (int i = daysInMonth + FirstDayInMonth; i < 42; i++)
+            {
+                if (GetWorkday(i / 7, i % 7, out Workday workday))
+                {
+                    workday.Arbeitstag = Arbeitstag.Zero;
+                    workday.Opacity = 0d;
                 }
             }
         }
-        */
 
+        private bool GetWorkday(int row, int column, out Workday workday)
+        {
+            foreach (UIElement child in Data.Children)
+            {
+                if (Grid.GetRow(child) == row && Grid.GetColumn(child) == column)
+                {
+                    workday = (Workday)child;
+                    return true;
+                }
+            }
+            workday = null;
+            return false;
+        }
+        
         private void AddElementToCell(UIElement uIElement, int tableRow, int tableColumn)
         {
             Data.Children.Add(uIElement);
             Grid.SetColumn(uIElement, tableColumn);
             Grid.SetRow(uIElement, tableRow);
+        }
+
+        private void Focus_On_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((FrameworkElement)sender).Focus();
         }
     }
 }

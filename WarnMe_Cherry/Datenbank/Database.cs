@@ -10,11 +10,10 @@ namespace WarnMe_Cherry.Datenbank
     {
         FileInfo source;
         Dictionary<string, Dictionary<string, Object>> Library = new Dictionary<string, Dictionary<string, Object>>();
-
-        Encoding Encoding = Encoding.UTF8;
+        readonly Encoding Encoding = Encoding.UTF8;
 
         string LastCommittedString = "";
-        public bool HasUncommitedChanges { get => (LastCommittedString != null && LastCommittedString.Equals(Serialize())); }
+        public bool HasUncommitedChanges => Serialize().Equals(LastCommittedString); //{ get => (LastCommittedString != null && LastCommittedString.Equals(Serialize())); }
 
         public Datenbank(string Filename)
         {
@@ -102,7 +101,7 @@ namespace WarnMe_Cherry.Datenbank
         public T Select<T>(string tableName, string elementName)
         {
             // check if key exists
-            if (!Library.ContainsKey(tableName) || !Library[tableName].ContainsKey(elementName))
+            if (!Exists(tableName, elementName))
             {
                 throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
             }
@@ -114,6 +113,18 @@ namespace WarnMe_Cherry.Datenbank
             {
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
             }
+        }
+
+        public bool TrySelect<T>(string tableName, string elementName, out T returnVal)
+        {
+            // check if key exists
+            if (!Exists(tableName, elementName))
+            {
+                returnVal = default(T);
+                return false;
+            }
+            returnVal = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
+            return true;
         }
 
         /// <summary>

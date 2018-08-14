@@ -6,13 +6,8 @@
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300">
-    <Grid x:Name="Table">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1"/>
-            <RowDefinition Height="5*"/>
-        </Grid.RowDefinitions>
-        <Grid x:Name="Titel">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <Grid x:Name="Data" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -22,28 +17,15 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
         </Grid>
-        <Canvas Grid.Row="1" Background="Black"/>
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
-            <Grid x:Name="Data">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-            </Grid>
-        </ScrollViewer>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

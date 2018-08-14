@@ -9,9 +9,11 @@ namespace WarnMe_Cherry
         TimeSpan startZeit;
         TimeSpan endZeit;
 
-        [Newtonsoft.Json.JsonProperty(PropertyName = "I")]
+        public static readonly Arbeitstag Zero = new Arbeitstag();
+
+        [Newtonsoft.Json.JsonProperty(PropertyName = "→")]
         public TimeSpan StartZeit { get => new TimeSpan(startZeit.Days, startZeit.Hours, startZeit.Minutes, startZeit.Seconds); set => startZeit = value; }
-        [Newtonsoft.Json.JsonProperty(PropertyName = "O")]
+        [Newtonsoft.Json.JsonProperty(PropertyName = "←")]
         public TimeSpan EndZeit { get => new TimeSpan(endZeit.Days, endZeit.Hours, endZeit.Minutes, endZeit.Seconds); set => endZeit = value; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "C")]
         public string Bemerkung { get; set; }

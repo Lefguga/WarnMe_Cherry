@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarnMe_Cherry", "WarnMe_Cherry\WarnMe_Cherry.csproj", "{E263CDEB-BC5B-4418-B1EE-6675921F1BC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestWarnMe", "UnitTestWarnMe\UnitTestWarnMe.csproj", "{C1BE185B-8109-46F5-B1BB-6350B1456D0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{E263CDEB-BC5B-4418-B1EE-6675921F1BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E263CDEB-BC5B-4418-B1EE-6675921F1BC4}.Release|x64.ActiveCfg = Release|x64
 		{E263CDEB-BC5B-4418-B1EE-6675921F1BC4}.Release|x64.Build.0 = Release|x64
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Debug|x64.ActiveCfg = Debug|x64
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Debug|x64.Build.0 = Debug|x64
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1BE185B-8109-46F5-B1BB-6350B1456D0A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
