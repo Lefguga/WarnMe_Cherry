@@ -11,12 +11,17 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class WorkTable : UserControl
     {
+        public delegate void ValueUpdate(DateTime date, Arbeitstag arbeitstag);
+        public event ValueUpdate ValueUpdated;
+
         public string MonthString => System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Month);
         public int Month { get; set; } = DateTime.Now.Month;
         public int Year { get; set; } = DateTime.Now.Year;
         public ColumnDefinitionCollection ColumnDefinition => Data.ColumnDefinitions;
 
         public SortedDictionary<DateTime, Arbeitstag> TableData = new SortedDictionary<DateTime, Arbeitstag>();
+
+        internal static WorkDayPropWindow window = new WorkDayPropWindow();
 
         /// <summary>
         /// Returns the first <see cref="DateTime.DayOfWeek"/> as <see cref="int"/> with Sunday set as 6 not 0
@@ -26,7 +31,53 @@ namespace WarnMe_Cherry.Steuerelemente
         public WorkTable()
         {
             InitializeComponent();
-            FillGridWithEmpty();
+            AddHandler(FrameworkElement.MouseDownEvent, new MouseButtonEventHandler(Focus_On_MouseDown), true);
+
+            window.WorkdayUpdated += WorkdayUpdated;
+
+            foreach (var child in Data.Children)
+            {
+                if (child is Workday)
+                {
+                    ((Workday)child).MouseUp += Open_Workday_Promt;
+                }
+            }
+            //FillGridWithEmpty();
+        }
+
+        /// <summary>
+        /// Update Workday, ValueTable and Trigger updated Event...
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="arbeitstag"></param>
+        private void WorkdayUpdated(DateTime date, Arbeitstag arbeitstag)
+        {
+            if (TableData.ContainsKey(date))
+                TableData[date] = arbeitstag;
+            else
+                TableData.Add(date, arbeitstag);
+            UpdateWorkday(date, arbeitstag);
+            // trigger event
+            ValueUpdated?.Invoke(date, arbeitstag);
+        }
+
+        private void Open_Workday_Promt(object sender, MouseButtonEventArgs e)
+        {
+            Workday w_day = (Workday)sender;
+            if (w_day.Opacity > 0d)
+                ShowPropWindow(w_day.PointToScreen(new Point(w_day.RenderSize.Width * -0.2d, 0d)), w_day);
+            // throw new NotImplementedException();
+        }
+
+        private static void ShowPropWindow(Point position, Workday workday)
+        {
+            window.Top = position.Y;
+            window.Left = position.X;
+            window.Width = workday.ActualWidth * 1.5d;
+            window.Height = workday.ActualHeight * 1.1d;
+
+            if (!window.IsVisible)
+                window.Show(workday.Arbeitstag, workday.DateTime);
         }
 
         /// <summary>
@@ -39,9 +90,10 @@ namespace WarnMe_Cherry.Steuerelemente
                 Workday workday = new Workday()
                 {
                     Arbeitstag = Arbeitstag.Zero,
-                    Opacity = 0.2d
+                    Opacity = 0.2d,
+                    Focusable = true
                 };
-                workday.MouseDown += Focus_On_MouseDown;
+                //workday.MouseDown += Focus_On_MouseDown;
                 AddElementToCell(workday, i / 7, i % 7);
             }
         }

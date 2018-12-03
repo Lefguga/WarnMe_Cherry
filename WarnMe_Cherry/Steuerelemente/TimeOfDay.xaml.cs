@@ -10,8 +10,8 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class TimeOfDay : UserControl
     {
-        public delegate void TimeUpdates(TimeSpan time);
-        public event TimeUpdates TimeUpdated;
+        public delegate void TimeChange(TimeSpan time);
+        public event TimeChange TimeChanged;
 
         int hour, minute, second;
         public int Hour
@@ -66,7 +66,7 @@ namespace WarnMe_Cherry.Steuerelemente
             }
         }
 
-        private void TriggerTimeUpdate() => TimeUpdated?.Invoke(new TimeSpan(Hour, Minute, Second));
+        private void TriggerTimeUpdate() => TimeChanged?.Invoke(new TimeSpan(Hour, Minute, Second));
 
         public Brush FocusBrush { get; set; } = new LinearGradientBrush(new GradientStopCollection(3)
         {
@@ -74,7 +74,7 @@ namespace WarnMe_Cherry.Steuerelemente
             new GradientStop(Color.FromArgb(0x00, 0x00, 0x60, 0xFF), 0.15)
         }, 90);
 
-        public TimeSpan Value { get => new TimeSpan(Hour, Minute, Second); internal set { Hour = value.Hours; Minute = value.Minutes; Second = value.Seconds; } }
+        public TimeSpan Value { get => new TimeSpan(Hour, Minute, Second); set { Hour = value.Hours; Minute = value.Minutes; Second = value.Seconds; } }
 
         public TimeOfDay()
         {

@@ -11,7 +11,7 @@ namespace WarnMe_Cherry.Steuerelemente
     public partial class DateTimePicker : UserControl
     {
         public delegate void TimeUpdates(TimeSpan value);
-        public event TimeUpdates TimeUpdated;
+        public event TimeUpdates TimeChanged;
 
         public bool AllowInputs { get; set; } = false;
         public Visibility ShowUpDown { get; set; } = Visibility.Hidden;
@@ -53,9 +53,9 @@ namespace WarnMe_Cherry.Steuerelemente
                 Buttons.Visibility = ShowUpDown;
             };
 
-            Time.TimeUpdated += delegate (TimeSpan timeSpan)
+            Time.TimeChanged += delegate (TimeSpan timeSpan)
             {
-                TimeUpdated?.Invoke(DateTime);
+                TimeChanged?.Invoke(DateTime);
             };
         }
 

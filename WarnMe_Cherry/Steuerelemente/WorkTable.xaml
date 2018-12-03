@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300">
+             Focusable="True">
     <ScrollViewer VerticalScrollBarVisibility="Hidden">
         <Grid x:Name="Data" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}">
             <Grid.ColumnDefinitions>
@@ -24,8 +24,50 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition/> <!--7. Extra Reihe um die Felder Quadratisch zu machen-->
             </Grid.RowDefinitions>
+            <local:Workday/>
+            <local:Workday Grid.Column="1"/>
+            <local:Workday Grid.Column="2"/>
+            <local:Workday Grid.Column="3"/>
+            <local:Workday Grid.Column="4"/>
+            <local:Workday Grid.Column="5"/>
+            <local:Workday Grid.Column="6"/>
+            <local:Workday Grid.Row="1"/>
+            <local:Workday Grid.Row="1" Grid.Column="1"/>
+            <local:Workday Grid.Row="1" Grid.Column="2"/>
+            <local:Workday Grid.Row="1" Grid.Column="3"/>
+            <local:Workday Grid.Row="1" Grid.Column="4"/>
+            <local:Workday Grid.Row="1" Grid.Column="5"/>
+            <local:Workday Grid.Row="1" Grid.Column="6"/>
+            <local:Workday Grid.Row="2"/>
+            <local:Workday Grid.Row="2" Grid.Column="1"/>
+            <local:Workday Grid.Row="2" Grid.Column="2"/>
+            <local:Workday Grid.Row="2" Grid.Column="3"/>
+            <local:Workday Grid.Row="2" Grid.Column="4"/>
+            <local:Workday Grid.Row="2" Grid.Column="5"/>
+            <local:Workday Grid.Row="2" Grid.Column="6"/>
+            <local:Workday Grid.Row="3"/>
+            <local:Workday Grid.Row="3" Grid.Column="1"/>
+            <local:Workday Grid.Row="3" Grid.Column="2"/>
+            <local:Workday Grid.Row="3" Grid.Column="3"/>
+            <local:Workday Grid.Row="3" Grid.Column="4"/>
+            <local:Workday Grid.Row="3" Grid.Column="5"/>
+            <local:Workday Grid.Row="3" Grid.Column="6"/>
+            <local:Workday Grid.Row="4"/>
+            <local:Workday Grid.Row="4" Grid.Column="1"/>
+            <local:Workday Grid.Row="4" Grid.Column="2"/>
+            <local:Workday Grid.Row="4" Grid.Column="3"/>
+            <local:Workday Grid.Row="4" Grid.Column="4"/>
+            <local:Workday Grid.Row="4" Grid.Column="5"/>
+            <local:Workday Grid.Row="4" Grid.Column="6"/>
+            <local:Workday Grid.Row="5"/>
+            <local:Workday Grid.Row="5" Grid.Column="1"/>
+            <local:Workday Grid.Row="5" Grid.Column="2"/>
+            <local:Workday Grid.Row="5" Grid.Column="3"/>
+            <local:Workday Grid.Row="5" Grid.Column="4"/>
+            <local:Workday Grid.Row="5" Grid.Column="5"/>
+            <local:Workday Grid.Row="5" Grid.Column="6"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
