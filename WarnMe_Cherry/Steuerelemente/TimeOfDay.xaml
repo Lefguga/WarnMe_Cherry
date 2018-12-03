@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
-             mc:Ignorable="d" 
-             d:DesignHeight="70" d:DesignWidth="300">
+             mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
@@ -15,25 +14,25 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Viewbox>
-            <TextBlock FontSize="80" Focusable="True" x:Name="Hours" Text="00"
+            <TextBlock x:Name="Hours" Text="00" Focusable="True"
                        MouseLeftButtonDown="Hours_MouseLeftButtonDown"
                        GotFocus="Control_GotFocus"
                        LostFocus="Control_LostFocus"/>
         </Viewbox>
         <Viewbox Grid.Column="1">
-            <TextBlock FontSize="80" Text=":"/>
+            <TextBlock Text=":"/>
         </Viewbox>
         <Viewbox Grid.Column="2">
-            <TextBlock FontSize="80" Focusable="True"  x:Name="Minutes" Text="00"
+            <TextBlock x:Name="Minutes" Text="00" Focusable="True"
                        MouseLeftButtonDown="Hours_MouseLeftButtonDown"
                        GotFocus="Control_GotFocus"
                        LostFocus="Control_LostFocus"/>
         </Viewbox>
         <Viewbox Grid.Column="3">
-            <TextBlock FontSize="80" Text=":"/>
+            <TextBlock Text=":"/>
         </Viewbox>
         <Viewbox Grid.Column="4">
-            <TextBlock FontSize="80" Focusable="True"  x:Name="Seconds" Text="00"
+            <TextBlock x:Name="Seconds" Text="00" Focusable="True"
                        MouseLeftButtonDown="Hours_MouseLeftButtonDown"
                        GotFocus="Control_GotFocus"
                        LostFocus="Control_LostFocus"/>

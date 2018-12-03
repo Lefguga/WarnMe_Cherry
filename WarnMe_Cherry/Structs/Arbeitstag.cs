@@ -11,11 +11,11 @@ namespace WarnMe_Cherry
 
         public static readonly Arbeitstag Zero = new Arbeitstag();
 
-        [Newtonsoft.Json.JsonProperty(PropertyName = "→")]
+        [Newtonsoft.Json.JsonProperty(PropertyName = "come")]
         public TimeSpan StartZeit { get => new TimeSpan(startZeit.Days, startZeit.Hours, startZeit.Minutes, startZeit.Seconds); set => startZeit = value; }
-        [Newtonsoft.Json.JsonProperty(PropertyName = "←")]
+        [Newtonsoft.Json.JsonProperty(PropertyName = "go")]
         public TimeSpan EndZeit { get => new TimeSpan(endZeit.Days, endZeit.Hours, endZeit.Minutes, endZeit.Seconds); set => endZeit = value; }
-        [Newtonsoft.Json.JsonProperty(PropertyName = "C")]
+        [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
         public string Bemerkung { get; set; }
         internal TimeSpan Duration { get => EndZeit - StartZeit; }
 
@@ -49,6 +49,11 @@ namespace WarnMe_Cherry
         public static bool operator!=(Arbeitstag a1, Arbeitstag a2)
         {
             return a1.startZeit != a2.startZeit || a1.endZeit != a2.endZeit || a1.Bemerkung != a2.Bemerkung;
+        }
+
+        public override string ToString()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, Datenbank.Datenbank.DefaultSetting);
         }
     }
 }

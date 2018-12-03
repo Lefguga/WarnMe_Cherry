@@ -8,6 +8,12 @@ namespace WarnMe_Cherry.Datenbank
 {
     class Datenbank
     {
+        public static Newtonsoft.Json.JsonSerializerSettings DefaultSetting = new Newtonsoft.Json.JsonSerializerSettings()
+        {
+            TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
+            DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
+        };
+
         FileInfo source;
         Dictionary<string, Dictionary<string, Object>> Library = new Dictionary<string, Dictionary<string, Object>>();
         readonly Encoding Encoding = Encoding.UTF8;
@@ -65,6 +71,9 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="elementValue"></param>
         public void Update(string tableName, string elementName, Object elementValue)
         {
+#if DEBUG
+            Console.WriteLine("LOG: Updated Value [{0}, {1}] = [({3}){2}]", tableName, elementName, elementValue, elementValue.GetType());
+#endif
             // check if key already exists
             if (!Library.ContainsKey(tableName))
             {
@@ -105,14 +114,21 @@ namespace WarnMe_Cherry.Datenbank
             {
                 throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
             }
-            try
-            {
+            //try
+            //{
+            //    Console.WriteLine("Log: {0} [{1}, {2}]\nVALUE:{3}\n", typeof(T).ToString(), tableName, elementName, Library[tableName][elementName]);
+            //    return (T)Library[tableName][elementName];
+            //}
+            //catch (InvalidCastException) // Some custom objects cant deserialized correctly and stored as objects. These must deserialized explictly
+            //{
+#if DEBUG
+            Console.WriteLine("LOG: Requested Type [{0}] existing Type [{1}]", Library[tableName][elementName].GetType(), typeof(T));
+#endif
+            if (typeof(T) == Library[tableName][elementName].GetType())
                 return (T)Library[tableName][elementName];
-            }
-            catch (InvalidCastException) // Some custom objects cant deserialized correctly and stored as objects. These must deserialized explictly
-            {
+            else
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
-            }
+            //}
         }
 
         public bool TrySelect<T>(string tableName, string elementName, out T returnVal)
@@ -123,7 +139,13 @@ namespace WarnMe_Cherry.Datenbank
                 returnVal = default(T);
                 return false;
             }
-            returnVal = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
+#if DEBUG
+            Console.WriteLine("LOG: Try Requested Type [{0}] existing Type [{1}]", Library[tableName][elementName].GetType(), typeof(T));
+#endif
+            if (typeof(T) == Library[tableName][elementName].GetType())
+                returnVal = (T)Library[tableName][elementName];
+            else
+                returnVal = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
             return true;
         }
 
@@ -230,11 +252,7 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="data"></param>
         void Deserialize(string data)
         {
-            Library = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Object>>>(data, new Newtonsoft.Json.JsonSerializerSettings()
-            {
-                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
-                DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
-            }) ?? new Dictionary<string, Dictionary<string, Object>>();
+            Library = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Object>>>(data, DefaultSetting) ?? new Dictionary<string, Dictionary<string, Object>>();
         }
     }
 }
