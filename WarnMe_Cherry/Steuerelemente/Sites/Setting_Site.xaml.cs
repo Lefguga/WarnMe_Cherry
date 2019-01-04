@@ -7,7 +7,7 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
     /// <summary>
     /// Interaktionslogik für Setting_Site.xaml
     /// </summary>
-    public partial class Setting_Site : UserControl
+    public partial class Setting_Site : UserControl, Interfaces.IUpdateable
     {
         public const string STARTTIMEOFFSET = "StartTimeOffset";
         public const string ENDTIMEOFFSET = "EndTimeOffset";
@@ -28,14 +28,14 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
         {
             initReady = false;
 
-            if (InternalVariables.Datenbank.TrySelect(InternalVariables.SETTINGS.NAME, STARTTIMEOFFSET, out string value))
-                StarttimeOffset.DateTime = TimeSpan.Parse(value);
+            if (InternalVariables.Datenbank.TrySelect(InternalVariables.SETTINGS.NAME, STARTTIMEOFFSET, out TimeSpan value))
+                StarttimeOffset.DateTime = (value);
             if (InternalVariables.Datenbank.TrySelect(InternalVariables.SETTINGS.NAME, ENDTIMEOFFSET, out value))
-                EndtimeOffset.DateTime = TimeSpan.Parse(value);
+                EndtimeOffset.DateTime = (value);
             if (InternalVariables.Datenbank.TrySelect(InternalVariables.SETTINGS.NAME, HOUR3OFFSET, out value))
-                Hour3Offset.DateTime = TimeSpan.Parse(value);
+                Hour3Offset.DateTime = (value);
             if (InternalVariables.Datenbank.TrySelect(InternalVariables.SETTINGS.NAME, HOUR6OFFSET, out value))
-                Hour6Offset.DateTime = TimeSpan.Parse(value);
+                Hour6Offset.DateTime = (value);
 
             initReady = true;
         }

@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using static WarnMe_Cherry.Global;
 
 namespace WarnMe_Cherry.Datenbank
 {
     class Datenbank
     {
-        public static Newtonsoft.Json.JsonSerializerSettings DefaultSetting = new Newtonsoft.Json.JsonSerializerSettings()
+        public static JsonSerializerSettings DefaultSetting = new JsonSerializerSettings()
         {
-            TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
+            TypeNameHandling = TypeNameHandling.None,
             DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
         };
 
         FileInfo source;
-        Dictionary<string, Dictionary<string, Object>> Library = new Dictionary<string, Dictionary<string, Object>>();
+        JObject Library = new JObject();
         readonly Encoding Encoding = Encoding.UTF8;
 
         string LastCommittedString = "";
@@ -23,6 +25,9 @@ namespace WarnMe_Cherry.Datenbank
 
         public Datenbank(string Filename)
         {
+#if TRACE
+            INFO($"Generating Datenbank from file '{Filename}'");
+#endif
             source = new FileInfo(Filename);
 
             if (!source.Exists)
@@ -48,17 +53,20 @@ namespace WarnMe_Cherry.Datenbank
         /// </summary>
         /// <param name="elementValue"></param>
         /// <param name="elementName"></param>
-        public void Insert(string tableName, string elementName, Object elementValue)
+        public void Insert(string tableName, string elementName, object elementValue)
         {
+#if TRACE
+            INFO($"Database.Insert Value in {tableName}, {elementName} with ){elementValue}]{elementValue.GetType()}");
+#endif
             if (!Library.ContainsKey(tableName))
-                Library.Add(tableName, new Dictionary<string, Object>());
-            if (Library[tableName].ContainsKey(elementName))
+                Library.Add(tableName, new JObject());
+            if (((JObject)Library[tableName]).ContainsKey(elementName))
             {
                 throw new InvalidDataException("Element bereits in der Datenbank vorhanden, bitte wählen Sie einen Anderen Namen oder verwenden Sie die \"Update()\" Methode.");
             }
             else
             {
-                Library[tableName].Add(elementName, elementValue);
+                ((JObject)Library[tableName]).Add(elementName, JToken.FromObject(elementValue));
             }
         }
 
@@ -69,23 +77,23 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="tableName"></param>
         /// <param name="elementName"></param>
         /// <param name="elementValue"></param>
-        public void Update(string tableName, string elementName, Object elementValue)
+        public void Update(string tableName, string elementName, object elementValue)
         {
-#if DEBUG
-            Console.WriteLine("LOG: Updated Value [{0}, {1}] = [({3}){2}]", tableName, elementName, elementValue, elementValue.GetType());
+#if TRACE
+            INFO($"Database.Update Value in {tableName}, {elementName} to {elementValue} as {elementValue.GetType()}");
 #endif
             // check if key already exists
             if (!Library.ContainsKey(tableName))
             {
-                Library.Add(tableName, new Dictionary<string, Object>());
+                Library.Add(tableName, new JObject());
             }
-            if (!Library[tableName].ContainsKey(elementName))
+            if (!((JObject)Library[tableName]).ContainsKey(elementName))
             {
-                Library[tableName].Add(elementName, elementValue);
+                ((JObject)Library[tableName]).Add(elementName, JToken.FromObject(elementValue));
             }
             else
             {
-                Library[tableName][elementName] = elementValue;
+                Library[tableName][elementName] = JToken.FromObject(elementValue);
             }
         }
 
@@ -99,53 +107,44 @@ namespace WarnMe_Cherry.Datenbank
         /// <returns></returns>
         public Dictionary<string, T> Select<T>(string tableName)
         {
+#if TRACE
+            INFO($"Database.Requested List of Type [{typeof(T)}]");
+#endif
             // check if key exists
             if (!Library.ContainsKey(tableName))
             {
                 throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
             }
-            return Library[tableName].ToDictionary(item => item.Key, item => Select<T>(tableName, item.Key));
+            return (Dictionary<string, T>)Library[tableName].ToObject(typeof(Dictionary<string, T>));
         }
 
         public T Select<T>(string tableName, string elementName)
         {
+#if TRACE
+            INFO($"Database.Requested Type [{typeof(T)}] existing Type [{Library[tableName][elementName].GetType()}]");
+#endif
             // check if key exists
             if (!Exists(tableName, elementName))
             {
                 throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
             }
-            //try
-            //{
-            //    Console.WriteLine("Log: {0} [{1}, {2}]\nVALUE:{3}\n", typeof(T).ToString(), tableName, elementName, Library[tableName][elementName]);
-            //    return (T)Library[tableName][elementName];
-            //}
-            //catch (InvalidCastException) // Some custom objects cant deserialized correctly and stored as objects. These must deserialized explictly
-            //{
-#if DEBUG
-            Console.WriteLine("LOG: Requested Type [{0}] existing Type [{1}]", Library[tableName][elementName].GetType(), typeof(T));
-#endif
-            if (typeof(T) == Library[tableName][elementName].GetType())
-                return (T)Library[tableName][elementName];
-            else
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
+
+            return (T)Library[tableName][elementName].ToObject(typeof(T));
             //}
         }
 
         public bool TrySelect<T>(string tableName, string elementName, out T returnVal)
         {
+#if TRACE
+            INFO($"Database.TrySelect Type [{typeof(T)}] in Library[{tableName}][{elementName}]");
+#endif
             // check if key exists
             if (!Exists(tableName, elementName))
             {
-                returnVal = default(T);
+                returnVal = default;
                 return false;
             }
-#if DEBUG
-            Console.WriteLine("LOG: Try Requested Type [{0}] existing Type [{1}]", Library[tableName][elementName].GetType(), typeof(T));
-#endif
-            if (typeof(T) == Library[tableName][elementName].GetType())
-                returnVal = (T)Library[tableName][elementName];
-            else
-                returnVal = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Library[tableName][elementName].ToString());
+            returnVal = (T)Library[tableName][elementName].ToObject(typeof(T));
             return true;
         }
 
@@ -157,6 +156,9 @@ namespace WarnMe_Cherry.Datenbank
         /// <returns></returns>
         public bool Exists(string tableName)
         {
+#if TRACE
+            INFO($"Database.Exitsts check for {tableName}");
+#endif
             // check if key already exists
             if (!Library.ContainsKey(tableName))
             {
@@ -174,8 +176,11 @@ namespace WarnMe_Cherry.Datenbank
         /// <returns></returns>
         public bool Exists(string tableName, string elementName)
         {
+#if TRACE
+            INFO($"Database.Exitsts check for {tableName}, {elementName}");
+#endif
             // check if key already exists
-            return (Library.ContainsKey(tableName) && Library[tableName].ContainsKey(elementName));
+            return Library.ContainsKey(tableName) && ((JObject)Library[tableName]).ContainsKey(elementName);
         }
 
         /// <summary>
@@ -185,8 +190,14 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="tableName"></param>
         public void Delete(string tableName)
         {
+#if TRACE
+            INFO($"Database.Delete data in {tableName}");
+#endif
             if (Library.ContainsKey(tableName))
             {
+#if DEBUG
+                    INFO($"Deleting data in Library[{tableName}]");
+#endif
                 Library.Remove(tableName);
             }
         }
@@ -199,11 +210,17 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="elementName"></param>
         public void Delete(string tableName, string elementName)
         {
+#if TRACE
+            INFO($"Database.Delete data in {tableName}, {elementName}");
+#endif
             if (Library.ContainsKey(tableName))
             {
-                if (Library[tableName].ContainsKey(elementName))
+                if (((JObject)Library[tableName]).ContainsKey(elementName))
                 {
-                    Library[tableName].Remove(elementName);
+#if DEBUG
+                    INFO($"Deleting data in Library[{tableName}][{elementName}]");
+#endif
+                    ((JObject)Library[tableName]).Remove(elementName);
                 }
             }
         }
@@ -213,6 +230,9 @@ namespace WarnMe_Cherry.Datenbank
         /// </summary>
         internal void Commit()
         {
+#if TRACE
+            INFO($"Database.Commit Writing data to '{source.FullName}'");
+#endif
             string toWrite = Serialize();
             try
             {
@@ -238,10 +258,13 @@ namespace WarnMe_Cherry.Datenbank
         /// <returns></returns>
         string Serialize()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(Library, new Newtonsoft.Json.JsonSerializerSettings()
+#if TRACE
+            INFO("Database.Serialize data");
+#endif
+            return JsonConvert.SerializeObject(Library, new JsonSerializerSettings()
             {
-                Formatting = Newtonsoft.Json.Formatting.Indented,
-                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None,
+                Formatting = Formatting.Indented,
+                TypeNameHandling = TypeNameHandling.None,
                 DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
             });
         }
@@ -252,7 +275,10 @@ namespace WarnMe_Cherry.Datenbank
         /// <param name="data"></param>
         void Deserialize(string data)
         {
-            Library = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Object>>>(data, DefaultSetting) ?? new Dictionary<string, Dictionary<string, Object>>();
+#if TRACE
+            INFO("Database.Deserialize data");
+#endif
+            Library = JObject.Parse(data);
         }
     }
 }

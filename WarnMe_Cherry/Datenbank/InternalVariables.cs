@@ -9,7 +9,7 @@ namespace WarnMe_Cherry.Datenbank
         public struct WORKINGDAYS
         {
             public const string NAME = "Arbeitstage";
-            public System.Collections.Generic.Dictionary<string, Arbeitstag> VALUE { get; set; }
+            public System.Collections.Generic.Dictionary<DateTime, Arbeitstag> VALUE { get; set; }
         }
         public struct WECKER
         {
@@ -21,24 +21,25 @@ namespace WarnMe_Cherry.Datenbank
             public const string CONFIG_FILE_NAME = @".\Configuration.json";
             // TABLE
             public const string NAME = "Einstellungen";
-            public struct Zeiten
+            public struct WorkingdayNormal
             {
-                public const string NAME = "Zeiten";
-                public struct TIME_A_DAY
-                {
-                    public const string NAME = "Workingtime";
-                    public TimeSpan Value { get; set; }
-                }
-                public struct MAX_TIME_A_DAY
-                {
-                    public const string NAME = "MaxWorkingtime";
-                    public TimeSpan Value { get; set; }
-                }
-                public struct KORREKTUR
-                {
-                    public const string NAME = "Korrektur";
-                    public TimeSpan Value { get; set; }
-                }
+                public const string NAME = "Arbeitstag";
+                public TimeSpan Value { get; set; }
+            }
+            public struct WorkingdayLimit
+            {
+                public const string NAME = "Stundenlimit";
+                public TimeSpan Value { get; set; }
+            }
+            public struct StartTimeOffset
+            {
+                public const string NAME = "StartTimeOffset";
+                public TimeSpan Value { get; set; }
+            }
+            public struct EndTimeOffset
+            {
+                public const string NAME = "EndTimeOffset";
+                public TimeSpan Value { get; set; }
             }
         }
         public struct OTHER
@@ -67,5 +68,6 @@ namespace WarnMe_Cherry.Datenbank
         static string HeuteString => DateTime.Now.ToShortDateString();
         static TimeSpan Jetzt => DateTime.Now.TimeOfDay;
         internal static Datenbank Datenbank { get; set; }
+
     }
 }
