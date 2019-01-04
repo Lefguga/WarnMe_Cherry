@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WarnMe_Cherry</RootNamespace>
     <AssemblyName>WarnMe</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -55,7 +56,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;HAVE_ADO_NET;HAVE_APP_DOMAIN;HAVE_ASYNC;_HAVE_BIG_INTEGER;HAVE_BINARY_FORMATTER;HAVE_BINARY_SERIALIZATION;HAVE_BINARY_EXCEPTION_SERIALIZATION;HAVE_CAS;HAVE_CHAR_TO_LOWER_WITH_CULTURE;HAVE_CHAR_TO_STRING_WITH_CULTURE;HAVE_COM_ATTRIBUTES;HAVE_COMPONENT_MODEL;HAVE_CONCURRENT_COLLECTIONS;HAVE_COVARIANT_GENERICS;_HAVE_DATA_CONTRACTS;HAVE_DATE_TIME_OFFSET;HAVE_DB_NULL_TYPE_CODE;HAVE_DYNAMIC;HAVE_EMPTY_TYPES;HAVE_ENTITY_FRAMEWORK;HAVE_EXPRESSIONS;HAVE_FAST_REVERSE;HAVE_FSHARP_TYPES;HAVE_FULL_REFLECTION;HAVE_GUID_TRY_PARSE;HAVE_HASH_SET;HAVE_ICLONEABLE;HAVE_ICONVERTIBLE;_HAVE_IGNORE_DATA_MEMBER_ATTRIBUTE;HAVE_INOTIFY_COLLECTION_CHANGED;HAVE_INOTIFY_PROPERTY_CHANGING;HAVE_ISET;HAVE_LINQ;HAVE_MEMORY_BARRIER;HAVE_METHOD_IMPL_ATTRIBUTE;HAVE_NON_SERIALIZED_ATTRIBUTE;HAVE_READ_ONLY_COLLECTIONS;HAVE_REFLECTION_EMIT;HAVE_SECURITY_SAFE_CRITICAL_ATTRIBUTE;HAVE_SERIALIZATION_BINDER_BIND_TO_NAME;HAVE_STREAM_READER_WRITER_CLOSE;HAVE_STRING_JOIN_WITH_ENUMERABLE;HAVE_TIME_SPAN_PARSE_WITH_CULTURE;HAVE_TIME_SPAN_TO_STRING_WITH_CULTURE;HAVE_TIME_ZONE_INFO;HAVE_TRACE_WRITER;HAVE_TYPE_DESCRIPTOR;HAVE_UNICODE_SURROGATE_DETECTION;HAVE_VARIANT_TYPE_PARAMETERS;HAVE_VERSION_TRY_PARSE;HAVE_XLINQ;HAVE_XML_DOCUMENT;HAVE_XML_DOCUMENT_TYPE;HAVE_CONCURRENT_DICTIONARY;</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -63,20 +64,42 @@
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;HAVE_ADO_NET;HAVE_APP_DOMAIN;HAVE_ASYNC;_HAVE_BIG_INTEGER;HAVE_BINARY_FORMATTER;HAVE_BINARY_SERIALIZATION;HAVE_BINARY_EXCEPTION_SERIALIZATION;HAVE_CAS;HAVE_CHAR_TO_LOWER_WITH_CULTURE;HAVE_CHAR_TO_STRING_WITH_CULTURE;HAVE_COM_ATTRIBUTES;HAVE_COMPONENT_MODEL;HAVE_CONCURRENT_COLLECTIONS;HAVE_COVARIANT_GENERICS;_HAVE_DATA_CONTRACTS;HAVE_DATE_TIME_OFFSET;HAVE_DB_NULL_TYPE_CODE;HAVE_DYNAMIC;HAVE_EMPTY_TYPES;HAVE_ENTITY_FRAMEWORK;HAVE_EXPRESSIONS;HAVE_FAST_REVERSE;HAVE_FSHARP_TYPES;HAVE_FULL_REFLECTION;HAVE_GUID_TRY_PARSE;HAVE_HASH_SET;HAVE_ICLONEABLE;HAVE_ICONVERTIBLE;_HAVE_IGNORE_DATA_MEMBER_ATTRIBUTE;HAVE_INOTIFY_COLLECTION_CHANGED;HAVE_INOTIFY_PROPERTY_CHANGING;HAVE_ISET;HAVE_LINQ;HAVE_MEMORY_BARRIER;HAVE_METHOD_IMPL_ATTRIBUTE;HAVE_NON_SERIALIZED_ATTRIBUTE;HAVE_READ_ONLY_COLLECTIONS;HAVE_REFLECTION_EMIT;HAVE_SECURITY_SAFE_CRITICAL_ATTRIBUTE;HAVE_SERIALIZATION_BINDER_BIND_TO_NAME;HAVE_STREAM_READER_WRITER_CLOSE;HAVE_STRING_JOIN_WITH_ENUMERABLE;HAVE_TIME_SPAN_PARSE_WITH_CULTURE;HAVE_TIME_SPAN_TO_STRING_WITH_CULTURE;HAVE_TIME_ZONE_INFO;HAVE_TRACE_WRITER;HAVE_TYPE_DESCRIPTOR;HAVE_UNICODE_SURROGATE_DETECTION;HAVE_VARIANT_TYPE_PARAMETERS;HAVE_VERSION_TRY_PARSE;HAVE_XLINQ;HAVE_XML_DOCUMENT;HAVE_XML_DOCUMENT_TYPE;HAVE_CONCURRENT_DICTIONARY;</DefineConstants>
-    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>HAVE_ADO_NET;HAVE_APP_DOMAIN;HAVE_ASYNC;_HAVE_BIG_INTEGER;HAVE_BINARY_FORMATTER;HAVE_BINARY_SERIALIZATION;HAVE_BINARY_EXCEPTION_SERIALIZATION;HAVE_CAS;HAVE_CHAR_TO_LOWER_WITH_CULTURE;HAVE_CHAR_TO_STRING_WITH_CULTURE;HAVE_COM_ATTRIBUTES;HAVE_COMPONENT_MODEL;HAVE_CONCURRENT_COLLECTIONS;HAVE_COVARIANT_GENERICS;_HAVE_DATA_CONTRACTS;HAVE_DATE_TIME_OFFSET;HAVE_DB_NULL_TYPE_CODE;HAVE_DYNAMIC;HAVE_EMPTY_TYPES;HAVE_ENTITY_FRAMEWORK;HAVE_EXPRESSIONS;HAVE_FAST_REVERSE;HAVE_FSHARP_TYPES;HAVE_FULL_REFLECTION;HAVE_GUID_TRY_PARSE;HAVE_HASH_SET;HAVE_ICLONEABLE;HAVE_ICONVERTIBLE;_HAVE_IGNORE_DATA_MEMBER_ATTRIBUTE;HAVE_INOTIFY_COLLECTION_CHANGED;HAVE_INOTIFY_PROPERTY_CHANGING;HAVE_ISET;HAVE_LINQ;HAVE_MEMORY_BARRIER;HAVE_METHOD_IMPL_ATTRIBUTE;HAVE_NON_SERIALIZED_ATTRIBUTE;HAVE_READ_ONLY_COLLECTIONS;HAVE_REFLECTION_EMIT;HAVE_SECURITY_SAFE_CRITICAL_ATTRIBUTE;HAVE_SERIALIZATION_BINDER_BIND_TO_NAME;HAVE_STREAM_READER_WRITER_CLOSE;HAVE_STRING_JOIN_WITH_ENUMERABLE;HAVE_TIME_SPAN_PARSE_WITH_CULTURE;HAVE_TIME_SPAN_TO_STRING_WITH_CULTURE;HAVE_TIME_ZONE_INFO;HAVE_TRACE_WRITER;HAVE_TYPE_DESCRIPTOR;HAVE_UNICODE_SURROGATE_DETECTION;HAVE_VARIANT_TYPE_PARAMETERS;HAVE_VERSION_TRY_PARSE;HAVE_XLINQ;HAVE_XML_DOCUMENT;HAVE_XML_DOCUMENT_TYPE;HAVE_CONCURRENT_DICTIONARY;</DefineConstants>
+    <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Ressources\IconCherry.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trace|AnyCPU'">
+    <OutputPath>bin\Trace\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trace|x64'">
+    <OutputPath>bin\Trace\</OutputPath>
+    <DefineConstants>TRACE;HAVE_ADO_NET;HAVE_APP_DOMAIN;HAVE_ASYNC;_HAVE_BIG_INTEGER;HAVE_BINARY_FORMATTER;HAVE_BINARY_SERIALIZATION;HAVE_BINARY_EXCEPTION_SERIALIZATION;HAVE_CAS;HAVE_CHAR_TO_LOWER_WITH_CULTURE;HAVE_CHAR_TO_STRING_WITH_CULTURE;HAVE_COM_ATTRIBUTES;HAVE_COMPONENT_MODEL;HAVE_CONCURRENT_COLLECTIONS;HAVE_COVARIANT_GENERICS;_HAVE_DATA_CONTRACTS;HAVE_DATE_TIME_OFFSET;HAVE_DB_NULL_TYPE_CODE;HAVE_DYNAMIC;HAVE_EMPTY_TYPES;HAVE_ENTITY_FRAMEWORK;HAVE_EXPRESSIONS;HAVE_FAST_REVERSE;HAVE_FSHARP_TYPES;HAVE_FULL_REFLECTION;HAVE_GUID_TRY_PARSE;HAVE_HASH_SET;HAVE_ICLONEABLE;HAVE_ICONVERTIBLE;_HAVE_IGNORE_DATA_MEMBER_ATTRIBUTE;HAVE_INOTIFY_COLLECTION_CHANGED;HAVE_INOTIFY_PROPERTY_CHANGING;HAVE_ISET;HAVE_LINQ;HAVE_MEMORY_BARRIER;HAVE_METHOD_IMPL_ATTRIBUTE;HAVE_NON_SERIALIZED_ATTRIBUTE;HAVE_READ_ONLY_COLLECTIONS;HAVE_REFLECTION_EMIT;HAVE_SECURITY_SAFE_CRITICAL_ATTRIBUTE;HAVE_SERIALIZATION_BINDER_BIND_TO_NAME;HAVE_STREAM_READER_WRITER_CLOSE;HAVE_STRING_JOIN_WITH_ENUMERABLE;HAVE_TIME_SPAN_PARSE_WITH_CULTURE;HAVE_TIME_SPAN_TO_STRING_WITH_CULTURE;HAVE_TIME_ZONE_INFO;HAVE_TRACE_WRITER;HAVE_TYPE_DESCRIPTOR;HAVE_UNICODE_SURROGATE_DETECTION;HAVE_VARIANT_TYPE_PARAMETERS;HAVE_VERSION_TRY_PARSE;HAVE_XLINQ;HAVE_XML_DOCUMENT;HAVE_XML_DOCUMENT_TYPE;HAVE_CONCURRENT_DICTIONARY;</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -101,37 +124,9 @@
     <Compile Include="Extensions\DayMatcher.cs" />
     <Compile Include="Extensions\Wetter.cs" />
     <Compile Include="ExterneKlassen\Extern.cs" />
+    <Compile Include="ExterneKlassen\Global.cs" />
     <Compile Include="ExterneKlassen\KlassenErweiterung.cs" />
-    <Compile Include="NotifyIcon\INotifyIcon.cs" />
-    <Compile Include="NotifyIcon\NotifyIcon.cs" />
-    <Compile Include="Steuerelemente\Buttons\Close.xaml.cs">
-      <DependentUpon>Close.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\Buttons\Maxi.xaml.cs">
-      <DependentUpon>Maxi.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\Buttons\Mini.xaml.cs">
-      <DependentUpon>Mini.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\Sites\Home_Site.xaml.cs">
-      <DependentUpon>Home_Site.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\Sites\Overview_Site.xaml.cs">
-      <DependentUpon>Overview_Site.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\Sites\Setting_Site.xaml.cs">
-      <DependentUpon>Setting_Site.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\Workday.xaml.cs">
-      <DependentUpon>Workday.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\WorkDayPropWindow.xaml.cs">
-      <DependentUpon>WorkDayPropWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Steuerelemente\WorkTable.xaml.cs">
-      <DependentUpon>WorkTable.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Structs\Arbeitstag.cs" />
+    <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonObjectId.cs" />
@@ -154,11 +149,13 @@
     <Compile Include="Newtonsoft.Json\Converters\KeyValuePairConverter.cs" />
     <Compile Include="Newtonsoft.Json\Converters\RegexConverter.cs" />
     <Compile Include="Newtonsoft.Json\Converters\StringEnumConverter.cs" />
+    <Compile Include="Newtonsoft.Json\Converters\UnixDateTimeConverter.cs" />
     <Compile Include="Newtonsoft.Json\Converters\VersionConverter.cs" />
     <Compile Include="Newtonsoft.Json\Converters\XmlNodeConverter.cs" />
     <Compile Include="Newtonsoft.Json\DateFormatHandling.cs" />
     <Compile Include="Newtonsoft.Json\DateParseHandling.cs" />
     <Compile Include="Newtonsoft.Json\DateTimeZoneHandling.cs" />
+    <Compile Include="Newtonsoft.Json\DefaultJsonNameTable.cs" />
     <Compile Include="Newtonsoft.Json\DefaultValueHandling.cs" />
     <Compile Include="Newtonsoft.Json\FloatFormatHandling.cs" />
     <Compile Include="Newtonsoft.Json\FloatParseHandling.cs" />
@@ -177,6 +174,7 @@
     <Compile Include="Newtonsoft.Json\JsonException.cs" />
     <Compile Include="Newtonsoft.Json\JsonExtensionDataAttribute.cs" />
     <Compile Include="Newtonsoft.Json\JsonIgnoreAttribute.cs" />
+    <Compile Include="Newtonsoft.Json\JsonNameTable.cs" />
     <Compile Include="Newtonsoft.Json\JsonObjectAttribute.cs" />
     <Compile Include="Newtonsoft.Json\JsonPosition.cs" />
     <Compile Include="Newtonsoft.Json\JsonPropertyAttribute.cs" />
@@ -197,6 +195,7 @@
     <Compile Include="Newtonsoft.Json\JsonWriter.cs" />
     <Compile Include="Newtonsoft.Json\JsonWriterException.cs" />
     <Compile Include="Newtonsoft.Json\Linq\CommentHandling.cs" />
+    <Compile Include="Newtonsoft.Json\Linq\DuplicatePropertyNameHandling.cs" />
     <Compile Include="Newtonsoft.Json\Linq\Extensions.cs" />
     <Compile Include="Newtonsoft.Json\Linq\IJEnumerable.cs" />
     <Compile Include="Newtonsoft.Json\Linq\JArray.Async.cs" />
@@ -330,8 +329,8 @@
     <Compile Include="Newtonsoft.Json\Utilities\DynamicProxyMetaObject.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\DynamicReflectionDelegateFactory.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\DynamicUtils.cs" />
+    <Compile Include="Newtonsoft.Json\Utilities\EnumInfo.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\EnumUtils.cs" />
-    <Compile Include="Newtonsoft.Json\Utilities\EnumValue.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ExpressionReflectionDelegateFactory.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\FSharpUtils.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ILGeneratorExtensions.cs" />
@@ -344,17 +343,47 @@
     <Compile Include="Newtonsoft.Json\Utilities\MethodBinder.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\MethodCall.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\MiscellaneousUtils.cs" />
-    <Compile Include="Newtonsoft.Json\Utilities\PropertyNameTable.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ReflectionDelegateFactory.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ReflectionObject.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ReflectionUtils.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\StringBuffer.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\StringReference.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\StringUtils.cs" />
+    <Compile Include="Newtonsoft.Json\Utilities\StructMultiKey.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ThreadSafeStore.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\TypeExtensions.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Newtonsoft.Json\WriteState.cs" />
+    <Compile Include="NotifyIcon\INotifyIcon.cs" />
+    <Compile Include="NotifyIcon\NotifyIcon.cs" />
+    <Compile Include="Steuerelemente\Buttons\Close.xaml.cs">
+      <DependentUpon>Close.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Buttons\Maxi.xaml.cs">
+      <DependentUpon>Maxi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Buttons\Mini.xaml.cs">
+      <DependentUpon>Mini.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Sites\Home_Site.xaml.cs">
+      <DependentUpon>Home_Site.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Sites\Overview_Site.xaml.cs">
+      <DependentUpon>Overview_Site.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Sites\Setting_Site.xaml.cs">
+      <DependentUpon>Setting_Site.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\Workday.xaml.cs">
+      <DependentUpon>Workday.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\WorkDayPropWindow.xaml.cs">
+      <DependentUpon>WorkDayPropWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerelemente\WorkTable.xaml.cs">
+      <DependentUpon>WorkTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Structs\Arbeitstag.cs" />
     <Compile Include="Steuerelemente\DateTimePicker.xaml.cs">
       <DependentUpon>DateTimePicker.xaml</DependentUpon>
     </Compile>
@@ -423,7 +452,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Steuerelemente\IUpdateable.cs" />
     <Compile Include="Steuerelemente\Timeline.xaml.cs">
       <DependentUpon>Timeline.xaml</DependentUpon>
     </Compile>
@@ -458,6 +486,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Newtonsoft.Json\Dynamic.snk" />
+    <None Include="Newtonsoft.Json\Newtonsoft.Json.ruleset" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -479,6 +509,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Ressources\IconCherry.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Newtonsoft.Json\Newtonsoft.Json.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
