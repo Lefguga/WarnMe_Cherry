@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -23,34 +23,21 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
-namespace Newtonsoft.Json.Schema
+namespace Newtonsoft.Json.Utilities
 {
-    /// <summary>
-    /// <para>
-    /// Specifies undefined schema Id handling options for the <see cref="JsonSchemaGenerator"/>.
-    /// </para>
-    /// <note type="caution">
-    /// JSON Schema validation has been moved to its own package. See <see href="https://www.newtonsoft.com/jsonschema">https://www.newtonsoft.com/jsonschema</see> for more details.
-    /// </note>
-    /// </summary>
-    [Obsolete("JSON Schema validation has been moved to its own package. See https://www.newtonsoft.com/jsonschema for more details.")]
-    public enum UndefinedSchemaIdHandling
+    internal class EnumInfo
     {
-        /// <summary>
-        /// Do not infer a schema Id.
-        /// </summary>
-        None = 0,
+        public EnumInfo(bool isFlags, ulong[] values, string[] names, string[] resolvedNames)
+        {
+            IsFlags = isFlags;
+            Values = values;
+            Names = names;
+            ResolvedNames = resolvedNames;
+        }
 
-        /// <summary>
-        /// Use the .NET type name as the schema Id.
-        /// </summary>
-        UseTypeName = 1,
-
-        /// <summary>
-        /// Use the assembly qualified .NET type name as the schema Id.
-        /// </summary>
-        UseAssemblyQualifiedName = 2,
+        public readonly bool IsFlags;
+        public readonly ulong[] Values;
+        public readonly string[] Names;
+        public readonly string[] ResolvedNames;
     }
 }

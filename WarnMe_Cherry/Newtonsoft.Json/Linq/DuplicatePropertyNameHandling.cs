@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -23,34 +23,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
-namespace Newtonsoft.Json.Schema
+namespace Newtonsoft.Json.Linq
 {
     /// <summary>
-    /// <para>
-    /// Specifies undefined schema Id handling options for the <see cref="JsonSchemaGenerator"/>.
-    /// </para>
-    /// <note type="caution">
-    /// JSON Schema validation has been moved to its own package. See <see href="https://www.newtonsoft.com/jsonschema">https://www.newtonsoft.com/jsonschema</see> for more details.
-    /// </note>
+    /// Specifies how duplicate property names are handled when loading JSON.
     /// </summary>
-    [Obsolete("JSON Schema validation has been moved to its own package. See https://www.newtonsoft.com/jsonschema for more details.")]
-    public enum UndefinedSchemaIdHandling
+    public enum DuplicatePropertyNameHandling
     {
         /// <summary>
-        /// Do not infer a schema Id.
+        /// Replace the existing value when there is a duplicate property. The value of the last property in the JSON object will be used.
         /// </summary>
-        None = 0,
-
+        Replace = 0,
         /// <summary>
-        /// Use the .NET type name as the schema Id.
+        /// Ignore the new value when there is a duplicate property. The value of the first property in the JSON object will be used.
         /// </summary>
-        UseTypeName = 1,
-
+        Ignore = 1,
         /// <summary>
-        /// Use the assembly qualified .NET type name as the schema Id.
+        /// Throw a <see cref="JsonReaderException"/> when a duplicate property is encountered.
         /// </summary>
-        UseAssemblyQualifiedName = 2,
+        Error = 2
     }
 }

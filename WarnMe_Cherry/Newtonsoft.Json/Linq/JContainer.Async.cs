@@ -35,7 +35,7 @@ namespace Newtonsoft.Json.Linq
 {
     public abstract partial class JContainer
     {
-        internal async Task ReadTokenFromAsync(JsonReader reader, JsonLoadSettings options, CancellationToken cancellationToken = default(CancellationToken))
+        internal async Task ReadTokenFromAsync(JsonReader reader, JsonLoadSettings options, CancellationToken cancellationToken = default)
         {
             ValidationUtils.ArgumentNotNull(reader, nameof(reader));
             int startDepth = reader.Depth;
@@ -53,7 +53,7 @@ namespace Newtonsoft.Json.Linq
             }
         }
 
-        private async Task ReadContentFromAsync(JsonReader reader, JsonLoadSettings settings, CancellationToken cancellationToken = default(CancellationToken))
+        private async Task ReadContentFromAsync(JsonReader reader, JsonLoadSettings settings, CancellationToken cancellationToken = default)
         {
             IJsonLineInfo lineInfo = reader as IJsonLineInfo;
 
@@ -61,7 +61,7 @@ namespace Newtonsoft.Json.Linq
 
             do
             {
-                if ((parent as JProperty)?.Value != null)
+                if (parent is JProperty p && p.Value != null)
                 {
                     if (parent == this)
                     {
@@ -148,21 +148,15 @@ namespace Newtonsoft.Json.Linq
                         parent.Add(v);
                         break;
                     case JsonToken.PropertyName:
-                        string propertyName = reader.Value.ToString();
-                        JProperty property = new JProperty(propertyName);
-                        property.SetLineInfo(lineInfo, settings);
-                        JObject parentObject = (JObject)parent;
-                        // handle multiple properties with the same name in JSON
-                        JProperty existingPropertyWithName = parentObject.Property(propertyName);
-                        if (existingPropertyWithName == null)
+                        JProperty property = ReadProperty(reader, settings, lineInfo, parent);
+                        if (property != null)
                         {
-                            parent.Add(property);
+                            parent = property;
                         }
                         else
                         {
-                            existingPropertyWithName.Replace(property);
+                            await reader.SkipAsync();
                         }
-                        parent = property;
                         break;
                     default:
                         throw new InvalidOperationException("The JsonReader should not be on a token of type {0}.".FormatWith(CultureInfo.InvariantCulture, reader.TokenType));

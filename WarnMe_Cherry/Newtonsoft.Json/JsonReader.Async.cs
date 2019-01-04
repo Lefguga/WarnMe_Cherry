@@ -42,8 +42,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns <c>true</c> if the next token was read successfully; <c>false</c> if there are no more tokens to read.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<bool> ReadAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<bool> ReadAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<bool>() ?? Read().ToAsync();
         }
@@ -54,8 +54,8 @@ namespace Newtonsoft.Json
         /// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public async Task SkipAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public async Task SkipAsync(CancellationToken cancellationToken = default)
         {
             if (TokenType == JsonToken.PropertyName)
             {
@@ -87,8 +87,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="Nullable{T}"/> of <see cref="bool"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<bool?> ReadAsBooleanAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<bool?> ReadAsBooleanAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<bool?>() ?? Task.FromResult(ReadAsBoolean());
         }
@@ -100,8 +100,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="byte"/>[]. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<byte[]> ReadAsBytesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<byte[]> ReadAsBytesAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<byte[]>() ?? Task.FromResult(ReadAsBytes());
         }
@@ -133,8 +133,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="Nullable{T}"/> of <see cref="DateTime"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<DateTime?> ReadAsDateTimeAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<DateTime?> ReadAsDateTimeAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<DateTime?>() ?? Task.FromResult(ReadAsDateTime());
         }
@@ -146,8 +146,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="Nullable{T}"/> of <see cref="DateTimeOffset"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<DateTimeOffset?> ReadAsDateTimeOffsetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<DateTimeOffset?> ReadAsDateTimeOffsetAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<DateTimeOffset?>() ?? Task.FromResult(ReadAsDateTimeOffset());
         }
@@ -159,8 +159,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="Nullable{T}"/> of <see cref="decimal"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<decimal?> ReadAsDecimalAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<decimal?> ReadAsDecimalAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<decimal?>() ?? Task.FromResult(ReadAsDecimal());
         }
@@ -172,8 +172,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="Nullable{T}"/> of <see cref="double"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<double?> ReadAsDoubleAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<double?> ReadAsDoubleAsync(CancellationToken cancellationToken = default)
         {
             return Task.FromResult(ReadAsDouble());
         }
@@ -185,8 +185,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="Nullable{T}"/> of <see cref="int"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<int?> ReadAsInt32Async(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<int?> ReadAsInt32Async(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<int?>() ?? Task.FromResult(ReadAsInt32());
         }
@@ -198,8 +198,8 @@ namespace Newtonsoft.Json
         /// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous read. The <see cref="Task{TResult}.Result"/>
         /// property returns the <see cref="string"/>. This result will be <c>null</c> at the end of an array.</returns>
         /// <remarks>The default behaviour is to execute synchronously, returning an already-completed task. Derived
-        /// classes can override this behaviour for true asychronousity.</remarks>
-        public virtual Task<string> ReadAsStringAsync(CancellationToken cancellationToken = default(CancellationToken))
+        /// classes can override this behaviour for true asynchronicity.</remarks>
+        public virtual Task<string> ReadAsStringAsync(CancellationToken cancellationToken = default)
         {
             return cancellationToken.CancelIfRequestedAsync<string>() ?? Task.FromResult(ReadAsString());
         }

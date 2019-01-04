@@ -30,10 +30,12 @@ using Newtonsoft.Json.Utilities;
 namespace Newtonsoft.Json.Converters
 {
     /// <summary>
-    /// Converts a <see cref="DateTime"/> to and from a JavaScript <c>Date</c> constructor (e.g. <c>new Date(52231943)</c>).
+    /// Converts a <see cref="DateTime"/> to and from Unix epoch time
     /// </summary>
-    public class JavaScriptDateTimeConverter : DateTimeConverterBase
+    public class UnixDateTimeConverter : DateTimeConverterBase
     {
+        internal static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
@@ -42,18 +44,16 @@ namespace Newtonsoft.Json.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            long ticks;
+            long seconds;
 
             if (value is DateTime dateTime)
             {
-                DateTime utcDateTime = dateTime.ToUniversalTime();
-                ticks = DateTimeUtils.ConvertDateTimeToJavaScriptTicks(utcDateTime);
+                seconds = (long)(dateTime.ToUniversalTime() - UnixEpoch).TotalSeconds;
             }
 #if HAVE_DATE_TIME_OFFSET
             else if (value is DateTimeOffset dateTimeOffset)
             {
-                DateTimeOffset utcDateTimeOffset = dateTimeOffset.ToUniversalTime();
-                ticks = DateTimeUtils.ConvertDateTimeToJavaScriptTicks(utcDateTimeOffset.UtcDateTime);
+                seconds = (long)(dateTimeOffset.ToUniversalTime() - UnixEpoch).TotalSeconds;
             }
 #endif
             else
@@ -61,9 +61,12 @@ namespace Newtonsoft.Json.Converters
                 throw new JsonSerializationException("Expected date object value.");
             }
 
-            writer.WriteStartConstructor("Date");
-            writer.WriteValue(ticks);
-            writer.WriteEndConstructor();
+            if (seconds < 0)
+            {
+                throw new JsonSerializationException("Cannot convert date value that is before Unix epoch of 00:00:00 UTC on 1 January 1970.");
+            }
+
+            writer.WriteValue(seconds);
         }
 
         /// <summary>
@@ -76,9 +79,10 @@ namespace Newtonsoft.Json.Converters
         /// <returns>The object value.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            bool nullable = ReflectionUtils.IsNullable(objectType);
             if (reader.TokenType == JsonToken.Null)
             {
-                if (!ReflectionUtils.IsNullable(objectType))
+                if (!nullable)
                 {
                     throw JsonSerializationException.Create(reader, "Cannot convert null value to {0}.".FormatWith(CultureInfo.InvariantCulture, objectType));
                 }
@@ -86,26 +90,43 @@ namespace Newtonsoft.Json.Converters
                 return null;
             }
 
-            if (reader.TokenType != JsonToken.StartConstructor || !string.Equals(reader.Value.ToString(), "Date", StringComparison.Ordinal))
+            long seconds;
+
+            if (reader.TokenType == JsonToken.Integer)
             {
-                throw JsonSerializationException.Create(reader, "Unexpected token or value when parsing date. Token: {0}, Value: {1}".FormatWith(CultureInfo.InvariantCulture, reader.TokenType, reader.Value));
+                seconds = (long)reader.Value;
+            }
+            else if (reader.TokenType == JsonToken.String)
+            {
+                if (!long.TryParse((string)reader.Value, out seconds))
+                {
+                    throw JsonSerializationException.Create(reader, "Cannot convert invalid value to {0}.".FormatWith(CultureInfo.InvariantCulture, objectType));
+                }
+            }
+            else
+            {
+                throw JsonSerializationException.Create(reader, "Unexpected token parsing date. Expected Integer or String, got {0}.".FormatWith(CultureInfo.InvariantCulture, reader.TokenType));
             }
 
-            if (!JavaScriptUtils.TryGetDateFromConstructorJson(reader, out DateTime d, out string errorMessage))
+            if (seconds >= 0)
             {
-                throw JsonSerializationException.Create(reader, errorMessage);
-            }
+                DateTime d = UnixEpoch.AddSeconds(seconds);
 
 #if HAVE_DATE_TIME_OFFSET
-            Type t = (ReflectionUtils.IsNullableType(objectType))
-                ? Nullable.GetUnderlyingType(objectType)
-                : objectType;
-            if (t == typeof(DateTimeOffset))
-            {
-                return new DateTimeOffset(d);
-            }
+                Type t = (nullable)
+                    ? Nullable.GetUnderlyingType(objectType)
+                    : objectType;
+                if (t == typeof(DateTimeOffset))
+                {
+                    return new DateTimeOffset(d, TimeSpan.Zero);
+                }
 #endif
-            return d;
+                return d;
+            }
+            else
+            {
+                throw JsonSerializationException.Create(reader, "Cannot convert value that is before Unix epoch of 00:00:00 UTC on 1 January 1970 to {0}.".FormatWith(CultureInfo.InvariantCulture, objectType));
+            }
         }
     }
 }

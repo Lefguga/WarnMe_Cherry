@@ -750,7 +750,7 @@ namespace Newtonsoft.Json.Linq
 
             do
             {
-                if ((parent as JProperty)?.Value != null)
+                if (parent is JProperty p && p.Value != null)
                 {
                     if (parent == this)
                     {
@@ -837,26 +837,54 @@ namespace Newtonsoft.Json.Linq
                         parent.Add(v);
                         break;
                     case JsonToken.PropertyName:
-                        string propertyName = r.Value.ToString();
-                        JProperty property = new JProperty(propertyName);
-                        property.SetLineInfo(lineInfo, settings);
-                        JObject parentObject = (JObject)parent;
-                        // handle multiple properties with the same name in JSON
-                        JProperty existingPropertyWithName = parentObject.Property(propertyName);
-                        if (existingPropertyWithName == null)
+                        JProperty property = ReadProperty(r, settings, lineInfo, parent);
+                        if (property != null)
                         {
-                            parent.Add(property);
+                            parent = property;
                         }
                         else
                         {
-                            existingPropertyWithName.Replace(property);
+                            r.Skip();
                         }
-                        parent = property;
                         break;
                     default:
                         throw new InvalidOperationException("The JsonReader should not be on a token of type {0}.".FormatWith(CultureInfo.InvariantCulture, r.TokenType));
                 }
             } while (r.Read());
+        }
+
+        private static JProperty ReadProperty(JsonReader r, JsonLoadSettings settings, IJsonLineInfo lineInfo, JContainer parent)
+        {
+            DuplicatePropertyNameHandling duplicatePropertyNameHandling = settings?.DuplicatePropertyNameHandling ?? DuplicatePropertyNameHandling.Replace;
+
+            JObject parentObject = (JObject)parent;
+            string propertyName = r.Value.ToString();
+            JProperty existingPropertyWithName = parentObject.Property(propertyName);
+            if (existingPropertyWithName != null)
+            {
+                if (duplicatePropertyNameHandling == DuplicatePropertyNameHandling.Ignore)
+                {
+                    return null;
+                }
+                else if (duplicatePropertyNameHandling == DuplicatePropertyNameHandling.Error)
+                {
+                    throw JsonReaderException.Create(r, "Property with the name '{0}' already exists in the current JSON object.".FormatWith(CultureInfo.InvariantCulture, propertyName));
+                }
+            }
+
+            JProperty property = new JProperty(propertyName);
+            property.SetLineInfo(lineInfo, settings);
+            // handle multiple properties with the same name in JSON
+            if (existingPropertyWithName == null)
+            {
+                parent.Add(property);
+            }
+            else
+            {
+                existingPropertyWithName.Replace(property);
+            }
+
+            return property;
         }
 
         internal int ContentsHashCode()
@@ -1041,12 +1069,11 @@ namespace Newtonsoft.Json.Linq
                 throw new JsonException("Could not determine new value to add to '{0}'.".FormatWith(CultureInfo.InvariantCulture, GetType()));
             }
 
-            if (!(args.NewObject is JToken))
+            if (!(args.NewObject is JToken newItem))
             {
                 throw new JsonException("New item to be added to collection must be compatible with {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JToken)));
             }
 
-            JToken newItem = (JToken)args.NewObject;
             Add(newItem);
 
             return newItem;
