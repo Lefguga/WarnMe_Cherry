@@ -5,7 +5,7 @@ namespace WarnMe_Cherry.Steuerelemente
     /// <summary>
     /// Interaktionslogik für Timeline.xaml
     /// </summary>
-    public partial class Timeline : UserControl, IUpdateable
+    public partial class Timeline : UserControl, Interfaces.IUpdateable
     {
         public double MaxValue { get; set; } = 100d;
 

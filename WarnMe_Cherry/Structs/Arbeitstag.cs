@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static WarnMe_Cherry.Datenbank.InternalVariables;
 
 namespace WarnMe_Cherry
 {

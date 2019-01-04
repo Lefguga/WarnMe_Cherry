@@ -88,28 +88,18 @@ namespace WarnMe_Cherry.Steuerelemente
                     //UpdateString();
                     LastInput = 0;
                 }
-                else if (e.Key == Key.Up)
+                else if (e.Key == Key.Add || e.Key == Key.OemPlus)
                 {
                     Time.AddValue(1);
                     LastInput = (LastInput + 1) % 10;
                 }
-                else if (e.Key == Key.Down)
+                else if (e.Key == Key.Subtract || e.Key == Key.OemMinus)
                 {
                     Time.AddValue(-1);
                     LastInput = (LastInput + 9) % 10;
                 }
             }
         }
-
-        //private void UpdateDateTime()
-        //{
-        //    if (int.TryParse(Hours.Text, out hour))
-        //        Hour = hour;
-        //    if (int.TryParse(Minutes.Text, out minute))
-        //        Minute = minute;
-        //    if (int.TryParse(Seconds.Text, out second))
-        //        Second = second;
-        //}
     }
 
     public static class ValueExtensions
