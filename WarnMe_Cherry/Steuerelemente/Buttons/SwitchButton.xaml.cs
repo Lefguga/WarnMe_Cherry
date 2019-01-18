@@ -10,6 +10,9 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class SwitchButton : UserControl
     {
+        public delegate void ValueChange(bool value);
+        public event ValueChange ValueChanged;
+
         bool switchValue = false;
         public bool SwitchValue
         {
@@ -20,6 +23,7 @@ namespace WarnMe_Cherry.Steuerelemente
 
                 Switch.HorizontalAlignment = SwitchValue ? HorizontalAlignment.Left : HorizontalAlignment.Right;
                 SwitchBG.BorderBrush = SwitchValue ? onColor : offColor;
+                ValueChanged?.Invoke(SwitchValue);
             }
         }
 

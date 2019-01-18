@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WarnMe_Cherry.ExterneKlassen;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestWarnMe
 {

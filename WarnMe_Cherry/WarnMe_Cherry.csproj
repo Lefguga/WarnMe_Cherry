@@ -79,7 +79,7 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Ressources\IconCherry.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\IconCherry.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trace|AnyCPU'">
     <OutputPath>bin\Trace\</OutputPath>
@@ -354,8 +354,25 @@
     <Compile Include="Newtonsoft.Json\Utilities\TypeExtensions.cs" />
     <Compile Include="Newtonsoft.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Newtonsoft.Json\WriteState.cs" />
-    <Compile Include="NotifyIcon\INotifyIcon.cs" />
-    <Compile Include="NotifyIcon\NotifyIcon.cs" />
+    <Compile Include="NotifyIcon.Wpf\BalloonIcon.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\BalloonFlags.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\IconDataMembers.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\IconState.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\MouseEvent.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\NotifyCommand.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\NotifyIconData.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\NotifyIconVersion.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\Point.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\SystemInfo.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\TrayInfo.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\WinApi.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\WindowClass.cs" />
+    <Compile Include="NotifyIcon.Wpf\Interop\WindowMessageSink.cs" />
+    <Compile Include="NotifyIcon.Wpf\PopupActivationMode.cs" />
+    <Compile Include="NotifyIcon.Wpf\RoutedEventHelper.cs" />
+    <Compile Include="NotifyIcon.Wpf\TaskbarIcon.cs" />
+    <Compile Include="NotifyIcon.Wpf\TaskbarIcon.Declarations.cs" />
+    <Compile Include="NotifyIcon.Wpf\Util.cs" />
     <Compile Include="Steuerelemente\Buttons\Close.xaml.cs">
       <DependentUpon>Close.xaml</DependentUpon>
     </Compile>
@@ -492,7 +509,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Resource Include="Ressources\SanFranciscoDisplay-Thin.ttf" />
+    <Resource Include="Resources\SanFranciscoDisplay-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -505,10 +522,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Ressources\SplashScreenCherry.png" />
+    <SplashScreen Include="Resources\SplashScreenCherry.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Ressources\IconCherry.ico" />
+    <Resource Include="Resources\IconCherry.ico" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Newtonsoft.Json\Newtonsoft.Json.csproj" />

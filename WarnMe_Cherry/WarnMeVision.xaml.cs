@@ -5,8 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WarnMe_Cherry.Datenbank;
+using Hardcodet.Wpf.TaskbarNotification;
 using static WarnMe_Cherry.Datenbank.InternalVariables;
 using static WarnMe_Cherry.Global;
+using WarnMe_Cherry.Extensions;
 
 namespace WarnMe_Cherry
 {
@@ -19,16 +21,11 @@ namespace WarnMe_Cherry
 
         BackgroundWorker Updater = new BackgroundWorker();
 
-        ContextMenu contextMenu = new ContextMenu()
-        {
-        Items =
-            {
-                new MenuItem() { Header="Show" },
-                new MenuItem() { Header="Hide" },
-                new Separator(),
-                new MenuItem() { Header="Close" }
-            }
-        };
+
+        Steuerelemente.WorkDayPropWindow notifyWorkDay = new Steuerelemente.WorkDayPropWindow();
+        ContextMenu contextMenu;
+
+        TaskbarIcon icon;
 
         bool DeviceLocked = false;
         struct Arbeitstag_Heute
@@ -45,6 +42,9 @@ namespace WarnMe_Cherry
         TimeSpan Jetzt => DateTime.Now.TimeOfDay;
         #endregion
         
+        /// <summary>
+        /// 
+        /// </summary>
         public WarnMeVision()
         {
 #if TRACE
@@ -56,6 +56,11 @@ namespace WarnMe_Cherry
             Microsoft.Win32.SystemEvents.SessionSwitch += SaveCurrentSessionState;
         }
 
+        /// <summary>
+        /// Saves Sessionstate on change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveCurrentSessionState(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
 #if TRACE
@@ -68,6 +73,11 @@ namespace WarnMe_Cherry
             }
         }
 
+        /// <summary>
+        /// Provides possibility to drag the window with an <see cref="FrameworkElement"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ActivateDragMove(object sender, MouseButtonEventArgs e)
         {
 #if TRACE
@@ -77,14 +87,42 @@ namespace WarnMe_Cherry
             DragMove();
         }
 
+        /// <summary>
+        /// Simply closes the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseClick(object sender, MouseButtonEventArgs e) => Close();
 
+        /// <summary>
+        /// Simply maximizes the window 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MaximizeClick(object sender, MouseButtonEventArgs e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
-        private void MinimizeClick(object sender, MouseButtonEventArgs e) => WindowState = WindowState.Minimized;
+        /// <summary>
+        /// Simply minimizes the window and hides it in the taskbar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MinimizeClick(object sender, MouseButtonEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+            ShowInTaskbar = false;
+        }
 
+        /// <summary>
+        /// Set a <see cref="FrameworkElement"/>s fokus
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrameworkElement_MouseDown_Focus(object sender, MouseButtonEventArgs e) => ((FrameworkElement)sender).Focus();
 
+        /// <summary>
+        /// Handle the closing procedere
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
 #if TRACE
@@ -93,6 +131,18 @@ namespace WarnMe_Cherry
             PrepareShutdown();
             // notyIcon?.Dispose();
             base.OnClosing(e);
+        }
+
+        protected new void Show()
+        {
+            base.Show();
+            ShowInTaskbar = true;
+        }
+
+        protected new void Hide()
+        {
+            base.Hide();
+            ShowInTaskbar = false;
         }
 
         // *********************************************************************************
@@ -157,23 +207,54 @@ namespace WarnMe_Cherry
         // TRIGGER EVENTS
         // *********************************************************************************
 
+        /// <summary>
+        /// ===== INITIALIZISE =====
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AfterFormInitialized(object sender, RoutedEventArgs e)
         {
 #if TRACE
             INFO("AfterFormInitialized");
 #endif
-            // Init Notificytion Icon
-            //notyIcon = new NotificationIcon.NotificationIcon
-            //{
-            //    ContextMenu = contextMenu.ContextMenu,
-            //    ToolTipText = "Hallo"
-            //};
 
             //Load Datenbank
             InternalVariables.Datenbank = new Datenbank.Datenbank(SETTINGS.CONFIG_FILE_NAME);
 
             //Set up Variables and Settings
             InitFormValues();
+
+            if (InternalVariables.Datenbank.TrySelect(SETTINGS.NAME, Steuerelemente.Sites.Setting_Site.STARTMINIMIZED, out bool mini))
+                if (mini)
+                    Hide();
+
+            //Set Menuitem
+            MenuItem show = new MenuItem() { Header = "Show" };
+            show.Click += (object o, RoutedEventArgs me) => { Show(); };
+            MenuItem hide = new MenuItem() { Header = "Hide" };
+            hide.Click += (object o, RoutedEventArgs me) => { Hide(); };
+            MenuItem close = new MenuItem() { Header = "Close" };
+            close.Click += (object o, RoutedEventArgs me) => { Close(); };
+
+            contextMenu = new ContextMenu()
+            {
+                Items =
+                {
+                    show,
+                    hide,
+                    new Separator(),
+                    close
+                }
+            };
+
+            //Set Notification Icon
+            icon = new TaskbarIcon
+            {
+                Icon = (System.Drawing.Icon)Properties.Resources.IconCherry.Clone(),
+                //ToolTip = notifyWorkDay,
+                ContextMenu = contextMenu
+            };
+            icon.TrayMouseDoubleClick += (object o, RoutedEventArgs me) => { Show(); };
 
             //Set up Updater
             Updater.DoWork += (object o, DoWorkEventArgs arg) =>
@@ -246,7 +327,7 @@ namespace WarnMe_Cherry
             Home.timeLine.Update();
             
         }
-
+        
         // private void ShutdownWarnMe(object sender, System.ComponentModel.CancelEventArgs e) => PrepareShutdown();
 
         // *********************************************************************************
@@ -331,6 +412,13 @@ namespace WarnMe_Cherry
 
             // Close Forms
             Steuerelemente.WorkTable.window.Close();
+
+            // Clean up Taskbar Icon
+            notifyWorkDay?.Close();
+            icon.CloseBalloon();
+            icon.Icon.Dispose();
+            icon.Icon = null;
+            icon.Dispose();
         }
 
         private void SettingChanged(string key, object value)

@@ -72,10 +72,12 @@
                 <TextBlock Text="Endzeit Offset:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="1"/>
                 <TextBlock Text="3 Stunden Abzug:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="2"/>
                 <TextBlock Text="6 Stunden Abzug:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="3"/>
+                <TextBlock Text="Minimierter Start:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="4"/>
                 <Steuerelemente:DateTimePicker x:Name="StarttimeOffset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Starttime_Changed" Grid.Column="1"/>
                 <Steuerelemente:DateTimePicker x:Name="EndtimeOffset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Endtime_Changed" Grid.Column="1" Grid.Row="1"/>
                 <Steuerelemente:DateTimePicker x:Name="Hour3Offset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Hour3_Changed" Grid.Column="1" Grid.Row="2"/>
                 <Steuerelemente:DateTimePicker x:Name="Hour6Offset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Hour6_Changed" Grid.Column="1" Grid.Row="3"/>
+                <Steuerelemente:SwitchButton x:Name="StartMinimized" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" Margin="20,0" ValueChanged="MinimizedChanged" Grid.Row="4"/>
             </Grid>
         <!--</ScrollViewer>-->
         </Grid>

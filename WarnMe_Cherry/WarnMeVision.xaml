@@ -14,7 +14,7 @@
     Width="780"
     AllowsTransparency="True"
     WindowStyle="None"
-    FontFamily="/WarnMe;component/Ressources/#San Francisco Display"
+    FontFamily="/WarnMe;component/Resources/#San Francisco Display"
     IsTabStop="False"
     Foreground="#FFEAEAEA"
     Loaded="AfterFormInitialized">
