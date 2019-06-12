@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace WarnMe_Cherry
 {
@@ -13,5 +7,17 @@ namespace WarnMe_Cherry
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            SplashScreen splashScreen = new SplashScreen(typeof(App).Assembly.GetName().Version);
+            splashScreen.Show();
+
+            WarnMeVision vision = new WarnMeVision();
+            vision.Loaded += (object o, RoutedEventArgs re) => { splashScreen.Close(); };
+            vision.Show();
+            splashScreen?.Close(); // prevent splashscreen from beeing open when vision fails
+        }
     }
 }

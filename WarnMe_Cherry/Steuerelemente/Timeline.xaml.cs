@@ -50,7 +50,7 @@ namespace WarnMe_Cherry.Steuerelemente
         public void Update()
         {
             double p = Progress;
-            ToolTip = string.Format("", p);
+            ToolTip = string.Format("{0:N0} %", p * 100d);
         }
     }
 }

@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="4*"/>
-            <RowDefinition Height="5"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Steuerelemente:DateTimePicker x:Name="StartTimePicker" Margin="5,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                        Height="30" Width="120" AllowInputs="True" ShowUpDown="Visible"

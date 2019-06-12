@@ -14,9 +14,14 @@ namespace WarnMe_Cherry.Steuerelemente
         public event WorkdayUpdate WorkdayUpdated;
 
         private DateTime date;
+        /// <summary>
+        /// Should prevent form from unintensioned changes on <see cref="LoseFocus"/> Event
+        /// </summary>
         private bool block = false;
-        private int input = 0;
-        private bool setinput = false;
+        /// <summary>
+        /// Saves the last numerical input
+        /// </summary>
+        private int lastInput = -1;
 
         public WorkDayPropWindow()
         {
@@ -25,8 +30,7 @@ namespace WarnMe_Cherry.Steuerelemente
 
         public void Show(Arbeitstag workday, DateTime date)
         {
-            input = 0;
-            setinput = false;
+            lastInput = -1;
             block = true;
             this.date = date;
 
@@ -60,15 +64,14 @@ namespace WarnMe_Cherry.Steuerelemente
                 else
                     return;
                 
-                if (setinput)
+                if (lastInput >= 0)
                 {
-                    setinput = false;
-                    tod.SetValue(input * 10 + e.Key.GetDigit());
+                    tod.SetValue(lastInput * 10 + e.Key.GetDigit());
+                    lastInput = -1;
                 }
                 else
                 {
-                    setinput = true;
-                    input = e.Key.GetDigit();
+                    lastInput = e.Key.GetDigit();
                 }
             }
         }

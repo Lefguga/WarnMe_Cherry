@@ -19,14 +19,7 @@ namespace WarnMe_Cherry.Steuerelemente
             get => hour;
             set
             {
-                if (value >= 0)
-                {
-                    hour = value % 24;
-                }
-                else
-                {
-                    hour = 23;
-                }
+                hour = value % 24;
                 Hours.Text = hour.ToString("D2");
                 TriggerTimeUpdate();
             }
@@ -36,14 +29,7 @@ namespace WarnMe_Cherry.Steuerelemente
             get => minute;
             set
             {
-                if (value >= 0)
-                {
-                    minute = value % 60;
-                }
-                else
-                {
-                    minute = 59;
-                }
+                minute = value % 60;
                 Minutes.Text = minute.ToString("D2");
                 TriggerTimeUpdate();
             }
@@ -53,14 +39,7 @@ namespace WarnMe_Cherry.Steuerelemente
             get => second;
             set
             {
-                if (value >= 0)
-                {
-                    second = value % 60;
-                }
-                else
-                {
-                    second = 59;
-                }
+                second = value % 60;
                 Seconds.Text = second.ToString("D2");
                 TriggerTimeUpdate();
             }
@@ -74,7 +53,11 @@ namespace WarnMe_Cherry.Steuerelemente
             new GradientStop(Color.FromArgb(0x00, 0x00, 0x60, 0xFF), 0.15)
         }, 90);
 
-        public TimeSpan Value { get => new TimeSpan(Hour, Minute, Second); set { Hour = value.Hours; Minute = value.Minutes; Second = value.Seconds; } }
+        public TimeSpan Value
+        {
+            get => new TimeSpan(Hour, Minute, Second);
+            set { Hour = value.Hours; Minute = value.Minutes; Second = value.Seconds; }
+        }
 
         public TimeOfDay()
         {
@@ -84,7 +67,9 @@ namespace WarnMe_Cherry.Steuerelemente
         private void Control_GotFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBlock)
+            {
                 ((TextBlock)sender).Background = FocusBrush;
+            }
         }
 
         private void Control_LostFocus(object sender, RoutedEventArgs e)

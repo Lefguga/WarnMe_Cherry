@@ -55,30 +55,36 @@
             </Grid>
         </ScrollViewer>
         <!--<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Hidden" Margin="20,0">-->
-            <Grid x:Name="WarnMeSetting" Grid.Column="1" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" Height="330">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Startzeit Offset:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25"/>
-                <TextBlock Text="Endzeit Offset:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="1"/>
-                <TextBlock Text="3 Stunden Abzug:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="2"/>
-                <TextBlock Text="6 Stunden Abzug:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="3"/>
-                <TextBlock Text="Minimierter Start:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="4"/>
-                <Steuerelemente:DateTimePicker x:Name="StarttimeOffset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Starttime_Changed" Grid.Column="1"/>
-                <Steuerelemente:DateTimePicker x:Name="EndtimeOffset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Endtime_Changed" Grid.Column="1" Grid.Row="1"/>
-                <Steuerelemente:DateTimePicker x:Name="Hour3Offset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Hour3_Changed" Grid.Column="1" Grid.Row="2"/>
-                <Steuerelemente:DateTimePicker x:Name="Hour6Offset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="Hour6_Changed" Grid.Column="1" Grid.Row="3"/>
-                <Steuerelemente:SwitchButton x:Name="StartMinimized" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" Margin="20,0" ValueChanged="MinimizedChanged" Grid.Row="4"/>
-            </Grid>
-        <!--</ScrollViewer>-->
+        <Grid x:Name="WarnMeSetting" Grid.Column="1" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="55"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Startzeit Offset:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25"/>
+            <TextBlock Text="Endzeit Offset:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="1"/>
+            <TextBlock Text="Kaffee Abzug ab:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="2"/>
+            <TextBlock Text="KaffeeAbzug für:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="3"/>
+            <TextBlock Text="Mittags Abzug ab:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="4"/>
+            <TextBlock Text="Mittags Abzug für:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="5"/>
+            <TextBlock Text="Minimierter Start:" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="25" Grid.Row="6"/>
+            <Steuerelemente:DateTimePicker x:Name="StarttimeOffset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="TimeSetting_Changed" Grid.Column="1"/>
+            <Steuerelemente:DateTimePicker x:Name="EndtimeOffset" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="TimeSetting_Changed" Grid.Column="1" Grid.Row="1"/>
+            <Steuerelemente:DateTimePicker x:Name="Offset1Start" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="TimeSetting_Changed" Grid.Column="1" Grid.Row="2"/>
+            <Steuerelemente:DateTimePicker x:Name="Offset1Duration" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="TimeSetting_Changed" Grid.Column="1" Grid.Row="3"/>
+            <Steuerelemente:DateTimePicker x:Name="Offset2Start" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="TimeSetting_Changed" Grid.Column="1" Grid.Row="4"/>
+            <Steuerelemente:DateTimePicker x:Name="Offset2Duration" HorizontalAlignment="Left" VerticalAlignment="Center" Height="35" Focusable="True" AllowInputs="True" TimeChanged="TimeSetting_Changed" Grid.Column="1" Grid.Row="5"/>
+            <Steuerelemente:SwitchButton x:Name="StartMinimized" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" Margin="20,0" ValueChanged="MinimizedChanged" Grid.Row="6"/>
         </Grid>
+        <!--</ScrollViewer>-->
+        <TextBlock x:Name="Debug" VerticalAlignment="Bottom"/>
+    </Grid>
 </UserControl>

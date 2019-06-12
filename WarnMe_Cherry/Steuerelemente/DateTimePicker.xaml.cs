@@ -10,7 +10,7 @@ namespace WarnMe_Cherry.Steuerelemente
     /// </summary>
     public partial class DateTimePicker : UserControl
     {
-        public delegate void TimeUpdates(TimeSpan value);
+        public delegate void TimeUpdates(object sender, TimeSpan value);
         public event TimeUpdates TimeChanged;
 
         public bool AllowInputs { get; set; } = false;
@@ -55,7 +55,7 @@ namespace WarnMe_Cherry.Steuerelemente
 
             Time.TimeChanged += delegate (TimeSpan timeSpan)
             {
-                TimeChanged?.Invoke(DateTime);
+                TimeChanged?.Invoke(this, DateTime);
             };
         }
 

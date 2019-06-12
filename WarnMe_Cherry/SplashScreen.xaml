@@ -1,0 +1,49 @@
+﻿<Window x:Class="WarnMe_Cherry.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+        xmlns:gif="clr-namespace:WpfAnimatedGif"
+        mc:Ignorable="d"
+        Title="SplashScreen"
+        Height="300" Width="500"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        BorderThickness="5"
+        Initialized="Window_Initialized">
+    <Window.Background>
+        <ImageBrush/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Border>
+            <Border.Background>
+                <RadialGradientBrush GradientOrigin="0.5,1" Center="0.5,1" RadiusY="1">
+                    <GradientStop Color="#FF191F26" Offset="0"/>
+                    <GradientStop Color="#FF191F26" Offset="0.5"/>
+                    <GradientStop Color="#00191F26" Offset="1"/>
+                    <GradientStop Color="#A0191F26" Offset="0.83"/>
+                </RadialGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border Grid.Row="1">
+            <Border.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0" Center="0.5,0" RadiusY="1">
+                    <GradientStop Color="#FF363636" Offset="0"/>
+                    <GradientStop Color="#00363636" Offset="1"/>
+                    <GradientStop Color="#A0363636" Offset="0.75"/>
+                </RadialGradientBrush>
+            </Border.Background>
+        </Border>
+        <Image x:Name="loading" Width="100" Height="100" VerticalAlignment="Bottom" gif:ImageBehavior.AnimatedSource="Resources/LoadingPotion.gif"/>
+        <!--<local:GifImage AutoStart="True"/>-->
+        <ProgressBar x:Name="progress" Grid.Row="1" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Margin="50,0"/>
+        <TextBlock x:Name="RunningVersion" Grid.Row="1" Text="RunningVersion" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="14" Foreground="#FFECECEC" Margin="120,8"/>
+    </Grid>
+</Window>
