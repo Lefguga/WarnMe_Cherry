@@ -21,10 +21,9 @@ namespace WarnMe_Cherry.Steuerelemente
         public int Month { get; set; } = DateTime.Now.Month;
         public int Year { get; set; } = DateTime.Now.Year;
         public ColumnDefinitionCollection ColumnDefinition => Data.ColumnDefinitions;
-
-        public Dictionary<DateTime, Arbeitstag> TableData = new Dictionary<DateTime, Arbeitstag>();
-
+        
         internal static WorkDayPropWindow window = new WorkDayPropWindow();
+        private bool WasFocused = true;
 
         /// <summary>
         /// Returns the first <see cref="DateTime.DayOfWeek"/> as <see cref="int"/> with Sunday set as 6 not 0
@@ -45,10 +44,21 @@ namespace WarnMe_Cherry.Steuerelemente
             {
                 if (child is Workday)
                 {
+                    ((Workday)child).MouseDown += CheckFormFocus;
                     ((Workday)child).MouseUp += Open_Workday_Promt;
                 }
             }
             //FillGridWithEmpty();
+        }
+
+        /// <summary>
+        /// Save focus state at the time of MouseDown Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckFormFocus(object sender, MouseButtonEventArgs e)
+        {
+            WasFocused = this.IsKeyboardFocused;
         }
 
         public void Update()
@@ -56,8 +66,6 @@ namespace WarnMe_Cherry.Steuerelemente
 #if TRACE
             INFO("WorkTable.Update");
 #endif
-            // Konvertierung zur sortierten Tabelle
-            TableData = InternalVariables.Datenbank.Select<Arbeitstag>(InternalVariables.WORKINGDAYS.NAME).ToDictionary(value => DateTime.Parse(value.Key), value => value.Value);
             UpdateTable();
         }
 
@@ -71,10 +79,10 @@ namespace WarnMe_Cherry.Steuerelemente
 #if TRACE
             INFO("WorkTable.WorkdayUpdated date[{date}]");
 #endif
-            if (TableData.ContainsKey(date))
-                TableData[date] = arbeitstag;
+            if (DATA.THIS.WORKINGDAYS.ContainsKey(date))
+                DATA.THIS.WORKINGDAYS[date] = arbeitstag;
             else
-                TableData.Add(date, arbeitstag);
+                DATA.THIS.WORKINGDAYS.Add(date, arbeitstag);
             UpdateWorkday(date, arbeitstag);
             // trigger event
             ValueUpdated?.Invoke(date, arbeitstag);
@@ -86,8 +94,12 @@ namespace WarnMe_Cherry.Steuerelemente
             INFO("WorkTable.Open_Workday_Promt");
 #endif
             Workday w_day = (Workday)sender;
-            if (w_day.Opacity > 0d)
-                ShowPropWindow(w_day.PointToScreen(new Point(w_day.RenderSize.Width * -0.2d, 0d)), w_day);
+            if (WasFocused)
+            {
+                WasFocused = false;
+                if (w_day.Opacity > 0d)
+                    ShowPropWindow(w_day.PointToScreen(new Point(w_day.RenderSize.Width * -0.2d, 0d)), w_day);
+            }
             // throw new NotImplementedException();
         }
 
@@ -134,7 +146,7 @@ namespace WarnMe_Cherry.Steuerelemente
             FillGridForMonth();
             //Data.RowDefinitions.Clear();
 
-            foreach (var item in TableData)
+            foreach (var item in DATA.THIS.WORKINGDAYS)
             {
                 UpdateWorkday(item.Key, item.Value);
             }

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WarnMe_Cherry.Datenbank;
 using Hardcodet.Wpf.TaskbarNotification;
-using static WarnMe_Cherry.Datenbank.InternalVariables;
 using static WarnMe_Cherry.Global;
-using WarnMe_Cherry.Extensions;
 
 namespace WarnMe_Cherry
 {
@@ -28,19 +25,6 @@ namespace WarnMe_Cherry
         TaskbarIcon icon;
 
         bool DeviceLocked = false;
-        struct Arbeitstag_Heute
-        {
-            public static DateTime Date;
-            public static Arbeitstag Arbeitstag;
-        };
-
-        #region Shortcuts
-        string HeuteString => DateTime.Now.ToShortDateString();
-        /// <summary>
-        /// Gibt einen <see cref="DateTime.TimeOfDay"/> Wert mit der aktuellen Uhrzeit zurück.
-        /// </summary>
-        TimeSpan Jetzt => DateTime.Now.TimeOfDay;
-        #endregion
         
         /// <summary>
         /// 
@@ -50,7 +34,6 @@ namespace WarnMe_Cherry
 #if TRACE
             INFO("Generate WarnMeVision()");
 #endif
-            //System.Threading.Thread.Sleep(1000);
             InitializeComponent();
             Übersicht.ZeitTabelle.ValueUpdated += ZeitTabelle_ValueUpdated;
             Microsoft.Win32.SystemEvents.SessionSwitch += SaveCurrentSessionState;
@@ -106,11 +89,7 @@ namespace WarnMe_Cherry
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MinimizeClick(object sender, MouseButtonEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-            ShowInTaskbar = false;
-        }
+        private void MinimizeClick(object sender, MouseButtonEventArgs e) => Hide();
 
         /// <summary>
         /// Set a <see cref="FrameworkElement"/>s fokus
@@ -135,13 +114,17 @@ namespace WarnMe_Cherry
 
         protected new void Show()
         {
-            base.Show();
+            //base.Show();
+            WindowState = WindowState.Normal;
+            Focus();
+            Activate();
             ShowInTaskbar = true;
         }
 
         protected new void Hide()
         {
-            base.Hide();
+            //base.Hide();
+            WindowState = WindowState.Minimized;
             ShowInTaskbar = false;
         }
 
@@ -154,7 +137,7 @@ namespace WarnMe_Cherry
 #if TRACE
             INFO("HomeBT_Click");
 #endif
-            Home.StartTimePicker.DateTime = Heute.StartZeit;
+            Home.StartTimePicker.DateTime = DATA.THIS.Heute.StartZeit;
             Tabs.SelectedIndex = 0; //Home
         }
 
@@ -168,9 +151,9 @@ namespace WarnMe_Cherry
             INFO("ÜbersichtBT_Click");
 #endif
             // Konvertierung zur sortierten Tabelle
-            Arbeitstag_Heute.Arbeitstag = Heute;
-            Arbeitstag_Heute.Arbeitstag.EndZeit = Jetzt;
-            Heute = Arbeitstag_Heute.Arbeitstag;
+            Arbeitstag _heute = DATA.THIS.Heute;
+            _heute.EndZeit = THIS.TimeNow;
+            DATA.THIS.Heute = _heute;
             Übersicht.Update();
             Tabs.SelectedIndex = 1; //Übersicht
         }
@@ -219,14 +202,13 @@ namespace WarnMe_Cherry
 #endif
 
             //Load Datenbank
-            InternalVariables.Datenbank = new Datenbank.Datenbank(SETTINGS.CONFIG_FILE_NAME);
+            // DATA = new Datenbank.Datenbank(INTERNAL.CONFIG_FILE_NAME);  NOT NEEDED WITH STATIC ALTERNATIVE
 
             //Set up Variables and Settings
             InitFormValues();
 
-            if (InternalVariables.Datenbank.TrySelect(SETTINGS.NAME, Steuerelemente.Sites.Setting_Site.STARTMINIMIZED, out bool mini))
-                if (mini)
-                    Hide();
+            if (DATA.THIS.EINSTELLUNGEN.MINIMIZED)
+                Hide();
 
             //Set Menuitem
             MenuItem show = new MenuItem() { Header = "Show" };
@@ -269,7 +251,7 @@ namespace WarnMe_Cherry
             //Start Updater
             Updater.RunWorkerAsync();
         }
-
+        
         /// <summary>
         /// Updater, verantwortlich für das Aufrufen aller anderen Updater
         /// </summary>
@@ -280,20 +262,22 @@ namespace WarnMe_Cherry
 #if DEBUG
             INFO("Update");
 #endif
-            if (UpdaterInWork) return;
-
-            if (!DeviceLocked)
+            if (!UpdaterInWork)
             {
-                UpdaterInWork = true;
 
-                //Ruft Update Funktionen auf
-                UpdateForm();
+                if (!DeviceLocked)
+                {
+                    UpdaterInWork = true;
 
-                UpdaterInWork = false;
+                    //Ruft Update Funktionen auf
+                    UpdateForm();
+
+                    UpdaterInWork = false;
+                }
+
+                // Restart Updater
+                Updater.RunWorkerAsync();
             }
-
-            // Restart Updater
-            Updater.RunWorkerAsync();
         }
 
         /// <summary>
@@ -307,14 +291,14 @@ namespace WarnMe_Cherry
             // Update Timeline
             try
             {
-                if (Arbeitstag_Heute.Date != DateTime.Now.Date)
+                if (DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
                 {
-                    UpdateWorkingDay(Arbeitstag_Heute.Date, Arbeitstag_Heute.Arbeitstag);
-                    InitFormValues();
+                    UpdateWorkingDay(THIS.DateNow, DATA.THIS.Heute);
+                    // InitFormValues();
                 }
                 else
                 {
-                    Arbeitstag_Heute.Arbeitstag.EndZeit = Jetzt;
+                    DATA.THIS.Heute_EndTime = THIS.TimeNow;
                 }
 
             }
@@ -323,9 +307,13 @@ namespace WarnMe_Cherry
                 InitFormValues();
             }
 
-            Home.timeLine.Value = (Jetzt - Arbeitstag_Heute.Arbeitstag.StartZeit).TotalSeconds;
+            Home.timeLine.Value = (THIS.TimeNow - DATA.THIS.Heute.StartZeit).TotalSeconds;
             Home.timeLine.Update();
-            
+
+            RefreshNotiToolTip();
+
+            // Set resttime as program usage
+            Einstellungen.Debug.Text = $"{THIS.TimeNow.Milliseconds / 10d:N1}% usage";
         }
         
         // private void ShutdownWarnMe(object sender, System.ComponentModel.CancelEventArgs e) => PrepareShutdown();
@@ -345,37 +333,33 @@ namespace WarnMe_Cherry
 #endif
 
             // init new day of working
-            if (!InternalVariables.Datenbank.Exists(WORKINGDAYS.NAME, HeuteString))
+            if (!DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
             {
                 DateTime upTime = Extern.SystemUpTime;
-                TimeSpan startZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : Jetzt);
-                if (InternalVariables.Datenbank.Exists(SETTINGS.NAME, Steuerelemente.Sites.Setting_Site.STARTTIMEOFFSET))
+                // check if uptime is today else add the actual time
+                TimeSpan startZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : THIS.TimeNow);
+                startZeit -= DATA.THIS.EINSTELLUNGEN.OFFSET_START_TIME;
+                DATA.THIS.WORKINGDAYS.Add(THIS.DateNow, new Arbeitstag()
                 {
-                    startZeit -= InternalVariables.Datenbank.Select<TimeSpan>(SETTINGS.NAME, Steuerelemente.Sites.Setting_Site.STARTTIMEOFFSET);
-                }
-                InternalVariables.Datenbank.Insert(WORKINGDAYS.NAME, HeuteString, new Arbeitstag()
-                {
-                    // check if uptime is today else add the actual time
                     StartZeit = startZeit,
-                    EndZeit = Jetzt,
+                    EndZeit = THIS.TimeNow,
                     Bemerkung = ""
                 });
             }
-            Arbeitstag_Heute.Date = DateTime.Now.Date;
-            Arbeitstag_Heute.Arbeitstag = Heute;
-            Arbeitstag_Heute.Arbeitstag.EndZeit = Jetzt;
+            DATA.THIS.Date = THIS.DateNow;
+            DATA.THIS.Heute_EndTime = THIS.TimeNow;
 
-            Home.StartTimePicker.DateTime = Arbeitstag_Heute.Arbeitstag.StartZeit;
+            Home.StartTimePicker.DateTime = DATA.THIS.Heute.StartZeit;
 
-            Home.EndTimePicker.DateTime = Arbeitstag_Heute.Arbeitstag.StartZeit + new TimeSpan(7, 45, 0);
-            Home.MaxEndTimePicker.DateTime = Arbeitstag_Heute.Arbeitstag.StartZeit + new TimeSpan(10, 45, 0);
-
-            InternalVariables.Datenbank.Update(OTHER.NAME, OTHER.SYSTEM_UP_TIME, Extern.SystemUpTime);
-            InternalVariables.Datenbank.Commit();
+            Home.EndTimePicker.DateTime = DATA.THIS.Heute.StartZeit + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKTIME;
+            Home.MaxEndTimePicker.DateTime = DATA.THIS.Heute.StartZeit + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKLIMIT;
+            
+            DATA.Commit();
 
             // WORKINGDAY TABLE
             Übersicht.Update();
 
+            Einstellungen.Init();
             Einstellungen.Update();
 
         }
@@ -390,8 +374,26 @@ namespace WarnMe_Cherry
 #if TRACE
             INFO("UpdateWorkingDay");
 #endif
-            InternalVariables.Datenbank.Update(WORKINGDAYS.NAME, date.ToShortDateString(), arbeitstag);
-            InternalVariables.Datenbank.Commit();
+            DATA.THIS.WORKINGDAYS[date] = arbeitstag;
+            // Results in too many data writings
+            // DATA.Commit();
+        }
+
+        private void RefreshNotiToolTip()
+        {
+            TimeSpan progress = DATA.THIS.Heute.Progress(THIS.TimeNow);
+            if (progress < DATA.THIS.EINSTELLUNGEN.WORKDAY_LIMIT)
+            {
+                icon.ToolTipText = string.Format("Done: {0}\nTodo: {1}",
+                  progress.ToString(@"hh\:mm\:ss"),
+                  (DATA.THIS.EINSTELLUNGEN.WORKDAY_LIMIT - progress).ToString(@"hh\:mm\:ss"));
+            }
+            else
+            {
+                icon.ToolTipText = string.Format("Done: {0}\nOver: {1}",
+                  progress.ToString(@"hh\:mm\:ss"),
+                  (DATA.THIS.EINSTELLUNGEN.WORKDAY_LIMIT - progress).ToString(@"hh\:mm\:ss"));
+            }
         }
 
         /// <summary>
@@ -403,12 +405,10 @@ namespace WarnMe_Cherry
             INFO("PrepareShutdown");
 #endif
             // Refresh "Heute"
-            Arbeitstag_Heute.Arbeitstag = Heute;
-            Arbeitstag_Heute.Arbeitstag.EndZeit = Jetzt;
-            Heute = Arbeitstag_Heute.Arbeitstag;
+            DATA.THIS.Heute_EndTime = THIS.TimeNow;
 
             // Commit Values
-            InternalVariables.Datenbank.Commit();
+            DATA.Commit();
 
             // Close Forms
             Steuerelemente.WorkTable.window.Close();
@@ -421,13 +421,17 @@ namespace WarnMe_Cherry
             icon.Dispose();
         }
 
-        private void SettingChanged(string key, object value)
-        {
-#if TRACE
-            INFO("SettingChanged");
-#endif
-            InternalVariables.Datenbank.Update(SETTINGS.NAME, key, value);
-            InternalVariables.Datenbank.Commit();
-        }
+//        private void SettingChanged(string key, object value)
+//        {
+//#if TRACE
+//            INFO("SettingChanged");
+//#endif
+//#if GEN_LIBRARY
+//            THIS.Datenbank.Update(EINSTELLUNGEN.NAME, key, value);
+//#else
+//            throw new NotImplementedException("Generic Library not availabel.");
+//#endif
+//            // THIS.Datenbank.Commit();
+//        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using static WarnMe_Cherry.Datenbank.InternalVariables;
+using static WarnMe_Cherry.Global;
 
 namespace WarnMe_Cherry
 {
@@ -19,6 +18,19 @@ namespace WarnMe_Cherry
         [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
         public string Bemerkung { get; set; }
         internal TimeSpan Duration { get => EndZeit - StartZeit; }
+        internal TimeSpan DauerNetto
+        {
+            get
+            {
+                if (Duration > DATA.THIS.EINSTELLUNGEN.COFFEE.START)
+                    if (Duration > DATA.THIS.EINSTELLUNGEN.LUNCH.START)
+                        return Duration.Subtract(DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION + DATA.THIS.EINSTELLUNGEN.LUNCH.DURATION);
+                    else
+                        return Duration.Subtract(DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION);
+                else
+                    return Duration;
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -36,9 +48,9 @@ namespace WarnMe_Cherry
         {
             var hashCode = -499075268;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<TimeSpan>.Default.GetHashCode(StartZeit);
-            hashCode = hashCode * -1521134295 + EqualityComparer<TimeSpan>.Default.GetHashCode(EndZeit);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Bemerkung);
+            hashCode = hashCode * -1521134295 + StartZeit.GetHashCode();
+            hashCode = hashCode * -1521134295 + EndZeit.GetHashCode();
+            hashCode = hashCode * -1521134295 + Bemerkung.GetHashCode();
             return hashCode;
         }
 
@@ -50,6 +62,16 @@ namespace WarnMe_Cherry
         public static bool operator!=(Arbeitstag a1, Arbeitstag a2)
         {
             return a1.startZeit != a2.startZeit || a1.endZeit != a2.endZeit || a1.Bemerkung != a2.Bemerkung;
+        }
+
+        /// <summary>
+        /// Get Time difference between <see cref="StartZeit"/> and given <see cref="TimeSpan"/> parameter
+        /// </summary>
+        /// <param name="compare"></param>
+        /// <returns></returns>
+        public TimeSpan Progress(TimeSpan compare)
+        {
+            return compare - StartZeit;
         }
 
         public override string ToString()

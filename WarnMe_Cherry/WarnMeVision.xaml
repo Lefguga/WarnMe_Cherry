@@ -149,7 +149,7 @@
                 <TabItem Header="Einstellungen" Height="0" IsTabStop="False" BorderThickness="0" Visibility="Hidden" Focusable="True"
                          Foreground="{Binding Foreground, ElementName=MainWindow}"
                          Background="{Binding Background, ElementName=MainGrid}">
-                    <Sites:Setting_Site x:Name="Einstellungen" SettingChanged="SettingChanged"/>
+                    <Sites:Setting_Site x:Name="Einstellungen"/>
                 </TabItem>
             </TabControl>
         </Grid>

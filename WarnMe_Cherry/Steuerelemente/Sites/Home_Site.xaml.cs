@@ -18,12 +18,6 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
             INFO("Home_Site.Home_Site");
 #endif
             InitializeComponent();
-            //Workday w = new Workday()
-            //{
-            //    Margin = new System.Windows.Thickness(0, 0, 648, 215)
-            //};
-            //Data.Children.Add(w);
-            //Grid.SetRow(w, 1);
         }
 
         public void Update()
@@ -34,20 +28,18 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
             throw new NotImplementedException();
         }
 
-        private void StartTimeUpdated(TimeSpan value)
+        private void StartTimeUpdated(object sender, TimeSpan value)
         {
 #if TRACE
             INFO($"Home_Site.StartTimeUpdated with value {value}");
 #endif
             if (value != start)
             {
-                Arbeitstag heute = InternalVariables.Heute;
-                heute.StartZeit = value;
-                InternalVariables.Heute = heute;
+                DATA.THIS.Heute_StartTime = value;
                 start = value;
 
-                EndTimePicker.DateTime = value + new TimeSpan(7, 45, 00);
-                MaxEndTimePicker.DateTime = value + new TimeSpan(10, 45, 00);
+                EndTimePicker.DateTime = value + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKTIME;
+                MaxEndTimePicker.DateTime = value + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKLIMIT;
             }
         }
     }
