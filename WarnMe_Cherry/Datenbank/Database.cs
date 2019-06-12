@@ -12,12 +12,18 @@ namespace WarnMe_Cherry.Datenbank
     {
         public static JsonSerializerSettings DefaultSetting = new JsonSerializerSettings()
         {
+            Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.None,
-            DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
+            DateFormatString = "dd.MM.yyyy"
         };
 
+
         FileInfo source;
+#if GEN_LIBRARY
         JObject Library = new JObject();
+#else
+        public THIS THIS = new THIS();
+#endif
         readonly Encoding Encoding = Encoding.UTF8;
 
         string LastCommittedString = "";
@@ -36,12 +42,7 @@ namespace WarnMe_Cherry.Datenbank
             }
             else
             {
-                string sourceString;
-                using (StreamReader sr = new StreamReader(source.OpenRead(), Encoding))
-                {
-                    sourceString = sr.ReadToEnd();
-                    sr.Close();
-                }
+                string sourceString = File.ReadAllText(source.FullName, Encoding);
                 LastCommittedString = sourceString;
                 Deserialize(sourceString);
             }
@@ -58,6 +59,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Insert Value in {tableName}, {elementName} with ){elementValue}]{elementValue.GetType()}");
 #endif
+#if GEN_LIBRARY
             if (!Library.ContainsKey(tableName))
                 Library.Add(tableName, new JObject());
             if (((JObject)Library[tableName]).ContainsKey(elementName))
@@ -68,6 +70,9 @@ namespace WarnMe_Cherry.Datenbank
             {
                 ((JObject)Library[tableName]).Add(elementName, JToken.FromObject(elementValue));
             }
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -82,6 +87,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Update Value in {tableName}, {elementName} to {elementValue} as {elementValue.GetType()}");
 #endif
+#if GEN_LIBRARY
             // check if key already exists
             if (!Library.ContainsKey(tableName))
             {
@@ -95,6 +101,9 @@ namespace WarnMe_Cherry.Datenbank
             {
                 Library[tableName][elementName] = JToken.FromObject(elementValue);
             }
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -110,19 +119,24 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Requested List of Type [{typeof(T)}]");
 #endif
+#if GEN_LIBRARY
             // check if key exists
             if (!Library.ContainsKey(tableName))
             {
                 throw new KeyNotFoundException("Der Wert konnte im Pfad nicht gefunden werden.");
             }
             return (Dictionary<string, T>)Library[tableName].ToObject(typeof(Dictionary<string, T>));
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         public T Select<T>(string tableName, string elementName)
         {
 #if TRACE
-            INFO($"Database.Requested Type [{typeof(T)}] existing Type [{Library[tableName][elementName].GetType()}]");
+            INFO($"Database.Requested Type [{typeof(T)}] in Table [{tableName}] with Key [{elementName}].");
 #endif
+#if GEN_LIBRARY
             // check if key exists
             if (!Exists(tableName, elementName))
             {
@@ -131,6 +145,9 @@ namespace WarnMe_Cherry.Datenbank
 
             return (T)Library[tableName][elementName].ToObject(typeof(T));
             //}
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         public bool TrySelect<T>(string tableName, string elementName, out T returnVal)
@@ -138,6 +155,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.TrySelect Type [{typeof(T)}] in Library[{tableName}][{elementName}]");
 #endif
+#if GEN_LIBRARY
             // check if key exists
             if (!Exists(tableName, elementName))
             {
@@ -146,6 +164,9 @@ namespace WarnMe_Cherry.Datenbank
             }
             returnVal = (T)Library[tableName][elementName].ToObject(typeof(T));
             return true;
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -159,12 +180,16 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Exitsts check for {tableName}");
 #endif
+#if GEN_LIBRARY
             // check if key already exists
             if (!Library.ContainsKey(tableName))
             {
                 return false;
             }
             return true;
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -179,8 +204,12 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Exitsts check for {tableName}, {elementName}");
 #endif
+#if GEN_LIBRARY
             // check if key already exists
             return Library.ContainsKey(tableName) && ((JObject)Library[tableName]).ContainsKey(elementName);
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -193,6 +222,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Delete data in {tableName}");
 #endif
+#if GEN_LIBRARY
             if (Library.ContainsKey(tableName))
             {
 #if DEBUG
@@ -200,6 +230,9 @@ namespace WarnMe_Cherry.Datenbank
 #endif
                 Library.Remove(tableName);
             }
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -213,6 +246,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO($"Database.Delete data in {tableName}, {elementName}");
 #endif
+#if GEN_LIBRARY
             if (Library.ContainsKey(tableName))
             {
                 if (((JObject)Library[tableName]).ContainsKey(elementName))
@@ -223,6 +257,9 @@ namespace WarnMe_Cherry.Datenbank
                     ((JObject)Library[tableName]).Remove(elementName);
                 }
             }
+#else
+            throw new NotImplementedException("Generic Library not availabel.");
+#endif
         }
 
         /// <summary>
@@ -236,11 +273,7 @@ namespace WarnMe_Cherry.Datenbank
             string toWrite = Serialize();
             try
             {
-                using (StreamWriter sw = new StreamWriter(source.OpenWrite(), Encoding))
-                {
-                    sw.Write(toWrite);
-                    sw.Close();
-                }
+                File.WriteAllText(source.FullName, toWrite, Encoding);
             }
             catch (IOException)
             {
@@ -261,12 +294,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO("Database.Serialize data");
 #endif
-            return JsonConvert.SerializeObject(Library, new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                TypeNameHandling = TypeNameHandling.None,
-                DateFormatString = "dd.MM.yyyy HH:mm:ss.ffff"
-            });
+            return JsonConvert.SerializeObject(THIS, DefaultSetting);
         }
 
         /// <summary>
@@ -278,7 +306,7 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO("Database.Deserialize data");
 #endif
-            Library = JObject.Parse(data);
+            THIS = JsonConvert.DeserializeObject<THIS>(data, DefaultSetting);
         }
     }
 }
