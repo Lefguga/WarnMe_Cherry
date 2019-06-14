@@ -291,10 +291,9 @@ namespace WarnMe_Cherry
             // Update Timeline
             try
             {
-                if (DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
+                if (!DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
                 {
-                    UpdateWorkingDay(THIS.DateNow, DATA.THIS.Heute);
-                    // InitFormValues();
+                    InitFormValues();
                 }
                 else
                 {

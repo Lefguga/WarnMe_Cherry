@@ -1,8 +1,6 @@
 ﻿<Application x:Class="WarnMe_Cherry.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WarnMe_Cherry"
-             StartupUri="WarnMeVision.xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
          
     </Application.Resources>
