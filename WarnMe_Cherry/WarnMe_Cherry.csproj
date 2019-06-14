@@ -557,7 +557,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\LoadingPotion.gif" />
-    <Resource Include="Resources\firefly2.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
