@@ -25,7 +25,8 @@ namespace WarnMe_Cherry
         public SplashScreen(Version version)
         {
             InitializeComponent();
-            RunningVersion.Text = $"Version: {version.ToString()}";
+            RunningVersion.Text = $"Version: {version}";
+            this.Title          = $"WarnMe {version}";
         }
 
         private void Window_Initialized(object sender, EventArgs e)

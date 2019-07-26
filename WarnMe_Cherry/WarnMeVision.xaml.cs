@@ -307,7 +307,7 @@ namespace WarnMe_Cherry
             }
 
             Home.timeLine.Value = (THIS.TimeNow - DATA.THIS.Heute.StartZeit).TotalSeconds;
-            Home.timeLine.Update();
+            Home.timeLine.ToolTip = $"{DATA.THIS.Heute.DauerNetto}";
 
             RefreshNotiToolTip();
 
@@ -381,17 +381,20 @@ namespace WarnMe_Cherry
         private void RefreshNotiToolTip()
         {
             TimeSpan progress = DATA.THIS.Heute.Progress(THIS.TimeNow);
-            if (progress < DATA.THIS.EINSTELLUNGEN.WORKDAY_LIMIT)
+            TimeSpan total = DATA.THIS.EINSTELLUNGEN.WORKDAY_NORMAL +
+                DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION +
+                DATA.THIS.EINSTELLUNGEN.LUNCH.DURATION;
+            if (progress < total)
             {
                 icon.ToolTipText = string.Format("Done: {0}\nTodo: {1}",
                   progress.ToString(@"hh\:mm\:ss"),
-                  (DATA.THIS.EINSTELLUNGEN.WORKDAY_LIMIT - progress).ToString(@"hh\:mm\:ss"));
+                  (total - progress).ToString(@"hh\:mm\:ss"));
             }
             else
             {
                 icon.ToolTipText = string.Format("Done: {0}\nOver: {1}",
                   progress.ToString(@"hh\:mm\:ss"),
-                  (DATA.THIS.EINSTELLUNGEN.WORKDAY_LIMIT - progress).ToString(@"hh\:mm\:ss"));
+                  (total - progress).ToString(@"hh\:mm\:ss"));
             }
         }
 

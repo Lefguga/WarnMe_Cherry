@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using WarnMe_Cherry.Datenbank;
 using static WarnMe_Cherry.Global;
 
@@ -39,15 +40,7 @@ namespace WarnMe_Cherry.Steuerelemente
             AddHandler(MouseDownEvent, new MouseButtonEventHandler(Focus_On_MouseDown), true);
 
             window.WorkdayUpdated += WorkdayUpdated;
-
-            foreach (var child in Data.Children)
-            {
-                if (child is Workday)
-                {
-                    ((Workday)child).MouseDown += CheckFormFocus;
-                    ((Workday)child).MouseUp += Open_Workday_Promt;
-                }
-            }
+            
             //FillGridWithEmpty();
         }
 
@@ -59,6 +52,24 @@ namespace WarnMe_Cherry.Steuerelemente
         private void CheckFormFocus(object sender, MouseButtonEventArgs e)
         {
             WasFocused = this.IsKeyboardFocused;
+        }
+
+        private void MarkWorkdayInactive(object o, MouseEventArgs e)
+        {
+            if (o is UserControl element)
+            {
+                INFO($"Mouse leave Workday in Row:{Grid.GetRow(element)}, Col:{Grid.GetColumn(element)}");
+                element.BorderBrush = Brushes.Transparent;
+            }
+        }
+
+        private void MarkWorkdayActive(object o, MouseEventArgs e)
+        {
+            if (o is UserControl element)
+            {
+                INFO($"Mouse over Workday in Row:{Grid.GetRow(element)}, Col:{Grid.GetColumn(element)}");
+                element.BorderBrush = new SolidColorBrush(DATA.THIS.COLORS.ACCENT_COLOR);
+            }
         }
 
         public void Update()
@@ -88,17 +99,17 @@ namespace WarnMe_Cherry.Steuerelemente
             ValueUpdated?.Invoke(date, arbeitstag);
         }
 
-        private void Open_Workday_Promt(object sender, MouseButtonEventArgs e)
+        private void OpenWorkdayPromt(object sender, MouseButtonEventArgs e)
         {
 #if TRACE
             INFO("WorkTable.Open_Workday_Promt");
 #endif
-            Workday w_day = (Workday)sender;
-            if (WasFocused)
+            if (sender is Workday w_day)
             {
-                WasFocused = false;
                 if (w_day.Opacity > 0d)
+                {
                     ShowPropWindow(w_day.PointToScreen(new Point(w_day.RenderSize.Width * -0.2d, 0d)), w_day);
+                }
             }
             // throw new NotImplementedException();
         }
@@ -179,7 +190,7 @@ namespace WarnMe_Cherry.Steuerelemente
 #if TRACE
             INFO("WorkTable.FillGridForMonth");
 #endif
-            Dictionary<Tuple<int, int>, Workday> workdays = GetWorkdays();
+            //Dictionary<Tuple<int, int>, Workday> workdays = GetWorkdays();
             int daysInMonth = DateTime.DaysInMonth(Year, Month);
             int _firstDay = FirstDayInMonth;
 
@@ -229,8 +240,10 @@ namespace WarnMe_Cherry.Steuerelemente
             Dictionary<Tuple<int, int>, Workday> elementArray = new Dictionary<Tuple<int, int>, Workday>();
             foreach (UIElement child in Data.Children)
             {
-                if (child is Workday)
-                    elementArray.Add(new Tuple<int, int>(Grid.GetRow(child), Grid.GetColumn(child)), (Workday)child);
+                if (child is Workday workday)
+                {
+                    elementArray.Add(new Tuple<int, int>(Grid.GetRow(workday), Grid.GetColumn(workday)), workday);
+                }
 #if DEBUG
             DEBUG($"  add from grid row:{Grid.GetRow(child)} col:{Grid.GetColumn(child)}");
 #endif

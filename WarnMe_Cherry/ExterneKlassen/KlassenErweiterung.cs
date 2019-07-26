@@ -10,6 +10,7 @@ namespace WarnMe_Cherry.ExterneKlassen
     {
         public static int IndexOf(this SortedDictionary<DateTime, Arbeitstag> dictionary, DateTime key)
         {
+#if false
             var value = dictionary[key];
             int i = 0;
             foreach (var _key in dictionary.Keys)
@@ -20,7 +21,10 @@ namespace WarnMe_Cherry.ExterneKlassen
                 }
             }
             return -1;
-        }
+#else
+            throw new NotImplementedException("IndexOf dict not supported!");
+#endif
 
+        }
     }
 }

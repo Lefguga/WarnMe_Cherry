@@ -7,14 +7,9 @@
              mc:Ignorable="d" 
              Focusable="True">
     <ScrollViewer VerticalScrollBarVisibility="Hidden">
-        <Grid x:Name="Data" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}">
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -26,48 +21,82 @@
                 <RowDefinition/>
                 <RowDefinition/> <!--7. Extra Reihe um die Felder Quadratisch zu machen-->
             </Grid.RowDefinitions>
-            <local:Workday/>
-            <local:Workday Grid.Column="1"/>
-            <local:Workday Grid.Column="2"/>
-            <local:Workday Grid.Column="3"/>
-            <local:Workday Grid.Column="4"/>
-            <local:Workday Grid.Column="5"/>
-            <local:Workday Grid.Column="6"/>
-            <local:Workday Grid.Row="1"/>
-            <local:Workday Grid.Row="1" Grid.Column="1"/>
-            <local:Workday Grid.Row="1" Grid.Column="2"/>
-            <local:Workday Grid.Row="1" Grid.Column="3"/>
-            <local:Workday Grid.Row="1" Grid.Column="4"/>
-            <local:Workday Grid.Row="1" Grid.Column="5"/>
-            <local:Workday Grid.Row="1" Grid.Column="6"/>
-            <local:Workday Grid.Row="2"/>
-            <local:Workday Grid.Row="2" Grid.Column="1"/>
-            <local:Workday Grid.Row="2" Grid.Column="2"/>
-            <local:Workday Grid.Row="2" Grid.Column="3"/>
-            <local:Workday Grid.Row="2" Grid.Column="4"/>
-            <local:Workday Grid.Row="2" Grid.Column="5"/>
-            <local:Workday Grid.Row="2" Grid.Column="6"/>
-            <local:Workday Grid.Row="3"/>
-            <local:Workday Grid.Row="3" Grid.Column="1"/>
-            <local:Workday Grid.Row="3" Grid.Column="2"/>
-            <local:Workday Grid.Row="3" Grid.Column="3"/>
-            <local:Workday Grid.Row="3" Grid.Column="4"/>
-            <local:Workday Grid.Row="3" Grid.Column="5"/>
-            <local:Workday Grid.Row="3" Grid.Column="6"/>
-            <local:Workday Grid.Row="4"/>
-            <local:Workday Grid.Row="4" Grid.Column="1"/>
-            <local:Workday Grid.Row="4" Grid.Column="2"/>
-            <local:Workday Grid.Row="4" Grid.Column="3"/>
-            <local:Workday Grid.Row="4" Grid.Column="4"/>
-            <local:Workday Grid.Row="4" Grid.Column="5"/>
-            <local:Workday Grid.Row="4" Grid.Column="6"/>
-            <local:Workday Grid.Row="5"/>
-            <local:Workday Grid.Row="5" Grid.Column="1"/>
-            <local:Workday Grid.Row="5" Grid.Column="2"/>
-            <local:Workday Grid.Row="5" Grid.Column="3"/>
-            <local:Workday Grid.Row="5" Grid.Column="4"/>
-            <local:Workday Grid.Row="5" Grid.Column="5"/>
-            <local:Workday Grid.Row="5" Grid.Column="6"/>
+            <Grid x:Name="Data" Grid.Column="1" Grid.RowSpan="7" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <!--7. Extra Reihe um die Felder Quadratisch zu machen-->
+                </Grid.RowDefinitions>
+
+                <local:Workday                              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Column="1"              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Column="2"              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Column="3"              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Column="4"              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Column="5"              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Column="6"              MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <!--                                        MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"-->
+                <local:Workday Grid.Row="1"                 MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="1" Grid.Column="1" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="1" Grid.Column="2" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="1" Grid.Column="3" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="1" Grid.Column="4" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="1" Grid.Column="5" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="1" Grid.Column="6" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <!--                                        MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"-->
+                <local:Workday Grid.Row="2"                 MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="2" Grid.Column="1" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="2" Grid.Column="2" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="2" Grid.Column="3" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="2" Grid.Column="4" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="2" Grid.Column="5" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="2" Grid.Column="6" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <!--                                        MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"-->
+                <local:Workday Grid.Row="3"                 MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="3" Grid.Column="1" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="3" Grid.Column="2" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="3" Grid.Column="3" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="3" Grid.Column="4" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="3" Grid.Column="5" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="3" Grid.Column="6" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <!--                                        MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"-->
+                <local:Workday Grid.Row="4"                 MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="4" Grid.Column="1" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="4" Grid.Column="2" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="4" Grid.Column="3" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="4" Grid.Column="4" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="4" Grid.Column="5" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="4" Grid.Column="6" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <!--                                        MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"-->
+                <local:Workday Grid.Row="5"                 MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="5" Grid.Column="1" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="5" Grid.Column="2" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="5" Grid.Column="3" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="5" Grid.Column="4" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="5" Grid.Column="5" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+                <local:Workday Grid.Row="5" Grid.Column="6" MouseDown="CheckFormFocus" MouseUp="OpenWorkdayPromt" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+            </Grid>
+
+            <Canvas x:Name="Rec1" Margin="1"              MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+            <Canvas x:Name="Rec2" Margin="1" Grid.Row="1" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+            <Canvas x:Name="Rec3" Margin="1" Grid.Row="2" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+            <Canvas x:Name="Rec4" Margin="1" Grid.Row="3" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+            <Canvas x:Name="Rec5" Margin="1" Grid.Row="4" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
+            <Canvas x:Name="Rec6" Margin="1" Grid.Row="5" MouseEnter="MarkWorkdayActive" MouseLeave="MarkWorkdayInactive"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

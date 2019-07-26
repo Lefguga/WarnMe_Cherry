@@ -17,7 +17,7 @@ namespace WarnMe_Cherry
             WarnMeVision vision = new WarnMeVision();
             vision.Loaded += (object o, RoutedEventArgs re) => { splashScreen.Close(); };
             vision.Show();
-            splashScreen?.Close(); // prevent splashscreen from beeing open when vision fails
+            splashScreen?.Close(); // prevent splashscreen stay open when vision fails
         }
     }
 }

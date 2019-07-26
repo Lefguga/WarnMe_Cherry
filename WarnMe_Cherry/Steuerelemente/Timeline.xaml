@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
              mc:Ignorable="d">
-    <Border Margin="0,2">
+    <Border>
         <Border.Background>
             <LinearGradientBrush EndPoint="1,0">
                 <GradientStop x:Name="ProgressColor2" Color="#700000FF" Offset="0"/>

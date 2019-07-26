@@ -17,18 +17,19 @@
     FontFamily="/WarnMe;component/Resources/#San Francisco Display"
     IsTabStop="False"
     Foreground="#FFEAEAEA"
-    Loaded="AfterFormInitialized">
+    Loaded="AfterFormInitialized"
+    BorderThickness="1">
     <Window.Style>
         <Style TargetType="Window">
-            <Setter Property="Background" Value="#11111164"/>
+            <Setter Property="BorderBrush" Value="#11111164"/>
             <Style.Triggers>
                 <Trigger Property="IsActive" Value="True">
-                    <Setter Property="Background" Value="#FF0000A0"/>
+                    <Setter Property="BorderBrush" Value="#FF0000A0"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Style>
-    <Grid x:Name="MainGrid" Background="#FF313131" Margin="1">
+    <Grid x:Name="MainGrid" Background="#FF313131">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="4*"/>

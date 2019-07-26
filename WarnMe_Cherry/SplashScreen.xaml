@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
         xmlns:gif="clr-namespace:WpfAnimatedGif"
         mc:Ignorable="d"
-        Title="SplashScreen"
+        Title="WarnMe"
         Height="300" Width="500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Collections.Generic;
+using System.Windows.Media;
+using System.Linq;
 
 namespace WarnMe_Cherry.Datenbank
 {
@@ -21,6 +23,9 @@ namespace WarnMe_Cherry.Datenbank
 
         [Newtonsoft.Json.JsonProperty(PropertyName = "Settings")]
         public EINSTELLUNGEN EINSTELLUNGEN = new EINSTELLUNGEN();
+
+        [Newtonsoft.Json.JsonProperty(PropertyName = "Colors")]
+        public COLORS COLORS = new COLORS();
 
         //[Newtonsoft.Json.JsonProperty(PropertyName = "Other")]
         //public OTHER OTHER = new OTHER();
@@ -124,8 +129,23 @@ namespace WarnMe_Cherry.Datenbank
         [Newtonsoft.Json.JsonProperty(PropertyName = "StartMinimized")]
         public bool MINIMIZED { get; set; } = true;
 
+
+
         internal TimeSpan TOTAL_WORKTIME => WORKDAY_NORMAL + COFFEE.DURATION + LUNCH.DURATION;
         internal TimeSpan TOTAL_WORKLIMIT => WORKDAY_LIMIT + COFFEE.DURATION + LUNCH.DURATION;
+    }
+
+    internal class COLORS
+    {
+        public Color ACCENT_COLOR { get; set; } = Color.FromArgb(255, 0, 0, 204);
+        public Color MAIN_COLOR { get; set; } = Color.FromArgb(255, 38, 38, 38);
+        internal Color MAIN_COLOR_WEAK => Color.Multiply(MAIN_COLOR, AVG_COLOR(MAIN_COLOR) < 128 ? 1.125f : 0.875f);
+        public Color FONT_COLOR { get; set; } = Color.FromArgb(255, 234, 234, 234);
+
+        private static byte AVG_COLOR(Color c)
+        {
+            return (byte)((c.R + c.G + c.B) / 3);
+        }
     }
 
     internal class TIME
