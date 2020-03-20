@@ -6,6 +6,7 @@ using System.Windows.Input;
 using WarnMe_Cherry.Datenbank;
 using Hardcodet.Wpf.TaskbarNotification;
 using static WarnMe_Cherry.Global;
+using System.Windows.Media;
 
 namespace WarnMe_Cherry
 {
@@ -17,8 +18,7 @@ namespace WarnMe_Cherry
         private bool UpdaterInWork = false;
 
         BackgroundWorker Updater = new BackgroundWorker();
-
-
+        
         Steuerelemente.WorkDayPropWindow notifyWorkDay = new Steuerelemente.WorkDayPropWindow();
         ContextMenu contextMenu;
 
@@ -152,7 +152,7 @@ namespace WarnMe_Cherry
 #endif
             // Konvertierung zur sortierten Tabelle
             Arbeitstag _heute = DATA.THIS.Heute;
-            _heute.EndZeit = THIS.TimeNow;
+            _heute.EndZeit = WARNME_CONFIG.TimeNow;
             DATA.THIS.Heute = _heute;
             Übersicht.Update();
             Tabs.SelectedIndex = 1; //Übersicht
@@ -291,13 +291,13 @@ namespace WarnMe_Cherry
             // Update Timeline
             try
             {
-                if (!DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
+                if (!DATA.THIS.WORKINGDAYS.ContainsKey(WARNME_CONFIG.DateNow))
                 {
                     InitFormValues();
                 }
                 else
                 {
-                    DATA.THIS.Heute_EndTime = THIS.TimeNow;
+                    DATA.THIS.Heute_EndTime = WARNME_CONFIG.TimeNow;
                 }
 
             }
@@ -306,13 +306,13 @@ namespace WarnMe_Cherry
                 InitFormValues();
             }
 
-            Home.timeLine.Value = (THIS.TimeNow - DATA.THIS.Heute.StartZeit).TotalSeconds;
+            Home.timeLine.Value = (WARNME_CONFIG.TimeNow - DATA.THIS.Heute.StartZeit).TotalSeconds;
             Home.timeLine.ToolTip = $"{DATA.THIS.Heute.DauerNetto}";
 
             RefreshNotiToolTip();
 
             // Set resttime as program usage
-            Einstellungen.Debug.Text = $"{THIS.TimeNow.Milliseconds / 10d:N1}% usage";
+            Einstellungen.Debug.Text = $"{WARNME_CONFIG.TimeNow.Milliseconds} ms";
         }
         
         // private void ShutdownWarnMe(object sender, System.ComponentModel.CancelEventArgs e) => PrepareShutdown();
@@ -332,21 +332,21 @@ namespace WarnMe_Cherry
 #endif
 
             // init new day of working
-            if (!DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
+            if (!DATA.THIS.WORKINGDAYS.ContainsKey(WARNME_CONFIG.DateNow))
             {
                 DateTime upTime = Extern.SystemUpTime;
                 // check if uptime is today else add the actual time
-                TimeSpan startZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : THIS.TimeNow);
+                TimeSpan startZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : WARNME_CONFIG.TimeNow);
                 startZeit -= DATA.THIS.EINSTELLUNGEN.OFFSET_START_TIME;
-                DATA.THIS.WORKINGDAYS.Add(THIS.DateNow, new Arbeitstag()
+                DATA.THIS.WORKINGDAYS.Add(WARNME_CONFIG.DateNow, new Arbeitstag()
                 {
                     StartZeit = startZeit,
-                    EndZeit = THIS.TimeNow,
+                    EndZeit = WARNME_CONFIG.TimeNow,
                     Bemerkung = ""
                 });
             }
-            DATA.THIS.Date = THIS.DateNow;
-            DATA.THIS.Heute_EndTime = THIS.TimeNow;
+            DATA.THIS.Date = WARNME_CONFIG.DateNow;
+            DATA.THIS.Heute_EndTime = WARNME_CONFIG.TimeNow;
 
             Home.StartTimePicker.DateTime = DATA.THIS.Heute.StartZeit;
 
@@ -354,6 +354,12 @@ namespace WarnMe_Cherry
             Home.MaxEndTimePicker.DateTime = DATA.THIS.Heute.StartZeit + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKLIMIT;
             
             DATA.Commit();
+
+            // Color
+            BorderBrush = new SolidColorBrush(DATA.THIS.COLORS.ACCENT_COLOR);
+            TitleGrid.Background = new SolidColorBrush(DATA.THIS.COLORS.MAIN_COLOR);
+            MainGrid.Background = new SolidColorBrush(DATA.THIS.COLORS.MAIN_COLOR_WEAK);
+
 
             // WORKINGDAY TABLE
             Übersicht.Update();
@@ -380,7 +386,7 @@ namespace WarnMe_Cherry
 
         private void RefreshNotiToolTip()
         {
-            TimeSpan progress = DATA.THIS.Heute.Progress(THIS.TimeNow);
+            TimeSpan progress = DATA.THIS.Heute.Progress(WARNME_CONFIG.TimeNow);
             TimeSpan total = DATA.THIS.EINSTELLUNGEN.WORKDAY_NORMAL +
                 DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION +
                 DATA.THIS.EINSTELLUNGEN.LUNCH.DURATION;
@@ -407,7 +413,7 @@ namespace WarnMe_Cherry
             INFO("PrepareShutdown");
 #endif
             // Refresh "Heute"
-            DATA.THIS.Heute_EndTime = THIS.TimeNow;
+            DATA.THIS.Heute_EndTime = WARNME_CONFIG.TimeNow;
 
             // Commit Values
             DATA.Commit();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Newtonsoft.Json.Linq;
 using static WarnMe_Cherry.Global;
 
 namespace WarnMe_Cherry.Steuerelemente.Sites
@@ -10,8 +11,9 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
     /// <summary>
     /// Interaktionslogik für Overview_Site.xaml
     /// </summary>
-    public partial class Overview_Site : UserControl, Interfaces.IUpdateable
+    public partial class Overview_Site : UserControl, Interfaces.IUpdateable, Interfaces.IDataEntry
     {
+        public string DATA_ID => "Overview";
 
         public Overview_Site()
         {
@@ -74,6 +76,32 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
             INFO("Overview_Site.Update");
 #endif
             ZeitTabelle.Update();
+        }
+
+        public void New()
+        {
+
+        }
+
+        public void Load(JObject data)
+        {
+            if (data.TryGetValue(ZeitTabelle.DATA_ID, out JToken value))
+            {
+                ZeitTabelle.Load((JObject)value);
+            }
+            else
+            {
+                ZeitTabelle.New();
+            }
+        }
+
+        public JObject Save()
+        {
+            JObject j = new JObject
+            {
+                { ZeitTabelle.DATA_ID, ZeitTabelle.Save() }
+            };
+            return j;
         }
     }
 }

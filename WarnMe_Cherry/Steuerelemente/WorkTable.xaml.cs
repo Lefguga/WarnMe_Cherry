@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Newtonsoft.Json.Linq;
 using WarnMe_Cherry.Datenbank;
 using static WarnMe_Cherry.Global;
 
@@ -13,7 +14,7 @@ namespace WarnMe_Cherry.Steuerelemente
     /// <summary>
     /// Interaktionslogik für GridTable.xaml
     /// </summary>
-    public partial class WorkTable : UserControl, Interfaces.IUpdateable
+    public partial class WorkTable : UserControl, Interfaces.IUpdateable, Interfaces.IDataEntry
     {
         public delegate void ValueUpdate(DateTime date, Arbeitstag arbeitstag);
         public event ValueUpdate ValueUpdated;
@@ -30,6 +31,8 @@ namespace WarnMe_Cherry.Steuerelemente
         /// Returns the first <see cref="DateTime.DayOfWeek"/> as <see cref="int"/> with Sunday set as 6 not 0
         /// </summary>
         int FirstDayInMonth => ((int)new DateTime(Year, Month, 1).DayOfWeek + 6) % 7;
+
+        public string DATA_ID => "Workingdays";
 
         public WorkTable()
         {
@@ -68,7 +71,7 @@ namespace WarnMe_Cherry.Steuerelemente
             if (o is UserControl element)
             {
                 INFO($"Mouse over Workday in Row:{Grid.GetRow(element)}, Col:{Grid.GetColumn(element)}");
-                element.BorderBrush = new SolidColorBrush(DATA.THIS.COLORS.ACCENT_COLOR);
+                element.BorderBrush = new SolidColorBrush(COLORS.ACCENT_COLOR);
             }
         }
 
@@ -267,6 +270,21 @@ namespace WarnMe_Cherry.Steuerelemente
             INFO("WorkTable.Focus_On_MouseDown");
 #endif
             ((FrameworkElement)sender).Focus();
+        }
+
+        public void New()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Load(JObject data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JObject Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -119,14 +119,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Datenbank\Colors.cs" />
     <Compile Include="Datenbank\Database.cs" />
     <Compile Include="Datenbank\DatenbankExceptions.cs" />
-    <Compile Include="Datenbank\InternalVariables.cs" />
+    <Compile Include="Datenbank\WarnMeConfig.cs" />
     <Compile Include="Extensions\DayMatcher.cs" />
     <Compile Include="Extensions\Wetter.cs" />
     <Compile Include="ExterneKlassen\Extern.cs" />
     <Compile Include="ExterneKlassen\Global.cs" />
     <Compile Include="ExterneKlassen\KlassenErweiterung.cs" />
+    <Compile Include="Interfaces\IDataEntry.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
@@ -374,8 +376,8 @@
     <Compile Include="NotifyIcon.Wpf\TaskbarIcon.cs" />
     <Compile Include="NotifyIcon.Wpf\TaskbarIcon.Declarations.cs" />
     <Compile Include="NotifyIcon.Wpf\Util.cs" />
-    <Compile Include="SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    <Compile Include="WarnMeLoader.xaml.cs">
+      <DependentUpon>WarnMeLoader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Steuerelemente\Buttons\Close.xaml.cs">
       <DependentUpon>Close.xaml</DependentUpon>
@@ -437,7 +439,7 @@
     <Compile Include="WpfAnimatedGif\Decoding\GifTrailer.cs" />
     <Compile Include="WpfAnimatedGif\ImageAnimationController.cs" />
     <Compile Include="WpfAnimatedGif\ImageBehavior.cs" />
-    <Page Include="SplashScreen.xaml">
+    <Page Include="WarnMeLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

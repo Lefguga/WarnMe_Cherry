@@ -8,7 +8,7 @@ using static WarnMe_Cherry.Global;
 
 namespace WarnMe_Cherry.Datenbank
 {
-    class Datenbank
+    internal class Datenbank
     {
         public static JsonSerializerSettings DefaultSetting = new JsonSerializerSettings()
         {
@@ -21,8 +21,6 @@ namespace WarnMe_Cherry.Datenbank
         FileInfo source;
 #if GEN_LIBRARY
         JObject Library = new JObject();
-#else
-        public THIS THIS = new THIS();
 #endif
         readonly Encoding Encoding = Encoding.UTF8;
 
@@ -288,7 +286,7 @@ namespace WarnMe_Cherry.Datenbank
         /// <summary>
         /// ______SERIALIZE______
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a <see cref="string"/> which contains all important data to be saved.</returns>
         string Serialize()
         {
 #if TRACE
@@ -306,7 +304,9 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO("Database.Deserialize data");
 #endif
-            THIS = JsonConvert.DeserializeObject<THIS>(data, DefaultSetting);
+            Datenbank a = new Datenbank("");
+            JObject test = JObject.FromObject(a);
+            THIS = JsonConvert.DeserializeObject<JObject>(data, DefaultSetting);
         }
     }
 }

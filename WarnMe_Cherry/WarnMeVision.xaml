@@ -18,7 +18,8 @@
     IsTabStop="False"
     Foreground="#FFEAEAEA"
     Loaded="AfterFormInitialized"
-    BorderThickness="1">
+    BorderThickness="1"
+    Background="#FF464646">
     <Window.Style>
         <Style TargetType="Window">
             <Setter Property="BorderBrush" Value="#11111164"/>
@@ -29,12 +30,12 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
-    <Grid x:Name="MainGrid" Background="#FF313131">
+    <Grid x:Name="MainGrid" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
-        <Grid Background="#FF262626">
+        <Grid x:Name="TitleGrid" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="32"/>
@@ -133,7 +134,7 @@
                     </Viewbox>
                 </Border>
             </Grid>
-            <TabControl x:Name="Tabs" Grid.Row="1" Background="#FF313131" BorderThickness="0" IsTabStop="True">
+            <TabControl x:Name="Tabs" Grid.Row="1" Background="Transparent" BorderThickness="0" IsTabStop="True">
                 <!--==============================HOME==============================-->
                 <TabItem Header="Home" Height="0" IsTabStop="False" BorderThickness="0" Visibility="Hidden" Focusable="True"
                          Foreground="{Binding Foreground, ElementName=MainWindow}"

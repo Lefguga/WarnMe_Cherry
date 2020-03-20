@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using static WarnMe_Cherry.Global;
-using static WarnMe_Cherry.Datenbank.THIS;
+using static WarnMe_Cherry.Datenbank.WARNME_CONFIG;
 
 namespace WarnMe_Cherry.Steuerelemente.Sites
 {
