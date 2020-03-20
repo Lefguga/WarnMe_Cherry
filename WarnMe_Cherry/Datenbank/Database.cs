@@ -273,11 +273,9 @@ namespace WarnMe_Cherry.Datenbank
             string toWrite = Serialize();
             try
             {
-                File.WriteAllText(source.FullName, toWrite, Encoding);
-            }
-            catch (IOException)
-            {
-                return;
+                File.WriteAllText($"{source.FullName}_bak", toWrite, Encoding);
+                File.Delete(source.FullName);
+                File.Move($"{source.FullName}_bak", source.FullName);
             }
             finally
             {
