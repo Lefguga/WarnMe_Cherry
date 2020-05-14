@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace WarnMe_Cherry.Steuerelemente
+namespace WarnMe_Cherry.Steuerelemente.Subparts
 {
     /// <summary>
     /// Interaktionslogik für Timeline.xaml

@@ -1,11 +1,22 @@
-﻿<Window x:Class="WarnMe_Cherry.Steuerelemente.WorkDayPropWindow"
+﻿<Window x:Class="WarnMe_Cherry.Steuerelemente.Sites.Overview.WorkDayPropWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+        xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Overview"
+        xmlns:steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente.Subparts"
         mc:Ignorable="d"
-        Title="WorkDayPropWindow" Height="450" Width="800" WindowStyle="None" AllowsTransparency="True" Background="#FF292929" Topmost="True" KeyDown="KeyInput" BorderBrush="#FF00D1FF" BorderThickness="2" Foreground="#FFCBCBCB" Deactivated="LoseFocus">
+        Title="WorkDayPropWindow"
+        Height="450" Width="800"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Foreground="#FFCBCBCB"
+        Background="#FF292929"
+        Topmost="True"
+        KeyDown="KeyInput"
+        BorderBrush="#FF00D1FF"
+        BorderThickness="2"
+        Deactivated="LoseFocus">
     <Grid>
         <Grid Margin="2">
             <Grid.RowDefinitions>
@@ -32,13 +43,13 @@
                     <TextBlock Text="Zeit:"/>
                 </Viewbox>
                 <Viewbox Grid.Column="1">
-                    <local:TimeOfDay x:Name="starttime"/>
+                    <steuerelemente:TimeOfDay x:Name="starttime"/>
                 </Viewbox>
                 <Viewbox Grid.Row="1" Grid.Column="1">
-                    <local:TimeOfDay x:Name="endtime"/>
+                    <steuerelemente:TimeOfDay x:Name="endtime"/>
                 </Viewbox>
                 <Viewbox Grid.Row="2" Grid.Column="1">
-                    <local:TimeOfDay x:Name="duration"/>
+                    <steuerelemente:TimeOfDay x:Name="duration"/>
                 </Viewbox>
             </Grid>
             <TextBox x:Name="comment" Grid.Row="1" Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WorkDayPropWindow}}}" Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WorkDayPropWindow}}}"/>

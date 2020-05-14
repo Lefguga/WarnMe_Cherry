@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Wecker"
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Subparts.Wecker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Subparts"
              xmlns:steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="150">
@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <Viewbox>
-                <steuerelemente:TimeOfDay/>
+                <local:TimeOfDay/>
             </Viewbox>
             <Viewbox Grid.Column="3" Margin="10">
                 <steuerelemente:SwitchButton x:Name="Switch" Height="50"/>
