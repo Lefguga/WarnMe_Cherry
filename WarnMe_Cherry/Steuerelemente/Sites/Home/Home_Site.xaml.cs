@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Windows.Controls;
-using WarnMe_Cherry.Datenbank;
 using static WarnMe_Cherry.Global;
+using static GLOBAL.CONFIG;
 
-namespace WarnMe_Cherry.Steuerelemente.Sites
+namespace WarnMe_Cherry.Steuerelemente.Sites.Home
 {
     /// <summary>
     /// Interaktionslogik für Home_Site.xaml
     /// </summary>
     public partial class Home_Site : UserControl, Interfaces.IUpdateable
     {
+        public delegate void ValueChange();
+        public event ValueChange ValueUpdated;
+
         TimeSpan start;
 
         public Home_Site()
@@ -25,7 +28,9 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
 #if TRACE
             INFO("Home_Site.Update");
 #endif
-            throw new NotImplementedException();
+            timeLine.Value = (NOW - WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit).TotalSeconds;
+            timeLine.ToolTip = $"{WARNME_CONFIG.WORKINGDAYS[TODAY].DauerNetto}";
+            //timeLine.Update();
         }
 
         private void StartTimeUpdated(object sender, TimeSpan value)
@@ -35,12 +40,18 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
 #endif
             if (value != start)
             {
-                DATA.THIS.Heute_StartTime = value;
-                start = value;
+                WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit = value;
+                EndTimePicker.DateTime = value + WARNME_CONFIG.TIME.WORKTIME;
+                MaxEndTimePicker.DateTime = value + WARNME_CONFIG.TIME.WORKLIMIT;
 
-                EndTimePicker.DateTime = value + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKTIME;
-                MaxEndTimePicker.DateTime = value + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKLIMIT;
+                start = value;
+                UpdateEvent();
             }
+        }
+
+        private void UpdateEvent()
+        {
+            ValueUpdated?.Invoke();
         }
     }
 }

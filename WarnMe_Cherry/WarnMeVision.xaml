@@ -1,13 +1,15 @@
 ﻿<Window
+    x:Name="MainWindow"
+    x:Class="WarnMe_Cherry.WarnMeVision"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WarnMe_Cherry"
-    xmlns:Buttons="clr-namespace:WarnMe_Cherry.Steuerelemente.Buttons"
-    xmlns:Sites="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites"
-    x:Name="MainWindow"
-    x:Class="WarnMe_Cherry.WarnMeVision"
+    xmlns:buttons="clr-namespace:WarnMe_Cherry.Steuerelemente.Buttons"
+    xmlns:home="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Home"
+    xmlns:settings="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Settings"
+    xmlns:overview="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Overview"
     mc:Ignorable="d"
     Title="WarnMe"
     Height="480"
@@ -18,7 +20,8 @@
     IsTabStop="False"
     Foreground="#FFEAEAEA"
     Loaded="AfterFormInitialized"
-    BorderThickness="1">
+    BorderThickness="1"
+    Background="#FF464646">
     <Window.Style>
         <Style TargetType="Window">
             <Setter Property="BorderBrush" Value="#11111164"/>
@@ -29,12 +32,12 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
-    <Grid x:Name="MainGrid" Background="#FF313131">
+    <Grid x:Name="MainGrid" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
-        <Grid Background="#FF262626">
+        <Grid x:Name="TitleGrid" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="32"/>
@@ -43,11 +46,11 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="WarnMe" FontSize="30" Margin="8,0"
                            MouseLeftButtonDown="ActivateDragMove"/>
-            <Buttons:Mini Margin="0.5, 2" Grid.Column="1"
+            <buttons:Mini Margin="0.5, 2" Grid.Column="1"
                        MouseLeftButtonUp="MinimizeClick" ToolTip="Minimieren"/>
-            <Buttons:Maxi Margin="0.5, 2" Grid.Column="2"
+            <buttons:Maxi Margin="0.5, 2" Grid.Column="2"
                        MouseLeftButtonUp="MaximizeClick" ToolTip="Maximieren"/>
-            <Buttons:Close Margin="0.5, 2" Grid.Column="3"
+            <buttons:Close Margin="0.5, 2" Grid.Column="3"
                        MouseLeftButtonUp="CloseClick" ToolTip="Schließen"/>
         </Grid>
         <Grid Margin="0" Grid.Row="1">
@@ -133,24 +136,24 @@
                     </Viewbox>
                 </Border>
             </Grid>
-            <TabControl x:Name="Tabs" Grid.Row="1" Background="#FF313131" BorderThickness="0" IsTabStop="True">
+            <TabControl x:Name="Tabs" Grid.Row="1" Background="Transparent" BorderThickness="0" IsTabStop="True">
                 <!--==============================HOME==============================-->
                 <TabItem Header="Home" Height="0" IsTabStop="False" BorderThickness="0" Visibility="Hidden" Focusable="True"
                          Foreground="{Binding Foreground, ElementName=MainWindow}"
                          Background="{Binding Background, ElementName=MainGrid}">
-                    <Sites:Home_Site x:Name="Home"/>
+                    <home:Home_Site x:Name="Home" ValueUpdated="UpdateOccured"/>
                 </TabItem>
                 <!--==============================ÜBERSICHT==============================-->
                 <TabItem Header="Übersicht" Height="0" IsTabStop="False" BorderThickness="0" Visibility="Hidden" Focusable="True"
                          Foreground="{Binding Foreground, ElementName=MainWindow}"
                          Background="{Binding Background, ElementName=MainGrid}">
-                    <Sites:Overview_Site x:Name="Übersicht"/>
+                    <overview:Overview_Site x:Name="Übersicht" ValueUpdated="UpdateOccured"/>
                 </TabItem>
                 <!--==============================EINSTELLUNGEN==============================-->
                 <TabItem Header="Einstellungen" Height="0" IsTabStop="False" BorderThickness="0" Visibility="Hidden" Focusable="True"
                          Foreground="{Binding Foreground, ElementName=MainWindow}"
                          Background="{Binding Background, ElementName=MainGrid}">
-                    <Sites:Setting_Site x:Name="Einstellungen"/>
+                    <settings:Setting_Site x:Name="Einstellungen" ValueUpdated="UpdateOccured"/>
                 </TabItem>
             </TabControl>
         </Grid>

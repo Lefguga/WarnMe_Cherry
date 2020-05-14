@@ -1,11 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WarnMe_Cherry.Datenbank;
+using System.Windows.Media;
 using Hardcodet.Wpf.TaskbarNotification;
+using WarnMe_Cherry.Steuerelemente.Sites.Overview;
 using static WarnMe_Cherry.Global;
+using static GLOBAL.CONFIG;
 
 namespace WarnMe_Cherry
 {
@@ -14,12 +16,14 @@ namespace WarnMe_Cherry
     /// </summary>
     public partial class WarnMeVision : Window
     {
+        public delegate void DataModified();
+        public event DataModified NewDataAvailable;
+
         private bool UpdaterInWork = false;
 
         BackgroundWorker Updater = new BackgroundWorker();
-
-
-        Steuerelemente.WorkDayPropWindow notifyWorkDay = new Steuerelemente.WorkDayPropWindow();
+        
+        WorkDayPropWindow notifyWorkDay = new WorkDayPropWindow();
         ContextMenu contextMenu;
 
         TaskbarIcon icon;
@@ -35,7 +39,6 @@ namespace WarnMe_Cherry
             INFO("Generate WarnMeVision()");
 #endif
             InitializeComponent();
-            Übersicht.ZeitTabelle.ValueUpdated += ZeitTabelle_ValueUpdated;
             Microsoft.Win32.SystemEvents.SessionSwitch += SaveCurrentSessionState;
         }
 
@@ -137,7 +140,7 @@ namespace WarnMe_Cherry
 #if TRACE
             INFO("HomeBT_Click");
 #endif
-            Home.StartTimePicker.DateTime = DATA.THIS.Heute.StartZeit;
+            Home.StartTimePicker.DateTime = WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit;
             Tabs.SelectedIndex = 0; //Home
         }
 
@@ -151,9 +154,7 @@ namespace WarnMe_Cherry
             INFO("ÜbersichtBT_Click");
 #endif
             // Konvertierung zur sortierten Tabelle
-            Arbeitstag _heute = DATA.THIS.Heute;
-            _heute.EndZeit = THIS.TimeNow;
-            DATA.THIS.Heute = _heute;
+            WARNME_CONFIG.WORKINGDAYS[TODAY].EndZeit = NOW;
             Übersicht.Update();
             Tabs.SelectedIndex = 1; //Übersicht
         }
@@ -207,7 +208,7 @@ namespace WarnMe_Cherry
             //Set up Variables and Settings
             InitFormValues();
 
-            if (DATA.THIS.EINSTELLUNGEN.MINIMIZED)
+            if (WARNME_CONFIG.SETTINGS.MINIMIZED)
                 Hide();
 
             //Set Menuitem
@@ -291,13 +292,13 @@ namespace WarnMe_Cherry
             // Update Timeline
             try
             {
-                if (!DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
+                if (!WARNME_CONFIG.WORKINGDAYS.ContainsKey(TODAY))
                 {
                     InitFormValues();
                 }
                 else
                 {
-                    DATA.THIS.Heute_EndTime = THIS.TimeNow;
+                    WARNME_CONFIG.WORKINGDAYS[TODAY].EndZeit = NOW;
                 }
 
             }
@@ -306,13 +307,25 @@ namespace WarnMe_Cherry
                 InitFormValues();
             }
 
-            Home.timeLine.Value = (THIS.TimeNow - DATA.THIS.Heute.StartZeit).TotalSeconds;
-            Home.timeLine.ToolTip = $"{DATA.THIS.Heute.DauerNetto}";
+            switch (Tabs.SelectedIndex)
+            {
+                case 0: // Home Site
+                    Home.Update();
+                    break;
+                // Refresh actual day
+                case 1:
+                    Übersicht.ZeitTabelle.UpdateWorkday(TODAY, WARNME_CONFIG.WORKINGDAYS[TODAY]);
+                    break;
+                // Set resttime as program usage
+                case 2:
+                    Einstellungen.Debug.Text = $"{NOW.Milliseconds} ms";
+                    break;
+                default:
+                    break;
+            }
 
             RefreshNotiToolTip();
 
-            // Set resttime as program usage
-            Einstellungen.Debug.Text = $"{THIS.TimeNow.Milliseconds / 10d:N1}% usage";
         }
         
         // private void ShutdownWarnMe(object sender, System.ComponentModel.CancelEventArgs e) => PrepareShutdown();
@@ -332,28 +345,32 @@ namespace WarnMe_Cherry
 #endif
 
             // init new day of working
-            if (!DATA.THIS.WORKINGDAYS.ContainsKey(THIS.DateNow))
+            if (!WARNME_CONFIG.WORKINGDAYS.ContainsKey(TODAY))
             {
                 DateTime upTime = Extern.SystemUpTime;
                 // check if uptime is today else add the actual time
-                TimeSpan startZeit = (upTime.Date == DateTime.Now.Date ? upTime.TimeOfDay : THIS.TimeNow);
-                startZeit -= DATA.THIS.EINSTELLUNGEN.OFFSET_START_TIME;
-                DATA.THIS.WORKINGDAYS.Add(THIS.DateNow, new Arbeitstag()
+                TimeSpan startZeit = (upTime.Date == TODAY ? upTime.TimeOfDay : NOW);
+                startZeit -= WARNME_CONFIG.TIME.START_DELAY;
+                WARNME_CONFIG.WORKINGDAYS.Add(TODAY, new Arbeitstag()
                 {
                     StartZeit = startZeit,
-                    EndZeit = THIS.TimeNow,
+                    EndZeit = NOW,
                     Bemerkung = ""
                 });
             }
-            DATA.THIS.Date = THIS.DateNow;
-            DATA.THIS.Heute_EndTime = THIS.TimeNow;
 
-            Home.StartTimePicker.DateTime = DATA.THIS.Heute.StartZeit;
+            Home.StartTimePicker.DateTime = WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit;
 
-            Home.EndTimePicker.DateTime = DATA.THIS.Heute.StartZeit + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKTIME;
-            Home.MaxEndTimePicker.DateTime = DATA.THIS.Heute.StartZeit + DATA.THIS.EINSTELLUNGEN.TOTAL_WORKLIMIT;
-            
-            DATA.Commit();
+            Home.EndTimePicker.DateTime = WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit + WARNME_CONFIG.TIME.WORKTIME;
+            Home.MaxEndTimePicker.DateTime = WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit + WARNME_CONFIG.TIME.WORKLIMIT;
+
+            NewDataAvailable();
+
+            // Color
+            BorderBrush = new SolidColorBrush(WARNME_CONFIG.COLORS.ACCENT_COLOR);
+            TitleGrid.Background = new SolidColorBrush(WARNME_CONFIG.COLORS.MAIN_COLOR);
+            MainGrid.Background = new SolidColorBrush(WARNME_CONFIG.COLORS.MAIN_COLOR_WEAK);
+
 
             // WORKINGDAY TABLE
             Übersicht.Update();
@@ -373,17 +390,17 @@ namespace WarnMe_Cherry
 #if TRACE
             INFO("UpdateWorkingDay");
 #endif
-            DATA.THIS.WORKINGDAYS[date] = arbeitstag;
+            WARNME_CONFIG.WORKINGDAYS[date] = arbeitstag;
             // Results in too many data writings
             // DATA.Commit();
         }
 
         private void RefreshNotiToolTip()
         {
-            TimeSpan progress = DATA.THIS.Heute.Progress(THIS.TimeNow);
-            TimeSpan total = DATA.THIS.EINSTELLUNGEN.WORKDAY_NORMAL +
-                DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION +
-                DATA.THIS.EINSTELLUNGEN.LUNCH.DURATION;
+            TimeSpan progress = WARNME_CONFIG.WORKINGDAYS[TODAY].Progress(NOW);
+            TimeSpan total = WARNME_CONFIG.TIME.WORKTIME +
+                WARNME_CONFIG.TIME.COFFEE.DURATION +
+                WARNME_CONFIG.TIME.LUNCH.DURATION;
             if (progress < total)
             {
                 icon.ToolTipText = string.Format("Done: {0}\nTodo: {1}",
@@ -407,13 +424,13 @@ namespace WarnMe_Cherry
             INFO("PrepareShutdown");
 #endif
             // Refresh "Heute"
-            DATA.THIS.Heute_EndTime = THIS.TimeNow;
+            WARNME_CONFIG.WORKINGDAYS[TODAY].EndZeit = NOW;
 
             // Commit Values
-            DATA.Commit();
+            NewDataAvailable();
 
             // Close Forms
-            Steuerelemente.WorkTable.window.Close();
+            WorkTable.window.Close();
 
             // Clean up Taskbar Icon
             notifyWorkDay?.Close();
@@ -423,17 +440,10 @@ namespace WarnMe_Cherry
             icon.Dispose();
         }
 
-//        private void SettingChanged(string key, object value)
-//        {
-//#if TRACE
-//            INFO("SettingChanged");
-//#endif
-//#if GEN_LIBRARY
-//            THIS.Datenbank.Update(EINSTELLUNGEN.NAME, key, value);
-//#else
-//            throw new NotImplementedException("Generic Library not availabel.");
-//#endif
-//            // THIS.Datenbank.Commit();
-//        }
+        private void UpdateOccured()
+        {
+            NewDataAvailable();
+        }
+
     }
 }

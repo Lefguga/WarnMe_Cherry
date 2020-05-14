@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Workday"
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Sites.Overview.Workday"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Overview"
+             xmlns:steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente.Subparts"
              mc:Ignorable="d"
              Background="Transparent"
              BorderThickness="1">
@@ -36,13 +37,13 @@
                 <TextBlock Text="Zeit:"/>
             </Viewbox>
             <Viewbox Grid.Column="1">
-                <local:TimeOfDay x:Name="starttime"/>
+                <steuerelemente:TimeOfDay x:Name="starttime"/>
             </Viewbox>
             <Viewbox Grid.Row="1" Grid.Column="1">
-                <local:TimeOfDay x:Name="endtime"/>
+                <steuerelemente:TimeOfDay x:Name="endtime"/>
             </Viewbox>
             <Viewbox Grid.Row="2" Grid.Column="1">
-                <local:TimeOfDay x:Name="duration"/>
+                <steuerelemente:TimeOfDay x:Name="duration"/>
             </Viewbox>
         </Grid>
         <Viewbox Grid.Row="2">

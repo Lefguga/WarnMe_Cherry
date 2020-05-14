@@ -5,18 +5,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using WarnMe_Cherry.Datenbank;
+using Newtonsoft.Json.Linq;
+using static GLOBAL.CONFIG;
 using static WarnMe_Cherry.Global;
 
-namespace WarnMe_Cherry.Steuerelemente
+namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
 {
     /// <summary>
     /// Interaktionslogik für GridTable.xaml
     /// </summary>
     public partial class WorkTable : UserControl, Interfaces.IUpdateable
     {
-        public delegate void ValueUpdate(DateTime date, Arbeitstag arbeitstag);
-        public event ValueUpdate ValueUpdated;
+        public delegate void ValueChange();
+        public event ValueChange ValueUpdated;
 
         public string MonthString => System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Month);
         public int Month { get; set; } = DateTime.Now.Month;
@@ -58,7 +59,9 @@ namespace WarnMe_Cherry.Steuerelemente
         {
             if (o is UserControl element)
             {
+#if TRACE
                 INFO($"Mouse leave Workday in Row:{Grid.GetRow(element)}, Col:{Grid.GetColumn(element)}");
+#endif
                 element.BorderBrush = Brushes.Transparent;
             }
         }
@@ -67,8 +70,10 @@ namespace WarnMe_Cherry.Steuerelemente
         {
             if (o is UserControl element)
             {
+#if TRACE
                 INFO($"Mouse over Workday in Row:{Grid.GetRow(element)}, Col:{Grid.GetColumn(element)}");
-                element.BorderBrush = new SolidColorBrush(DATA.THIS.COLORS.ACCENT_COLOR);
+#endif
+                element.BorderBrush = new SolidColorBrush(WARNME_CONFIG.COLORS.ACCENT_COLOR);
             }
         }
 
@@ -90,13 +95,12 @@ namespace WarnMe_Cherry.Steuerelemente
 #if TRACE
             INFO("WorkTable.WorkdayUpdated date[{date}]");
 #endif
-            if (DATA.THIS.WORKINGDAYS.ContainsKey(date))
-                DATA.THIS.WORKINGDAYS[date] = arbeitstag;
+            if (WARNME_CONFIG.WORKINGDAYS.ContainsKey(date))
+                WARNME_CONFIG.WORKINGDAYS[date] = arbeitstag;
             else
-                DATA.THIS.WORKINGDAYS.Add(date, arbeitstag);
+                WARNME_CONFIG.WORKINGDAYS.Add(date, arbeitstag);
             UpdateWorkday(date, arbeitstag);
-            // trigger event
-            ValueUpdated?.Invoke(date, arbeitstag);
+            UpdateEvent();
         }
 
         private void OpenWorkdayPromt(object sender, MouseButtonEventArgs e)
@@ -157,7 +161,7 @@ namespace WarnMe_Cherry.Steuerelemente
             FillGridForMonth();
             //Data.RowDefinitions.Clear();
 
-            foreach (var item in DATA.THIS.WORKINGDAYS)
+            foreach (var item in WARNME_CONFIG.WORKINGDAYS)
             {
                 UpdateWorkday(item.Key, item.Value);
             }
@@ -267,6 +271,11 @@ namespace WarnMe_Cherry.Steuerelemente
             INFO("WorkTable.Focus_On_MouseDown");
 #endif
             ((FrameworkElement)sender).Focus();
+        }
+
+        private void UpdateEvent()
+        {
+            ValueUpdated?.Invoke();
         }
     }
 }

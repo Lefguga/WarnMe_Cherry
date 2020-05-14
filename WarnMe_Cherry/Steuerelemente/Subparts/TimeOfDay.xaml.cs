@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace WarnMe_Cherry.Steuerelemente
+namespace WarnMe_Cherry.Steuerelemente.Subparts
 {
     /// <summary>
     /// Interaktionslogik für TimeOfDay.xaml

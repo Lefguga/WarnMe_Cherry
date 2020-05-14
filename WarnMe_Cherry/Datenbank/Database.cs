@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using WarnMe_Cherry.CONFIG;
 using static WarnMe_Cherry.Global;
 
 namespace WarnMe_Cherry.Datenbank
 {
-    class Datenbank
+    internal class Datenbank
     {
         public static JsonSerializerSettings DefaultSetting = new JsonSerializerSettings()
         {
@@ -17,12 +19,9 @@ namespace WarnMe_Cherry.Datenbank
             DateFormatString = "dd.MM.yyyy"
         };
 
-
         FileInfo source;
 #if GEN_LIBRARY
         JObject Library = new JObject();
-#else
-        public THIS THIS = new THIS();
 #endif
         readonly Encoding Encoding = Encoding.UTF8;
 
@@ -286,13 +285,13 @@ namespace WarnMe_Cherry.Datenbank
         /// <summary>
         /// ______SERIALIZE______
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a <see cref="string"/> which contains all important data to be saved.</returns>
         string Serialize()
         {
 #if TRACE
             INFO("Database.Serialize data");
 #endif
-            return JsonConvert.SerializeObject(THIS, DefaultSetting);
+            return JsonConvert.SerializeObject(GLOBAL.CONFIG.WARNME_CONFIG, DefaultSetting);
         }
 
         /// <summary>
@@ -304,7 +303,20 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO("Database.Deserialize data");
 #endif
-            THIS = JsonConvert.DeserializeObject<THIS>(data, DefaultSetting);
+            GLOBAL.CONFIG.WARNME_CONFIG = JsonConvert.DeserializeObject<WARNME_CONFIG>(data, DefaultSetting);
+            if (GLOBAL.CONFIG.WARNME_CONFIG == null)
+            {
+                MessageBox.Show("Deserializing database failed, resulting object equals null.", "Error reading save file!",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                if (MessageBox.Show("Do you want to create a new dataset?", "Old configuration will be deleted!",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    GLOBAL.CONFIG.WARNME_CONFIG = new WARNME_CONFIG();
+                }
+            }
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
-using static WarnMe_Cherry.Global;
+using static GLOBAL.CONFIG;
 
 namespace WarnMe_Cherry
 {
     [Serializable]
-    public struct Arbeitstag : IEquatable<Arbeitstag>
+    public class Arbeitstag : IEquatable<Arbeitstag>
     {
         TimeSpan startZeit;
         TimeSpan endZeit;
@@ -22,11 +22,11 @@ namespace WarnMe_Cherry
         {
             get
             {
-                if (Duration > DATA.THIS.EINSTELLUNGEN.COFFEE.START)
-                    if (Duration > DATA.THIS.EINSTELLUNGEN.LUNCH.START)
-                        return Duration.Subtract(DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION + DATA.THIS.EINSTELLUNGEN.LUNCH.DURATION);
+                if (Duration > WARNME_CONFIG.TIME.COFFEE.START)
+                    if (Duration >WARNME_CONFIG.TIME.LUNCH.START)
+                        return Duration.Subtract(WARNME_CONFIG.TIME.COFFEE.DURATION + WARNME_CONFIG.TIME.LUNCH.DURATION);
                     else
-                        return Duration.Subtract(DATA.THIS.EINSTELLUNGEN.COFFEE.DURATION);
+                        return Duration.Subtract(WARNME_CONFIG.TIME.COFFEE.DURATION);
                 else
                     return Duration;
             }
@@ -56,11 +56,19 @@ namespace WarnMe_Cherry
 
         public static bool operator==(Arbeitstag a1, Arbeitstag a2)
         {
+            if (a2 is null)
+            {
+                return a1 is null;
+            }
             return a1.startZeit == a2.startZeit && a1.endZeit == a2.endZeit && a1.Bemerkung == a2.Bemerkung;
         }
 
         public static bool operator!=(Arbeitstag a1, Arbeitstag a2)
         {
+            if (a2 is null)
+            {
+                return !(a1 is null);
+            }
             return a1.startZeit != a2.startZeit || a1.endZeit != a2.endZeit || a1.Bemerkung != a2.Bemerkung;
         }
 

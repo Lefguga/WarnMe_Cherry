@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using WarnMe_Cherry.Extensions;
 
-namespace WarnMe_Cherry.Steuerelemente
+namespace WarnMe_Cherry.Steuerelemente.Subparts
 {
     /// <summary>
     /// Interaktionslogik für Wecker.xaml

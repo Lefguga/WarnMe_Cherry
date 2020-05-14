@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static WarnMe_Cherry.Global;
 
-namespace WarnMe_Cherry.Steuerelemente.Sites
+namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
 {
     /// <summary>
     /// Interaktionslogik für Overview_Site.xaml
     /// </summary>
     public partial class Overview_Site : UserControl, Interfaces.IUpdateable
     {
+        public delegate void ValueChange();
+        public event ValueChange ValueUpdated;
 
         public Overview_Site()
         {
@@ -74,6 +74,11 @@ namespace WarnMe_Cherry.Steuerelemente.Sites
             INFO("Overview_Site.Update");
 #endif
             ZeitTabelle.Update();
+        }
+
+        private void UpdateEvent()
+        {
+            ValueUpdated?.Invoke();
         }
     }
 }

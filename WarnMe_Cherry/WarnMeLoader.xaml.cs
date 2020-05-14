@@ -1,15 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 
 namespace WarnMe_Cherry
 {
     /// <summary>
     /// Interaktionslogik für SplashScreen.xaml
     /// </summary>
-    public partial class SplashScreen : Window
+    public partial class WarnMeLoader : Window
     {
         internal System.Windows.Media.ImageSource Source
         {
@@ -22,7 +20,7 @@ namespace WarnMe_Cherry
         
         private bool readyToClose = false;
 
-        public SplashScreen(Version version)
+        public WarnMeLoader(Version version)
         {
             InitializeComponent();
             RunningVersion.Text = $"Version: {version}";

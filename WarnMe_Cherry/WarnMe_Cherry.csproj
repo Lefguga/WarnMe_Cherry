@@ -119,15 +119,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CONFIG\ApplicationSettings.cs" />
+    <Compile Include="CONFIG\Brakes.cs" />
+    <Compile Include="CONFIG\Colors.cs" />
+    <Compile Include="CONFIG\TimeSettings.cs" />
     <Compile Include="Datenbank\Database.cs" />
     <Compile Include="Datenbank\DatenbankExceptions.cs" />
-    <Compile Include="Datenbank\InternalVariables.cs" />
+    <Compile Include="CONFIG\WarnMeConfig.cs" />
     <Compile Include="Extensions\DayMatcher.cs" />
     <Compile Include="Extensions\Wetter.cs" />
     <Compile Include="ExterneKlassen\Extern.cs" />
     <Compile Include="ExterneKlassen\Global.cs" />
     <Compile Include="ExterneKlassen\KlassenErweiterung.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
+    <Compile Include="Interfaces\UpdateEvent.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
     <Compile Include="Newtonsoft.Json\Bson\BsonObjectId.cs" />
@@ -374,8 +379,11 @@
     <Compile Include="NotifyIcon.Wpf\TaskbarIcon.cs" />
     <Compile Include="NotifyIcon.Wpf\TaskbarIcon.Declarations.cs" />
     <Compile Include="NotifyIcon.Wpf\Util.cs" />
-    <Compile Include="SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    <Compile Include="Steuerelemente\Sites\Settings\TimingsList.xaml.cs">
+      <DependentUpon>TimingsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarnMeLoader.xaml.cs">
+      <DependentUpon>WarnMeLoader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Steuerelemente\Buttons\Close.xaml.cs">
       <DependentUpon>Close.xaml</DependentUpon>
@@ -386,35 +394,35 @@
     <Compile Include="Steuerelemente\Buttons\Mini.xaml.cs">
       <DependentUpon>Mini.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\Sites\Home_Site.xaml.cs">
+    <Compile Include="Steuerelemente\Sites\Home\Home_Site.xaml.cs">
       <DependentUpon>Home_Site.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\Sites\Overview_Site.xaml.cs">
+    <Compile Include="Steuerelemente\Sites\Overview\Overview_Site.xaml.cs">
       <DependentUpon>Overview_Site.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\Sites\Setting_Site.xaml.cs">
+    <Compile Include="Steuerelemente\Sites\Settings\Setting_Site.xaml.cs">
       <DependentUpon>Setting_Site.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\Workday.xaml.cs">
+    <Compile Include="Steuerelemente\Sites\Overview\Workday.xaml.cs">
       <DependentUpon>Workday.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\WorkDayPropWindow.xaml.cs">
+    <Compile Include="Steuerelemente\Sites\Overview\WorkDayPropWindow.xaml.cs">
       <DependentUpon>WorkDayPropWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\WorkTable.xaml.cs">
+    <Compile Include="Steuerelemente\Sites\Overview\WorkTable.xaml.cs">
       <DependentUpon>WorkTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Structs\Arbeitstag.cs" />
-    <Compile Include="Steuerelemente\DateTimePicker.xaml.cs">
+    <Compile Include="Steuerelemente\Subparts\DateTimePicker.xaml.cs">
       <DependentUpon>DateTimePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Steuerelemente\Buttons\SwitchButton.xaml.cs">
       <DependentUpon>SwitchButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\TimeOfDay.xaml.cs">
+    <Compile Include="Steuerelemente\Subparts\TimeOfDay.xaml.cs">
       <DependentUpon>TimeOfDay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Steuerelemente\Wecker.xaml.cs">
+    <Compile Include="Steuerelemente\Subparts\Wecker.xaml.cs">
       <DependentUpon>Wecker.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfAnimatedGif\AnimationCache.cs" />
@@ -437,7 +445,11 @@
     <Compile Include="WpfAnimatedGif\Decoding\GifTrailer.cs" />
     <Compile Include="WpfAnimatedGif\ImageAnimationController.cs" />
     <Compile Include="WpfAnimatedGif\ImageBehavior.cs" />
-    <Page Include="SplashScreen.xaml">
+    <Page Include="Steuerelemente\Sites\Settings\TimingsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarnMeLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -453,27 +465,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\Sites\Home_Site.xaml">
+    <Page Include="Steuerelemente\Sites\Home\Home_Site.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\Sites\Overview_Site.xaml">
+    <Page Include="Steuerelemente\Sites\Overview\Overview_Site.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\Sites\Setting_Site.xaml">
+    <Page Include="Steuerelemente\Sites\Settings\Setting_Site.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\Workday.xaml">
+    <Page Include="Steuerelemente\Sites\Overview\Workday.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\WorkDayPropWindow.xaml">
+    <Page Include="Steuerelemente\Sites\Overview\WorkDayPropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\WorkTable.xaml">
+    <Page Include="Steuerelemente\Sites\Overview\WorkTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -481,11 +493,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\Timeline.xaml">
+    <Page Include="Steuerelemente\Subparts\Timeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\TimeOfDay.xaml">
+    <Page Include="Steuerelemente\Subparts\TimeOfDay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -497,18 +509,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Steuerelemente\Timeline.xaml.cs">
+    <Compile Include="Steuerelemente\Subparts\Timeline.xaml.cs">
       <DependentUpon>Timeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="WarnMeVision.xaml.cs">
       <DependentUpon>WarnMeVision.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Steuerelemente\DateTimePicker.xaml">
+    <Page Include="Steuerelemente\Subparts\DateTimePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Steuerelemente\Wecker.xaml">
+    <Page Include="Steuerelemente\Subparts\Wecker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -558,6 +570,7 @@
   <ItemGroup>
     <Resource Include="Resources\LoadingPotion.gif" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

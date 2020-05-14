@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Sites.Overview_Site"
+﻿<UserControl x:Class="WarnMe_Cherry.Steuerelemente.Sites.Overview.Overview_Site"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites"
-             xmlns:Steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente"
+             xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Overview"
+             xmlns:Steuerelemente="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Overview"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10">
@@ -98,6 +98,6 @@
             </Viewbox>
         </Grid>
         <Canvas Grid.Row="3" Background="Black"/>
-        <Steuerelemente:WorkTable x:Name="ZeitTabelle" Grid.Row="4"/>
+        <Steuerelemente:WorkTable x:Name="ZeitTabelle" Grid.Row="4" ValueUpdated="UpdateEvent"/>
     </Grid>
 </UserControl>
