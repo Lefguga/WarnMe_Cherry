@@ -4,22 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Subparts"
-             mc:Ignorable="d" Height="30" Width="150"
+             mc:Ignorable="d"
              Focusable="True"
-             KeyDown="HandleKeyInput">
-    
+             PreviewKeyDown="HandleKeyInput">
+
     <Grid x:Name="grid"
           HorizontalAlignment="Stretch"
           Height="Auto"
           VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="18"/>
         </Grid.ColumnDefinitions>
-        <Viewbox>
-            <local:TimeOfDay x:Name="Time"/>
-        </Viewbox>
-        <Grid x:Name="Buttons" Grid.Column="1">
+        <local:TimeOfDay x:Name="Time"/>
+        <Grid x:Name="Buttons" Grid.Column="1" Visibility="{Binding ShowUpDown, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DateTimePicker}}}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>

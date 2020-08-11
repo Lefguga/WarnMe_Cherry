@@ -19,6 +19,9 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
             INFO("Generate Overview_Site");
 #endif
             InitializeComponent();
+
+            // Events
+            ZeitTabelle.ValueUpdated += UpdateEvent;
         }
 
         private void PrevMonth_Click(object sender, MouseButtonEventArgs e)

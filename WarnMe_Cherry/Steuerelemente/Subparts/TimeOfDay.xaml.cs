@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static GLOBAL.CONFIG;
 
 namespace WarnMe_Cherry.Steuerelemente.Subparts
 {
@@ -47,11 +48,7 @@ namespace WarnMe_Cherry.Steuerelemente.Subparts
 
         private void TriggerTimeUpdate() => TimeChanged?.Invoke(new TimeSpan(Hour, Minute, Second));
 
-        public Brush FocusBrush { get; set; } = new LinearGradientBrush(new GradientStopCollection(3)
-        {
-            new GradientStop(Color.FromArgb(0x9F, 0x00, 0x60, 0xFF), 0.16),
-            new GradientStop(Color.FromArgb(0x00, 0x00, 0x60, 0xFF), 0.15)
-        }, 90);
+        Brush FocusBrush => new SolidColorBrush(WARNME_CONFIG.COLORS.ACCENT_COLOR);
 
         public TimeSpan Value
         {
@@ -66,19 +63,21 @@ namespace WarnMe_Cherry.Steuerelemente.Subparts
 
         private void Control_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBlock)
+            if (sender is TextBlock t)
             {
-                ((TextBlock)sender).Background = FocusBrush;
+                t.Background = FocusBrush;
             }
         }
 
         private void Control_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBlock)
-                ((TextBlock)sender).Background = Brushes.Transparent;
+            if (sender is TextBlock t)
+            {
+                t.Background = Brushes.Transparent;
+            }
         }
 
-        private void Hours_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void OnClickEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             ((UIElement)sender).Focus();
         }

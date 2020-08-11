@@ -23,12 +23,22 @@ namespace WarnMe_Cherry
             get
             {
                 if (Duration > WARNME_CONFIG.TIME.COFFEE.START)
-                    if (Duration >WARNME_CONFIG.TIME.LUNCH.START)
-                        return Duration.Subtract(WARNME_CONFIG.TIME.COFFEE.DURATION + WARNME_CONFIG.TIME.LUNCH.DURATION);
+                    if (Duration > WARNME_CONFIG.TIME.LUNCH.START)
+                    {
+                        return Duration > (WARNME_CONFIG.TIME.LUNCH.START + WARNME_CONFIG.TIME.LUNCH.DURATION) ?
+                            Duration - (WARNME_CONFIG.TIME.COFFEE.DURATION + WARNME_CONFIG.TIME.LUNCH.DURATION) :
+                            WARNME_CONFIG.TIME.LUNCH.START - WARNME_CONFIG.TIME.COFFEE.DURATION;
+                    }
                     else
-                        return Duration.Subtract(WARNME_CONFIG.TIME.COFFEE.DURATION);
+                    {
+                        return Duration > (WARNME_CONFIG.TIME.COFFEE.START + WARNME_CONFIG.TIME.COFFEE.DURATION) ?
+                            Duration - WARNME_CONFIG.TIME.COFFEE.DURATION :
+                            WARNME_CONFIG.TIME.COFFEE.START;
+                    }
                 else
+                {
                     return Duration;
+                }
             }
         }
 

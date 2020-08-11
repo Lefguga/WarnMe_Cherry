@@ -4,58 +4,76 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarnMe_Cherry.Steuerelemente.Sites.Settings"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             Focusable="True"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Hidden" VerticalAlignment="Top">
-            <Grid Height="210">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border>
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <SolidColorBrush Color="#FF0000FF"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <TextBlock Text="Warn ME" Height="30" FontSize="25" Margin="10"/>
-                </Border>
-                <Border Grid.Row="1">
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <SolidColorBrush Color="#FF0000FF"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <TextBlock Text="Windows" Height="30" FontSize="25" Margin="10"/>
-                </Border>
-            </Grid>
-        </ScrollViewer>
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Hidden" Margin="20,0">
-            <local:TimingsList x:Name="Timings" Grid.Column="1" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" ValueUpdated="UpdateEvent"/>
-        </ScrollViewer>
+        <Grid Height="210" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Cursor="Hand" MouseDown="SwitchToTimings">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FF0000FF"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="Timings" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Border Grid.Row="1" Cursor="Hand" MouseDown="SwitchToDmar">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FF0000FF"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="DMAR" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+        </Grid>
+        <TabControl x:Name="SettingsTab" Grid.Column="1" Margin="20,0" Focusable="False" Background="Transparent" BorderThickness="0">
+            <TabItem Visibility="Hidden">
+                <local:TimingsList x:Name="Timings" Grid.Column="1" Width="431" HorizontalAlignment="Left" VerticalAlignment="Top" ValueUpdated="UpdateEvent" Height="364"/>
+            </TabItem>
+            <TabItem Name="DMAR" Visibility="Hidden">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="+"/>
+                        <TextBlock Text="-" Grid.Column="1"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
         <TextBlock x:Name="Debug" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              Background="Transparent"
              BorderThickness="1">
-    <Grid Margin="10">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="3*"/>
@@ -37,13 +37,13 @@
                 <TextBlock Text="Zeit:"/>
             </Viewbox>
             <Viewbox Grid.Column="1">
-                <steuerelemente:TimeOfDay x:Name="starttime"/>
+                <steuerelemente:DateTimePicker x:Name="starttime" TimeChanged="UpdateStartTimeEvent" AllowInputs="True"/>
             </Viewbox>
             <Viewbox Grid.Row="1" Grid.Column="1">
-                <steuerelemente:TimeOfDay x:Name="endtime"/>
+                <steuerelemente:DateTimePicker x:Name="endtime" TimeChanged="UpdateEndTimeEvent" AllowInputs="True"/>
             </Viewbox>
             <Viewbox Grid.Row="2" Grid.Column="1">
-                <steuerelemente:TimeOfDay x:Name="duration"/>
+                <steuerelemente:DateTimePicker x:Name="duration"/>
             </Viewbox>
         </Grid>
         <Viewbox Grid.Row="2">

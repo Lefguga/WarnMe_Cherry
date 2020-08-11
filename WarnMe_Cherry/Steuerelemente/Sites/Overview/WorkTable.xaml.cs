@@ -24,7 +24,6 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
         public int Year { get; set; } = DateTime.Now.Year;
         public ColumnDefinitionCollection ColumnDefinition => Data.ColumnDefinitions;
         
-        internal static WorkDayPropWindow window = new WorkDayPropWindow();
         private bool WasFocused = true;
 
         /// <summary>
@@ -38,11 +37,6 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
             INFO("WorkTable");
 #endif
             InitializeComponent();
-            AddHandler(MouseDownEvent, new MouseButtonEventHandler(Focus_On_MouseDown), true);
-
-            window.WorkdayUpdated += WorkdayUpdated;
-            
-            //FillGridWithEmpty();
         }
 
         /// <summary>
@@ -101,35 +95,6 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
                 WARNME_CONFIG.WORKINGDAYS.Add(date, arbeitstag);
             UpdateWorkday(date, arbeitstag);
             UpdateEvent();
-        }
-
-        private void OpenWorkdayPromt(object sender, MouseButtonEventArgs e)
-        {
-#if TRACE
-            INFO("WorkTable.Open_Workday_Promt");
-#endif
-            if (sender is Workday w_day)
-            {
-                if (w_day.Opacity > 0d)
-                {
-                    ShowPropWindow(w_day.PointToScreen(new Point(w_day.RenderSize.Width * -0.2d, 0d)), w_day);
-                }
-            }
-            // throw new NotImplementedException();
-        }
-
-        private static void ShowPropWindow(Point position, Workday workday)
-        {
-#if TRACE
-            INFO("WorkTable.ShowPropWindow");
-#endif
-            window.Top = position.Y;
-            window.Left = position.X;
-            window.Width = workday.ActualWidth * 1.5d;
-            window.Height = workday.ActualHeight * 1.1d;
-
-            if (!window.IsVisible)
-                window.Show(workday.Arbeitstag, workday.DateTime);
         }
 
         /// <summary>

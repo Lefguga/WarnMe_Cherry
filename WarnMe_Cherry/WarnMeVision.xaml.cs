@@ -287,7 +287,7 @@ namespace WarnMe_Cherry
         private void UpdateForm()
         {
 #if DEBUG
-            INFO("UpdateForm");
+            INFO("WarnMeVision: UpdateForm");
 #endif
             // Update Timeline
             try
@@ -341,7 +341,7 @@ namespace WarnMe_Cherry
         private void InitFormValues()
         {
 #if TRACE
-            INFO("InitFormValues");
+            INFO("WarnMeVision: InitFormValues");
 #endif
 
             // init new day of working
@@ -388,7 +388,7 @@ namespace WarnMe_Cherry
         private void UpdateWorkingDay(DateTime date, Arbeitstag arbeitstag)
         {
 #if TRACE
-            INFO("UpdateWorkingDay");
+            INFO("WarnMeVision: UpdateWorkingDay");
 #endif
             WARNME_CONFIG.WORKINGDAYS[date] = arbeitstag;
             // Results in too many data writings
@@ -421,16 +421,13 @@ namespace WarnMe_Cherry
         private void PrepareShutdown()
         {
 #if TRACE
-            INFO("PrepareShutdown");
+            INFO("WarnMeVision: PrepareShutdown");
 #endif
             // Refresh "Heute"
             WARNME_CONFIG.WORKINGDAYS[TODAY].EndZeit = NOW;
 
             // Commit Values
             NewDataAvailable();
-
-            // Close Forms
-            WorkTable.window.Close();
 
             // Clean up Taskbar Icon
             notifyWorkDay?.Close();

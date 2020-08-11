@@ -25,7 +25,7 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Home
 
         public void Update()
         {
-#if TRACE
+#if DEBUG
             INFO("Home_Site.Update");
 #endif
             timeLine.Value = (NOW - WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit).TotalSeconds;

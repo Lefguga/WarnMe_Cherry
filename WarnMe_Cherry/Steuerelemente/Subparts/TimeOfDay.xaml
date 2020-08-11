@@ -15,16 +15,16 @@
         </Grid.ColumnDefinitions>
         <Viewbox>
             <TextBlock x:Name="Hours" Text="00" Focusable="True"
-                       MouseLeftButtonDown="Hours_MouseLeftButtonDown"
-                       GotFocus="Control_GotFocus"
-                       LostFocus="Control_LostFocus"/>
+                       MouseDown="OnClickEvent"
+                       GotKeyboardFocus="Control_GotFocus"
+                       LostKeyboardFocus="Control_LostFocus"/>
         </Viewbox>
         <Viewbox Grid.Column="1">
             <TextBlock Text=":"/>
         </Viewbox>
         <Viewbox Grid.Column="2">
             <TextBlock x:Name="Minutes" Text="00" Focusable="True"
-                       MouseLeftButtonDown="Hours_MouseLeftButtonDown"
+                       MouseDown="OnClickEvent"
                        GotFocus="Control_GotFocus"
                        LostFocus="Control_LostFocus"/>
         </Viewbox>
@@ -33,7 +33,7 @@
         </Viewbox>
         <Viewbox Grid.Column="4">
             <TextBlock x:Name="Seconds" Text="00" Focusable="True"
-                       MouseLeftButtonDown="Hours_MouseLeftButtonDown"
+                       MouseDown="OnClickEvent"
                        GotFocus="Control_GotFocus"
                        LostFocus="Control_LostFocus"/>
         </Viewbox>

@@ -129,6 +129,7 @@
     <Compile Include="Extensions\DayMatcher.cs" />
     <Compile Include="Extensions\Wetter.cs" />
     <Compile Include="ExterneKlassen\Extern.cs" />
+    <Compile Include="ExterneKlassen\FirstDegreeFunctionConverter.cs" />
     <Compile Include="ExterneKlassen\Global.cs" />
     <Compile Include="ExterneKlassen\KlassenErweiterung.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
@@ -379,6 +380,9 @@
     <Compile Include="NotifyIcon.Wpf\TaskbarIcon.cs" />
     <Compile Include="NotifyIcon.Wpf\TaskbarIcon.Declarations.cs" />
     <Compile Include="NotifyIcon.Wpf\Util.cs" />
+    <Compile Include="Steuerelemente\Sites\Settings\dmarItem.cs">
+      <DependentUpon>dmarItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Steuerelemente\Sites\Settings\TimingsList.xaml.cs">
       <DependentUpon>TimingsList.xaml</DependentUpon>
     </Compile>
@@ -445,6 +449,10 @@
     <Compile Include="WpfAnimatedGif\Decoding\GifTrailer.cs" />
     <Compile Include="WpfAnimatedGif\ImageAnimationController.cs" />
     <Compile Include="WpfAnimatedGif\ImageBehavior.cs" />
+    <Page Include="Steuerelemente\Sites\Settings\dmarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Steuerelemente\Sites\Settings\TimingsList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

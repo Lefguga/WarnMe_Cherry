@@ -44,6 +44,14 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Settings
         {
             ValueUpdated?.Invoke();
         }
+        private void SwitchToTimings(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            SettingsTab.SelectedIndex = 0;
+        }
 
+        private void SwitchToDmar(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            SettingsTab.SelectedIndex = 1;
+        }        
     }
 }

@@ -98,6 +98,8 @@
             </Viewbox>
         </Grid>
         <Canvas Grid.Row="3" Background="Black"/>
-        <Steuerelemente:WorkTable x:Name="ZeitTabelle" Grid.Row="4" ValueUpdated="UpdateEvent"/>
+        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Hidden" Focusable="False">
+            <Steuerelemente:WorkTable x:Name="ZeitTabelle"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>
