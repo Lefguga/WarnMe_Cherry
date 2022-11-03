@@ -16,7 +16,7 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
     /// </summary>
     public partial class WorkTable : UserControl, Interfaces.IUpdateable
     {
-        public delegate void ValueChange();
+        public delegate void ValueChange(DateTime date, Arbeitstag wDay);
         public event ValueChange ValueUpdated;
 
         public string MonthString => System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Month);
@@ -100,7 +100,7 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
             else
                 WARNME_CONFIG.WORKINGDAYS.Add(date, arbeitstag);
             UpdateWorkday(date, arbeitstag);
-            UpdateEvent();
+            UpdateEvent(date, arbeitstag);
         }
 
         private void OpenWorkdayPromt(object sender, MouseButtonEventArgs e)
@@ -273,9 +273,9 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
             ((FrameworkElement)sender).Focus();
         }
 
-        private void UpdateEvent()
+        private void UpdateEvent(DateTime date, Arbeitstag wDay)
         {
-            ValueUpdated?.Invoke();
+            ValueUpdated?.Invoke(date, wDay);
         }
     }
 }

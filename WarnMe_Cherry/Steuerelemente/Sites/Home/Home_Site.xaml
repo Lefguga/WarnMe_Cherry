@@ -25,6 +25,26 @@
                                        Height="30" Width="120"/>
         <TextBlock Text="Stundenlimit" HorizontalAlignment="Left" Margin="348,10,0,0" VerticalAlignment="Top" Width="100"/>
         <!--<Steuerelemente:Workday Grid.Row="1" Margin="0,0,698,265"/>-->
-        <subparts:Timeline x:Name="timeLine" Grid.Row="2"/>
+        <subparts:Timeline x:Name="timeLine" Grid.Row="2">
+            <subparts:Timeline.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="Transparent" Offset="0"/>
+                    <!--Coffee-->
+                    <GradientStop Color="Transparent" Offset="0.279"/>
+                    <GradientStop Color="#7FFF0000" Offset="0.284"/>
+                    <GradientStop Color="#7FFF0000" Offset="0.297"/>
+                    <GradientStop Color="Transparent" Offset="0.302"/>
+                    <!--Lunch-->
+                    <GradientStop Color="Transparent" Offset="0.581"/>
+                    <GradientStop Color="#7FFF0000" Offset="0.586"/>
+                    <GradientStop Color="#7FFF0000" Offset="0.622"/>
+                    <GradientStop Color="Transparent" Offset="0.627"/>
+                    <!--End-->
+                    <GradientStop Color="Transparent" Offset="0.720"/>
+                    <GradientStop Color="#7F008000" Offset="0.725"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </LinearGradientBrush>
+            </subparts:Timeline.Background>
+        </subparts:Timeline>
     </Grid>
 </UserControl>

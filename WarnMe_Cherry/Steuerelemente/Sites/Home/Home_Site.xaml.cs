@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 using static WarnMe_Cherry.Global;
 using static GLOBAL.CONFIG;
 
@@ -10,7 +11,7 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Home
     /// </summary>
     public partial class Home_Site : UserControl, Interfaces.IUpdateable
     {
-        public delegate void ValueChange();
+        public delegate void ValueChange(DateTime date, Arbeitstag wDay);
         public event ValueChange ValueUpdated;
 
         TimeSpan start;
@@ -21,6 +22,11 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Home
             INFO("Home_Site.Home_Site");
 #endif
             InitializeComponent();
+        }
+
+        internal void Init()
+        {
+            
         }
 
         public void Update()
@@ -40,18 +46,14 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Home
 #endif
             if (value != start)
             {
+                TimeSpan totalBrakeTime = WARNME_CONFIG.TIME.COFFEE.DURATION + WARNME_CONFIG.TIME.LUNCH.DURATION;
                 WARNME_CONFIG.WORKINGDAYS[TODAY].StartZeit = value;
-                EndTimePicker.DateTime = value + WARNME_CONFIG.TIME.WORKTIME;
-                MaxEndTimePicker.DateTime = value + WARNME_CONFIG.TIME.WORKLIMIT;
+                EndTimePicker.DateTime = value + WARNME_CONFIG.TIME.WORKTIME + totalBrakeTime;
+                MaxEndTimePicker.DateTime = value + WARNME_CONFIG.TIME.WORKLIMIT + totalBrakeTime;
 
                 start = value;
-                UpdateEvent();
+                ValueUpdated?.Invoke(TODAY, WARNME_CONFIG.WORKINGDAYS[TODAY]);
             }
-        }
-
-        private void UpdateEvent()
-        {
-            ValueUpdated?.Invoke();
         }
     }
 }

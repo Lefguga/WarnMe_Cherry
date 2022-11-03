@@ -153,7 +153,7 @@
                 <TabItem Header="Einstellungen" Height="0" IsTabStop="False" BorderThickness="0" Visibility="Hidden" Focusable="True"
                          Foreground="{Binding Foreground, ElementName=MainWindow}"
                          Background="{Binding Background, ElementName=MainGrid}">
-                    <settings:Setting_Site x:Name="Einstellungen" ValueUpdated="UpdateOccured"/>
+                    <settings:Setting_Site x:Name="Einstellungen" ValueUpdated="SettingsUpdateOccured"/>
                 </TabItem>
             </TabControl>
         </Grid>

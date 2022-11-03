@@ -44,6 +44,28 @@ namespace WarnMe_Cherry.Datenbank
                 string sourceString = File.ReadAllText(source.FullName, Encoding);
                 LastCommittedString = sourceString;
                 Deserialize(sourceString);
+                if (Directory.Exists($"{source.Directory}\\Days"))
+                {
+                    foreach (string fileName in Directory.EnumerateFiles($"{source.Directory}\\Days", "*.day"))
+                    {
+                        string sDay = File.ReadAllText(fileName, Encoding);
+                        Dictionary<DateTime, Arbeitstag> days = JsonConvert.DeserializeObject<Dictionary<DateTime, Arbeitstag>>(sDay, DefaultSetting);
+                        foreach (var day in days)
+                        {
+                            if (GLOBAL.CONFIG.WARNME_CONFIG.WORKINGDAYS.ContainsKey(day.Key))
+                            {
+                                GLOBAL.CONFIG.WARNME_CONFIG.WORKINGDAYS[day.Key] = day.Value;
+                            }
+                            else
+                            {
+                                GLOBAL.CONFIG.WARNME_CONFIG.WORKINGDAYS.Add(day.Key, day.Value);
+                            }
+                        }
+                    }
+                } else
+                {
+                    Directory.CreateDirectory($"{source.Directory}\\Days");
+                }
             }
         }
 
@@ -270,11 +292,27 @@ namespace WarnMe_Cherry.Datenbank
             INFO($"Database.Commit Writing data to '{source.FullName}'");
 #endif
             string toWrite = Serialize();
+            saveOverwriteFile(source.FullName, toWrite);
+        }
+
+        internal void Commit(DateTime date, Arbeitstag wDay)
+        {
+#if TRACE
+            INFO($"Database.Commit Writing data to '{date:yyyy.MM.dd} [{wDay}]'");
+#endif
+            var day = new Dictionary<DateTime, Arbeitstag>();
+            day.Add(date, wDay);
+            string sDay = JsonConvert.SerializeObject(day, DefaultSetting);
+            File.WriteAllText($"{source.Directory}\\Days\\{date:yyyy.MM.dd}.day", sDay, Encoding);
+        }
+
+        private void saveOverwriteFile(string fileName, string toWrite)
+        {
             try
             {
-                File.WriteAllText($"{source.FullName}_bak", toWrite, Encoding);
-                File.Delete(source.FullName);
-                File.Move($"{source.FullName}_bak", source.FullName);
+                File.WriteAllText($"{fileName}_bak", toWrite, Encoding);
+                File.Delete(fileName);
+                File.Move($"{fileName}_bak", fileName);
             }
             finally
             {
@@ -291,7 +329,13 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO("Database.Serialize data");
 #endif
-            return JsonConvert.SerializeObject(GLOBAL.CONFIG.WARNME_CONFIG, DefaultSetting);
+            WARNME_CONFIG config = new WARNME_CONFIG();
+            config.COLORS = GLOBAL.CONFIG.WARNME_CONFIG.COLORS;
+            config.SETTINGS = GLOBAL.CONFIG.WARNME_CONFIG.SETTINGS;
+            config.TIME = GLOBAL.CONFIG.WARNME_CONFIG.TIME;
+            //config.WORKINGDAYS
+            //config.WECKER
+            return JsonConvert.SerializeObject(config, DefaultSetting);
         }
 
         /// <summary>
@@ -303,8 +347,8 @@ namespace WarnMe_Cherry.Datenbank
 #if TRACE
             INFO("Database.Deserialize data");
 #endif
-            GLOBAL.CONFIG.WARNME_CONFIG = JsonConvert.DeserializeObject<WARNME_CONFIG>(data, DefaultSetting);
-            if (GLOBAL.CONFIG.WARNME_CONFIG == null)
+            var cfg = JsonConvert.DeserializeObject<WARNME_CONFIG>(data, DefaultSetting);
+            if (cfg == null)
             {
                 MessageBox.Show("Deserializing database failed, resulting object equals null.", "Error reading save file!",
                     MessageBoxButton.OK,
@@ -315,6 +359,19 @@ namespace WarnMe_Cherry.Datenbank
                     MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     GLOBAL.CONFIG.WARNME_CONFIG = new WARNME_CONFIG();
+                }
+            } else
+            {
+                GLOBAL.CONFIG.WARNME_CONFIG.COLORS = cfg.COLORS;
+                GLOBAL.CONFIG.WARNME_CONFIG.SETTINGS = cfg.SETTINGS;
+                GLOBAL.CONFIG.WARNME_CONFIG.TIME = cfg.TIME;
+                foreach (var day in cfg.WORKINGDAYS)
+                {
+                    GLOBAL.CONFIG.WARNME_CONFIG.WORKINGDAYS.Add(day.Key, day.Value);
+                }
+                foreach (var wecker in cfg.WECKER)
+                {
+                    GLOBAL.CONFIG.WARNME_CONFIG.WECKER.Add(wecker.Key, wecker.Value);
                 }
             }
         }

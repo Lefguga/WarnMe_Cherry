@@ -19,6 +19,9 @@ namespace WarnMe_Cherry
         public delegate void DataModified();
         public event DataModified NewDataAvailable;
 
+        public delegate void UpdateWorkday(DateTime date, Arbeitstag day);
+        public event UpdateWorkday WorkdayUpdated;
+
         private bool UpdaterInWork = false;
 
         BackgroundWorker Updater = new BackgroundWorker();
@@ -307,21 +310,24 @@ namespace WarnMe_Cherry
                 InitFormValues();
             }
 
-            switch (Tabs.SelectedIndex)
+            if (this.WindowState != WindowState.Minimized)
             {
-                case 0: // Home Site
-                    Home.Update();
-                    break;
-                // Refresh actual day
-                case 1:
-                    Übersicht.ZeitTabelle.UpdateWorkday(TODAY, WARNME_CONFIG.WORKINGDAYS[TODAY]);
-                    break;
-                // Set resttime as program usage
-                case 2:
-                    Einstellungen.Debug.Text = $"{NOW.Milliseconds} ms";
-                    break;
-                default:
-                    break;
+                switch (Tabs.SelectedIndex)
+                {
+                    case 0: // Home Site
+                        Home.Update();
+                        break;
+                    // Refresh actual day
+                    case 1:
+                        Übersicht.ZeitTabelle.UpdateWorkday(TODAY, WARNME_CONFIG.WORKINGDAYS[TODAY]);
+                        break;
+                    // Set resttime as program usage
+                    case 2:
+                        Einstellungen.Debug.Text = $"{NOW.Milliseconds} ms";
+                        break;
+                    default:
+                        break;
+                }
             }
 
             RefreshNotiToolTip();
@@ -371,6 +377,7 @@ namespace WarnMe_Cherry
             TitleGrid.Background = new SolidColorBrush(WARNME_CONFIG.COLORS.MAIN_COLOR);
             MainGrid.Background = new SolidColorBrush(WARNME_CONFIG.COLORS.MAIN_COLOR_WEAK);
 
+            Home.Init();
 
             // WORKINGDAY TABLE
             Übersicht.Update();
@@ -391,6 +398,7 @@ namespace WarnMe_Cherry
             INFO("UpdateWorkingDay");
 #endif
             WARNME_CONFIG.WORKINGDAYS[date] = arbeitstag;
+            WorkdayUpdated?.Invoke(date, arbeitstag);
             // Results in too many data writings
             // DATA.Commit();
         }
@@ -427,6 +435,7 @@ namespace WarnMe_Cherry
             WARNME_CONFIG.WORKINGDAYS[TODAY].EndZeit = NOW;
 
             // Commit Values
+            UpdateOccured(TODAY, WARNME_CONFIG.WORKINGDAYS[TODAY]);
             NewDataAvailable();
 
             // Close Forms
@@ -440,10 +449,14 @@ namespace WarnMe_Cherry
             icon.Dispose();
         }
 
-        private void UpdateOccured()
+        private void UpdateOccured(DateTime date, Arbeitstag wDay)
         {
-            NewDataAvailable();
+            WorkdayUpdated?.Invoke(date, wDay);
         }
 
+        private void SettingsUpdateOccured()
+        {
+            NewDataAvailable?.Invoke();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
     /// </summary>
     public partial class Overview_Site : UserControl, Interfaces.IUpdateable
     {
-        public delegate void ValueChange();
+        public delegate void ValueChange(DateTime date, Arbeitstag wDay);
         public event ValueChange ValueUpdated;
 
         public Overview_Site()
@@ -76,9 +76,9 @@ namespace WarnMe_Cherry.Steuerelemente.Sites.Overview
             ZeitTabelle.Update();
         }
 
-        private void UpdateEvent()
+        private void UpdateEvent(DateTime date, Arbeitstag wDay)
         {
-            ValueUpdated?.Invoke();
+            ValueUpdated?.Invoke(date, wDay);
         }
     }
 }

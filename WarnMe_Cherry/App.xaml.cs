@@ -26,7 +26,11 @@ namespace WarnMe_Cherry
 #if TRACE
                 INFO("Application: Data Updated.");
 #endif
-                datenbank.Commit(); 
+                datenbank.Commit();
+            };
+            vision.WorkdayUpdated += (System.DateTime date, Arbeitstag wDay) =>
+            {
+                datenbank.Commit(date, wDay);
             };
             vision.Show();
             splashScreen?.Close(); // prevent splashscreen stay open when vision fails

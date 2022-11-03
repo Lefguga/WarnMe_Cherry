@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-using WarnMe_Cherry.Steuerelemente.Subparts;
+﻿using System.Windows.Controls;
 using static GLOBAL.CONFIG;
 
 namespace WarnMe_Cherry.Steuerelemente.Sites.Settings
